@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Blockly Demo: Iframe Blockly</title>
+	<style>
+		html, body {
+			height: 100%;
+		}
+		body {
+			background-color: #fff;
+			font-family: sans-serif;
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+		iframe {
+			width: 100%;
+			height: 99%;
+			border-style: solid;
+			border-color: #ddd;
+			border-width: 0 1px 1px 0;
+		}
+	</style>
+</head>
+<body>
+	<script>
+		function blocklyLoaded(blockly) {
+			// Called once Blockly is fully loaded.
+			window.Blockly = blockly;
+		}
+	</script>
+	<iframe src="frame.html"></iframe>
+</body>
+</html>

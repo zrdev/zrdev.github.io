@@ -1,0 +1,66 @@
+body {
+	padding-top: 70px;
+	padding-bottom: 15px;
+	background: url("../images/BG.png") repeat-x fixed 0px 0px rgb(12, 68, 126);
+}
+
+.container {
+	width: 100%;
+}
+
+#accordion-container {
+	padding-left: 0;
+	overflow: hidden;
+}
+
+.panel-body {
+	overflow: auto;
+}
+
+#main-container {
+	display: none;
+}
+
+#editor {
+	 font-size: 18px;
+}
+
+.modal-container {
+	display: table;
+	height: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.navbar-inverse {
+	background-color: #000000;
+}
+
+.navbar-inverse a {
+	color: #ffffff;
+}
+
+.modal-dialog {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.modal-footer {
+	margin-top: 0;
+}
+
+#new-project-modal .modal-dialog {
+	max-width: 400px;
+}
+
+#pages-list {
+	margin-bottom: 10px;
+}
+
+#log-list {
+	margin-bottom: 0;
+}
+
+#log-chat-field {
+	margin-bottom: 15px;
+}

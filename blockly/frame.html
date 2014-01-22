@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<script type="text/javascript" src="blockly_uncompressed.js"></script>
+		<script type="text/javascript" src="blocks/text.js"></script>
+		<script type="text/javascript" src="blocks/variables.js"></script>
+		<script type="text/javascript" src="blocks/logic.js"></script>
+		<script type="text/javascript" src="blocks/math.js"></script>
+		<script type="text/javascript" src="blocks/loops.js"></script>
+		<script type="text/javascript" src="blocks/procedures.js"></script>
+		<script type="text/javascript" src="blocks/zr-base-api.js"></script>
+		<script type="text/javascript" src="generators/zr_cpp.js"></script>
+		<script type="text/javascript" src="generators/zr_cpp/text.js"></script>
+		<script type="text/javascript" src="generators/zr_cpp/variables.js"></script>
+		<script type="text/javascript" src="generators/zr_cpp/logic.js"></script>
+		<script type="text/javascript" src="generators/zr_cpp/math.js"></script>
+		<script type="text/javascript" src="generators/zr_cpp/loops.js"></script>
+		<script type="text/javascript" src="generators/zr_cpp/procedures.js"></script>
+		<script type="text/javascript" src="generators/zr_cpp/zr-base-api.js"></script>
+		<script type="text/javascript" src="msg/js/en.js"></script>
+		<style>
+			html, body {
+				background-color: #fff;
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+				height: 100%;
+			}
+			.blocklySvg {
+				height: 100%;
+				width: 100%;
+			}
+		</style>
+		<script>
+			function init() {
+				Blockly.inject(document.body,
+						{path: './', toolbox: document.getElementById('toolbox')});
+				// Let the top-level application know that Blockly is ready.
+				window.parent.blocklyLoaded(Blockly);
+			}
+		</script>
+	</head>
+	<body onload="init()">
+		<xml id="toolbox" style="display: none">
+			<category name="SPHERES Controls">
+				<block type="spheres_setPos">
+					<value name="X">
+						<block type="math_number">
+							<field name="NUM">0</field>
+						</block>
+					</value>
+					<value name="Y">
+						<block type="math_number">
+							<field name="NUM">0</field>
+						</block>
+					</value>
+					<value name="Z">
+						<block type="math_number">
+							<field name="NUM">0</field>
+						</block>
+					</value>
+				</block>
+				<block type="spheres_setTarget">
+					<value name="ARGUMENT">
+						<block type="variables_get">
+						</block>
+					</value>
+				</block>
+				<block type="spheres_getZRState">
+					<value name="ARGUMENT">
+						<block type="variables_get">
+						</block>
+					</value>
+				</block>
+				<block type="spheres_getTime"></block>
+			</category>
+			<category name="Debug">
+				<block type="debug">
+					<value name="TEXT">
+						<block type="debug_string">
+						</block>
+					</value>
+				</block>
+				<block type="debug_string"></block>
+			</category>
+			<category name="Variables">
+				<block type="variables_get"></block>
+				<block type="variables_set">
+					<value name="VALUE">
+						<block type="math_number">
+							<field name="NUM">0</field>
+						</block>
+					</value>
+				</block>
+				<block type="variables_declare">
+					<value name="VALUE">
+						<block type="math_number">
+							<field name="NUM">0</field>
+						</block>
+					</value>
+				</block>
+				<block type="variables_array_get">
+					<value name="INDEX">
+						<block type="math_number">
+							<field name="NUM">0</field>
+						</block>
+					</value>
+				</block>
+				<block type="variables_array_set">
+					<value name="INDEX">
+						<block type="math_number">
+							<field name="NUM">0</field>
+						</block>
+					</value>
+					<value name="VALUE">
+						<block type="math_number">
+							<field name="NUM">0</field>
+						</block>
+					</value>
+				</block>
+				<block type="variables_array_declare"></block>
+				<block type="procedures_definit"></block>
+				<block type="procedures_defloop"></block>
+				<block type="variables_globalvars"></block>
+			</category>
+			<category name="Logic">
+				<block type="controls_if"></block>
+				<block type="logic_compare"></block>
+				<block type="logic_operation"></block>
+				<block type="logic_negate"></block>
+				<block type="logic_boolean"></block>
+				<block type="logic_ternary"></block>
+			</category>
+			<category name="Math">
+				<block type="math_number"></block>
+				<block type="math_arithmetic"></block>
+				<block type="math_single"></block>
+				<block type="math_trig"></block>
+				<block type="math_constant"></block>
+				<block type="math_change">
+					<value name="DELTA">
+						<block type="math_number">
+							<field name="NUM">1</field>
+						</block>
+					</value>
+				</block>
+				<block type="math_round"></block>
+				<block type="math_modulo"></block>
+			</category>
+			<category name="Loops">
+				<block type="controls_repeat_ext">
+					<value name="TIMES">
+						<block type="math_number">
+							<field name="NUM">10</field>
+						</block>
+					</value>
+				</block>
+				<block type="controls_whileUntil"></block>
+				<block type="controls_for">
+					<value name="FROM">
+						<block type="math_number">
+							<field name="NUM">1</field>
+						</block>
+					</value>
+					<value name="TO">
+						<block type="math_number">
+							<field name="NUM">10</field>
+						</block>
+					</value>
+				</block>
+				<block type="controls_forEach"></block>
+				<block type="controls_flow_statements"></block>
+			</category>
+			<category name="Procedures" custom="PROCEDURE">
+			</category>
+		</xml>
+	</body>
+</html>
