@@ -166,13 +166,14 @@ Blockly.Blocks['variables_array_declare'] = {
 				.appendField('name:')
 				.appendField(new Blockly.FieldTextInput('myArray', this.validator), 'NAME')
 				.appendField('length:')
-				.appendField(new Blockly.FieldTextInput('1'), 'LENGTH')
+				.appendField(new Blockly.FieldTextInput('1', this.adjustInputs), 'LENGTH')
 				.appendField('initial value:');
-		this.appendValueInput('VALUE');
+		this.appendValueInput('VALUE0');
 		this.setInputsInline(true);
 		this.setPreviousStatement(true);
 		this.setNextStatement(true);
 		this.setTooltip('');
+		this.adjustInputs.parentBlock = this; //Hack to make the adjust function work when called from another context
 	},
 	getGlobals: function() {
 		//Has different name from getVars so the variable will not be double counted
@@ -182,6 +183,23 @@ Blockly.Blocks['variables_array_declare'] = {
 			length: this.getFieldValue('LENGTH'),
 			isArray: 'TRUE',
 		}
+	},
+	adjustInputs: function(text) {
+		var len = parseInt(text);
+		if(isNaN(len) || len < 1) {
+			len = 1;
+		}
+		var block = this.changeHandler_.parentBlock; //Hack to make the adjust function work when called from another context
+		if(block.inputList !== void 0) { //inputList will not yet be initialized on the first call
+			var oldlen = block.inputList.length;
+			for (var i = 0; i < oldlen - 1; i++) {
+				block.removeInput('VALUE' + i);
+			}
+			for(var j = 0; j < len; j++) {
+				block.appendValueInput('VALUE' + j);
+			}
+		}
+		return '' + len; //Cast to string
 	},
 	validator: Blockly.Blocks['variables_declare'].validator
 };

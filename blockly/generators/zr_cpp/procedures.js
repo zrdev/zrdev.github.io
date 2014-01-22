@@ -34,7 +34,7 @@ Blockly.zr_cpp['procedures_defreturn'] = function(block) {
 	// Define a procedure with a return value.
 	var funcName = Blockly.zr_cpp.variableDB_.getName(
 			block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
-	var branch = Blockly.zr_cpp.statementToCode(block, 'GLOBALS') + Blockly.zr_cpp.statementToCode(block, 'STACK');
+	var branch = Blockly.zr_cpp.statementToCode(block, 'STACK');
 	var type = block.getFieldValue('TYPE') || 'void';
 	var returnValue = Blockly.zr_cpp.valueToCode(block, 'RETURN',
 			Blockly.zr_cpp.ORDER_NONE) || '';
@@ -55,16 +55,23 @@ Blockly.zr_cpp['procedures_defnoreturn'] =
 
 Blockly.zr_cpp['procedures_definit'] = function(block) {
 	// Define a procedure with a return value.
-	var funcName = this.type === 'procedures_definit' ? 'init' : 'loop';
-	var branch = Blockly.zr_cpp.statementToCode(block, 'STACK');
-	var code = 'void ' + funcName + '() {\n' +
+	var branch = Blockly.zr_cpp.statementToCode(block, 'GLOBALS') + Blockly.zr_cpp.statementToCode(block, 'STACK');
+	var code = 'void init() {\n' +
 			branch + '}';
 	code = Blockly.zr_cpp.scrub_(block, code);
-	Blockly.zr_cpp.definitions_[funcName] = code;
+	Blockly.zr_cpp.definitions_['init'] = code;
 	return null;
 };
 
-Blockly.zr_cpp['procedures_defloop'] = Blockly.zr_cpp['procedures_definit'];
+Blockly.zr_cpp['procedures_defloop'] = function(block) {
+	// Define a procedure with a return value.
+	var branch = Blockly.zr_cpp.statementToCode(block, 'STACK');
+	var code = 'void loop() {\n' +
+			branch + '}';
+	code = Blockly.zr_cpp.scrub_(block, code);
+	Blockly.zr_cpp.definitions_['loop'] = code;
+	return null;
+};
 
 Blockly.zr_cpp['procedures_callreturn'] = function(block) {
 	// Call a procedure with a return value.

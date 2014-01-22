@@ -46,7 +46,13 @@ Blockly.zr_cpp['variables_set'] = function(block) {
 	return varName + ' = ' + argument0 + ';\n';
 };
 
-Blockly.zr_cpp['variables_declare'] = Blockly.zr_cpp['variables_set'];
+Blockly.zr_cpp['variables_declare'] = function(block) {
+	// Declare variable. 
+	var varName = Blockly.zr_cpp.variableDB_.getName(block.getFieldValue('NAME'), Blockly.Variables.NAME_TYPE);
+	var val = Blockly.zr_cpp.valueToCode(block, 'VALUE', Blockly.zr_cpp.ORDER_ASSIGNMENT) || '0';
+	return varName + ' = ' + val + ';\n';
+};
+
 
 Blockly.zr_cpp['variables_array_get'] = function(block) {
 	//Note: Uses 0-based indices, not 1-based like other Blockly generators
@@ -68,26 +74,14 @@ Blockly.zr_cpp['variables_array_set'] = function(block) {
 };
 
 Blockly.zr_cpp['variables_array_declare'] = function(block) {
-	//Note: Uses 0-based indices, not 1-based like other Blockly generators
-	var index = Blockly.zr_cpp.valueToCode(block, 'INDEX',
-			Blockly.zr_cpp.ORDER_NONE) || '0';
-	var array = Blockly.zr_cpp.variableDB_.getName(block.getFieldValue('ARRAY'), Blockly.Variables.NAME_TYPE) || '_';
-	var value = Blockly.zr_cpp.valueToCode(block, 'VALUE',
-			Blockly.zr_cpp.ORDER_ASSIGNMENT) || '0';
-	return array + '[' + index + '] = ' + value + ';\n';
-};
-
-Blockly.zr_cpp['variables_declare'] = function(block) {
-	// Global variable/array declaration
-	var code = Blockly.zr_cpp.variableDB_.getName(block.getFieldValue('VAR'),
-			Blockly.Variables.NAME_TYPE);
-	return [code, Blockly.zr_cpp.ORDER_ATOMIC];
-};
-
-Blockly.zr_cpp['variables_globalvars'] = function(block) {
-	return ['', Blockly.zr_cpp.ORDER_ATOMIC];
-};
-
-Blockly.zr_cpp['variables_declare'], Blockly.zr_cpp['variables_array_declare'] = function(block) { 
-	return ''; 
+	// Declare array. 
+	var varName = Blockly.zr_cpp.variableDB_.getName(
+			block.getFieldValue('NAME'), Blockly.Variables.NAME_TYPE);
+	var len = block.getFieldValue('LENGTH');
+	var code = '';
+	for(var i = 0; i < len; i++) {
+		var val = Blockly.zr_cpp.valueToCode(block, 'VALUE' + i, Blockly.zr_cpp.ORDER_ASSIGNMENT) || '0';
+		code = code + varName + '[' + i + '] = ' + val + ';\n';
+	}
+	return code;
 };
