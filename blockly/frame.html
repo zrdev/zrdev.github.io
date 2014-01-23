@@ -37,7 +37,7 @@
 				Blockly.inject(document.body,
 						{path: './', toolbox: document.getElementById('toolbox')});
 				// Let the top-level application know that Blockly is ready.
-				window.parent.blocklyLoaded(Blockly);
+				window.parent.ide.blocklyLoaded(Blockly);
 			}
 		</script>
 	</head>

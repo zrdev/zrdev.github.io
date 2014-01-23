@@ -192,11 +192,16 @@ Blockly.Blocks['variables_array_declare'] = {
 		var block = this.changeHandler_.parentBlock; //Hack to make the adjust function work when called from another context
 		if(block.inputList !== void 0) { //inputList will not yet be initialized on the first call
 			var oldlen = block.inputList.length;
-			for (var i = 0; i < oldlen - 1; i++) {
-				block.removeInput('VALUE' + i);
-			}
-			for(var j = 0; j < len; j++) {
-				block.appendValueInput('VALUE' + j);
+			if(len != oldlen - 1) {
+				for (var i = 0; i < oldlen - 1; i++) {
+					block.removeInput('VALUE' + i);
+				}
+				for(var j = 0; j < len; j++) {
+					var newInput = block.appendValueInput('VALUE' + j);
+					var num = Blockly.Block.obtain(block.workspace, 'math_number');
+					num.initSvg();
+					newInput.connection.connect(num.ouputConnection);
+				}
 			}
 		}
 		return '' + len; //Cast to string

@@ -44,7 +44,15 @@ body {
 }
 
 #editor {
-	 font-size: 18px;
+	font-size: 18px;
+	display: none; 
+}
+
+#blockly-frame {
+	height: 500px;
+	border: none;
+	padding: 0;
+	margin: 0;
 }
 
 .modal-container {

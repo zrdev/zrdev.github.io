@@ -30,6 +30,11 @@ ide.fromUndo = false; //Flag so Ace will update on local events only if the even
 ide.PROJ_INIT_TEXT='void init() {\n\t\n}\n\nvoid loop() {\n\t\n}\n';
 ide.APP_ID = '2809468685';
 
+ide.blocklyLoaded = function(blockly) {
+	// Called once Blockly is fully loaded.
+	window.Blockly = blockly;
+}
+
 /**
  * This function is called the first time that the Realtime model is created
  * for a file. This function should be used to initialize any values of the
@@ -204,7 +209,7 @@ ide.bindAce = function(title) {
 };
 
 ide.fitToPage = function() {
-	$('#editor').height(($(window).height() - 165).toString() + "px");
+	$('#editor, #blockly-frame').height(($(window).height() - 165).toString() + "px");
 	$('.panel-body').css('max-height',($(window).height() - 248).toString() + "px");
 	editor.resize();
 };
