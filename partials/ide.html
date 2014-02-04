@@ -1,0 +1,97 @@
+<div class="container">
+	<!-- Static navbar -->
+	<div class="navbar navbar-default" role="navigation">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#ide-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+		<div id="ide-collapse" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li class="dropdown">
+					<a class="dropdown-toggle">File<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li> <a href="#/ide/new-project/">New Project</a> </li>
+						<li> <a href="#/ide/open-project/">Open Project</a> </li>
+						<li> <a>Open Simulation</a> </li>
+						<li> <a>Save As</a> </li>
+						<li> <a>Revision History</a> </li>
+						<li> <a ng-click="download()">Download</a> </li>
+						<li> <a>Share</a> </li>
+						<li> <a ng-click="renameProject()">Rename</a> </li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-toggle">Edit<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li id="undo-li" class="disabled"> <a id="menu-undo">Undo</a> </li>
+						<li id="redo-li" class="disabled"> <a id="menu-redo">Redo</a> </li>
+						<li class="divider"></li>
+						<li> <a id="menu-cut">Cut</a> </li>
+						<li> <a id="menu-copy">Copy</a> </li>
+						<li> <a id="menu-paste">Paste</a> </li>
+						<li> <a id="menu-select-all">Select All</a> </li>
+						<li class="divider"></li>
+						<li> <a id="menu-find-replace">Find/Replace</a> </li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-toggle">Simulate<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li> <a id="menu-compile">Compile</a> </li>
+						<li> <a id="menu-codesize-estimate">Codesize Estimate</a> </li>
+						<li> <a id="menu-simulate">Simulate</a> </li>
+						<li> <a id="menu-profile">Profile</a> </li>
+						<li> <a id="menu-submit">Submit</a> </li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-toggle">Help<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li> <a target="_blank" href="http://www.zerorobotics.org/web/zero-robotics/forum">Forums</a> </li>
+						<li> <a target="_blank" href="http://www.zerorobotics.org/web/zero-robotics/tutorials">Resources Index</a> </li>
+						<li> <a>File Ticket</a> </li>
+					</ul>
+				</li>
+			</ul>
+			<p id="project-name" class="navbar-text navbar-right"></p>
+		</div><!--/.nav-collapse -->
+	</div>
+</div>
+
+<div id="main-container" class="container">
+	<div id="accordion-container" class="col-md-3" adjustheight="165">
+		<accordion>
+			<accordion-group heading="Pages" is-open="true">
+				<div class="list-group" adjustheight="330">
+					<a class="list-group-item {{ k === currentPageName ? 'active' : '' }}" ng-repeat="k in pages.keys().sort()" ng-click="setActivePage(k)">{{ k }}</a>
+				</div>
+				<div class="btn-group btn-group-sm">
+					<button type="button" class="btn btn-default" ng-click="newPage()"><span class="glyphicon glyphicon-plus"></span></button>
+					<button type="button" class="btn btn-default" ng-click="deletePage(currentPageName)"><span class="glyphicon glyphicon-minus"></span></button>
+				</div>
+			</accordion-group>
+			<accordion-group heading="Log">
+				<form>
+					<input type="text" class="form-control" id="log-chat-field" placeholder="Type here and press Enter" ng-model="chat.message" ui-keypress="{'enter':'sendChatMessage()'}">
+				</form>
+				<div class="list-group" id="log-list" adjustheight="330">
+					<a class="list-group-item" ng-repeat="l in log.keys().sort().reverse()">
+						<strong>{{ log.get(l).user }}</strong> {{ l.split('.')[0] | date:'medium' }}<br>{{ log.get(l).title }}<br>{{ log.get(l).content }}
+					</a>
+				</div>
+			</accordion-group>
+		</accordion>
+	</div>
+	<div ng-switch="editorMode">
+		<div class="col-md-9" ui-ace="{
+			theme:'chrome',
+			mode: 'c_cpp',
+			showPrintMargin: false
+		}" ng-model="currentPage.text" style="font-size: 18px;" heightoffset="165" ng-switch-when="text"></div>
+		<iframe id="blockly-frame" src="blockly/frame.html" class="col-md-9" adjustheight="165" ng-switch-when="graphical"></iframe>
+	</div>
+</div>

@@ -30,6 +30,26 @@ body {
 	width: 100%;
 }
 
+.page-content {
+	background: white;
+	margin-left: 20px;
+	margin-right: 20px;
+	padding: 15px;
+	overflow: auto;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+}
+
+.page-header {
+	margin-top: 15px;
+	margin-bottom: 10px;
+}
+
+.img-thumbnail {
+	max-height: 140px;
+	max-width: 200px;
+}
+
 #accordion-container {
 	padding-left: 0;
 	overflow: hidden;
@@ -39,27 +59,19 @@ body {
 	overflow: auto;
 }
 
-#main-container {
-	display: none;
-}
-
-#editor {
-	font-size: 18px;
-	display: none; 
+.ace_editor {
+	height: 200px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
 }
 
 #blockly-frame {
-	height: 500px;
+	height: 9999px;
 	border: none;
 	padding: 0;
 	margin: 0;
-}
-
-.modal-container {
-	display: table;
-	height: 100%;
-	margin-left: auto;
-	margin-right: auto;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
 }
 
 .navbar-inverse {
@@ -71,8 +83,9 @@ body {
 }
 
 .modal-dialog {
-	display: table-cell;
-	vertical-align: middle;
+	width: 500px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .modal-footer {
@@ -93,4 +106,22 @@ body {
 
 #log-chat-field {
 	margin-bottom: 15px;
+}
+
+/* This is required by Angular Bootstrap */
+.nav, .pagination, .carousel, .panel-title a { 
+	cursor: pointer; 
+}
+
+.staff-photo {
+	height: 200px !important;
+	margin-top: 10px;
+}
+
+.thumb-container, .thumbnail {
+	min-height: 371px;
+}
+
+.list-group {
+	overflow: auto;
 }

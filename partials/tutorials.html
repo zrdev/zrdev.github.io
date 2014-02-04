@@ -1,0 +1,514 @@
+<style type="text/css">
+.fulltable{
+	text-align:left;
+	border-collapse:collapse;
+	width:100%;
+	margin-left:0;
+	margin-right:0;
+	color:black;
+	background-color:#B4D5F0;
+	font-family:"century gothic","cambria","calibri";
+	margin-bottom:20px;
+}
+.fulltable th, .fulltable td {
+    padding-top:10px;
+	padding-bottom:10px;
+	padding-left:3px;
+	padding-right:7px;
+	border: 2px solid #F0F0F0;
+}
+.title{
+	text-align:center;
+	vertical-align:middle;
+	padding-left:8px;
+	padding-right:8px;
+	font-size:2.0em;
+}
+.subheader{
+	text-align:center;
+	vertical-align:middle;
+	width:20%;
+	font-size:1.25em;
+}
+.name{
+	width:30%;
+	font-size:1em;
+}
+.link:hover .name, .link:hover .description{
+	background-color:#C2C2C2;
+	color:white;
+}
+.hidable {
+	display:none;
+}
+#gettingStarted{
+	background-color:#CEEBE4;
+}
+#beginner{
+	background-color:#CAE6C3;
+}
+#intermediate{
+	background-color:#EDD1BE;
+}
+#advanced{
+	background-color:#EDBED9;
+}
+#teamActivities{
+	background-color:#E0BBF2;
+}</style>
+
+<div class="page-content">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			Welcome to the Tutorials page - your resource for getting started with Zero Robotics! The ZR Website tutorials handle the basics of navigating our system; if you're new, start there, then go on to the Beginner section. The programming tutorials are meant to be followed in order, but returning competitors may be able to skip directly to the Intermediate or Advanced section. We are always interested in improving our introductory materials, so if you feel something is missing, please feel free to let us know.
+		</div>
+	</div>
+	<table class="table" id="gettingStarted">
+		<thead>
+			<tr>
+				<th class="title" colspan="3" ng-click="x = !x;">
+					ZR Website</th>
+			</tr>
+		</thead>
+		<tbody class="hidable" id="startbody" ng-class="{hidable: x}">
+			<tr class="link">
+				<td class="subheader" rowspan="2">
+					Website Basics</td>
+				<td class="name">
+					<a href="{% static 'tutorials/CreateAccount.pdf' %}">Create an Account</a></td>
+				<td class="description">
+					Set up an account on the ZR website</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/InviteTeam.pdf' %}">Invite Students to Your Team</a></td>
+				<td class="description">
+					Invite team members after everyone has made an account (mentors only)</td>
+			</tr>
+			<tr class="link">
+				<td class="subheader" rowspan="6">
+					IDE</td>
+				<td class="name">
+					<a href="{% static 'tutorials/GettingToKnowZR_IDE.pdf' %}">Getting to Know the ZR IDE</a></td>
+				<td class="description">
+					Intro to the ZR programming environment</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'ms-curriculum/Week1_Day2.pdf' %}">Using the Graphical Editor</a></td>
+				<td class="description">
+					Use the graphical editor as an alternative to writing code</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/IntroGameMode.pdf' %}">Introduction to Game Mode</a></td>
+				<td class="description">
+					Select the appropriate Game Mode and test your code against a standard player</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/IntramuralGameMode.pdf' %}">Intramural Competitions and Sharing Projects</a></td>
+				<td class="description">
+					Share code with your team and compete against a teammate.</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/collaborativeEditing.pdf' %}">Collaborative Editing</a></td>
+				<td class="description">
+					Edit projects as a team.</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/SubmitCode.pdf' %}">Submit Code for a Competition</a></td>
+				<td class="description">
+					Submit code for a competition.</td>
+			</tr>
+			<tr class="link">
+				<td class="subheader" rowspan="2">
+					Scoring</td>
+				<td class="name">
+					<a href="{% static 'tutorials/Leaderboard.pdf' %}">The Leaderboard</a></td>
+				<td class="description">
+					Explanation of the leaderboard and the ZR scoring system</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/UserTools.pdf' %}">User Tools</a></td>
+				<td class="description">
+					Overview of the features of the leaderboard</td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="fulltable" id="beginner">
+		<tbody>
+			<tr>
+				<td class="title" colspan="3" onmousedown="toggleBody('beginnerbody')">
+					Beginner</td>
+			</tr>
+		</tbody>
+		<tbody class="hidable" id="beginnerbody">
+			<tr class="link">
+				<td class="subheader" rowspan="2">
+					Basic SPHERES Controls</td>
+				<td class="name">
+					<a href="{% static 'tutorials/VariablesandArrays.pdf' %}">Variables, Arrays, and the setPositionTarget Function</a></td>
+				<td class="description">
+					Create variables, arrays, and make the satellite move</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/setAttitudeTarget.pdf' %}">More Simple Arrays and setAttitude Target</a></td>
+				<td class="description">
+					Practice using arrays and make your satellite rotate to face a certain direction</td>
+			</tr>
+			<tr class="link">
+				<td class="subheader" rowspan="8">
+					Programming Concepts</td>
+				<td class="name">
+					<a href="{% static 'tutorials/Conditionals_IfThen.pdf' %}">Conditionals: The Basics of "If-Then"</a></td>
+				<td class="description">
+					Intro to conditional statements</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/Conditionals_IfThenAndLogicOperators.pdf' %}">Conditionals: More Fun with "If-Then", Logic Operators and Debugging</a></td>
+				<td class="description">
+					Enhance the "if-then" statement with logic operators and learn to print to the debug console</td>
+			</tr>
+			<tr>
+				<td class="name">
+					<a href="{% static 'tutorials/Conditionals_AdvancedLogicOperators.pdf' %}">Conditionals: Advanced Logic Operators</a></td>
+				<td class="description">
+					Use the "and" and "or" logic operators</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/Conditionals_ElseIf.pdf' %}">Conditionals: Else-If</a></td>
+				<td class="description">
+					Learn about the "else-if" statement, nesting conditionals</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/ForLoops.pdf' %}">For Loops</a></td>
+				<td class="description">
+					Use a "for" loop to repeat an action a set number of times, as well as find the position of the other satellite.</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/AppliedConditionals.pdf' %}">Applied Conditionals</a></td>
+				<td class="description">
+					Use getMyZRState in conditional statements</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/CreatingFunctions.pdf' %}">Creating Functions</a></td>
+				<td class="description">
+					Organize your code with procedural functions</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/StepCounterModel.pdf' %}">Functions and the Step Counter Model</a></td>
+				<td class="description">
+					Learn to use a step counter and practice creating functions</td>
+			</tr>
+			<tr class="link">
+				<td class="subheader" rowspan="3">
+					Useful Math and Physics</td>
+				<td class="name">
+					<a href="{% static 'tutorials/IntroToPhysics.pdf' %}">Intro to Physics</a></td>
+				<td class="description">
+					Basic information on weightlessness, translation, and rotation</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/Kinematics.pdf' %}">Kinematics</a></td>
+				<td class="description">
+					Conceptual fundamentals of motion</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/Vectors.pdf' %}">Combining Vectors</a></td>
+				<td class="description">
+					Fundamentals of using and combining vectors</td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="fulltable" id="intermediate">
+		<tbody>
+			<tr>
+				<td class="title" colspan="3" onmousedown="toggleBody('intermediatebody')">
+					Intermediate</td>
+			</tr>
+		</tbody>
+		<tbody class="hidable" id="intermediatebody">
+			<tr class="link">
+				<td class="subheader" rowspan="7">
+					More SPHERES Controls</td>
+				<td class="name">
+					<a href="{% static 'tutorials/Vectors2.pdf' %}">setAttitudeTarget, Revisited</a></td>
+				<td class="description">
+					Write code to control the SPHERE's direction</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/HintsSPHERESDynamics.pdf' %}">Hints about SPHERES Loop Dynamics</a></td>
+				<td class="description">
+					Get a better understanding of SPHERES dynamics and Newton's first law.</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/Velocity.pdf' %}">setVelocityTarget</a></td>
+				<td class="description">
+					Use setVelocityTarget for efficiency</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/Force.pdf' %}">Force</a></td>
+				<td class="description">
+					Learn Newton's Laws and use setForce</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/Torque.pdf' %}">Spinning: Torque</a></td>
+				<td class="description">
+					Intro to torque and the setTorques function</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/AngularVelocity.pdf' %}">Spinning: Angular Velocity</a></td>
+				<td class="description">
+					Make your satellite spin using angular velocity and setAttRateTarget</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/PartialTurns.pdf' %}">Spinning: Partial Turns</a></td>
+				<td class="description">
+					Use dot product to perform partial rotations</td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="fulltable" id="advanced">
+		<tbody>
+			<tr>
+				<td class="title" colspan="3" onmousedown="toggleBody('advancedbody')">
+					Advanced</td>
+			</tr>
+		</tbody>
+		<tbody class="hidable" id="advancedbody">
+			<tr class="link">
+				<td class="subheader" rowspan="4">
+					Advanced Programming</td>
+				<td class="name">
+					<a href="{% static 'tutorials/TiltedAxis.pdf' %}">Spinning: Tilted Axis</a></td>
+				<td class="description">
+					Use cross product to control spinning on a tilted axis</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/PolarCoordinates.pdf' %}">Revolving: Polar Coordinates</a></td>
+				<td class="description">
+					Use polar coordinates to revolve in 2-D at the origin</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/RevolvingTiltedAxis.pdf' %}">Revolving: Tilted Axis</a></td>
+				<td class="description">
+					Use cross product to revolve on a tilted axis anywhere on the coordinate plane</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="{% static 'tutorials/RecommendedFunctions.pdf' %}">Recommended Functions</a></td>
+				<td class="description">
+					Descriptions of functions we recommend you add to your algorithms</td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="fulltable" id="teamActivities">
+		<tbody>
+			<tr>
+				<td class="title" colspan="3" onmousedown="toggleBody('activitiesbody')">
+					Optional Team Activities</td>
+			</tr>
+		</tbody>
+		<tbody class="hidable" id="activitiesbody">
+			<tr class="link">
+				<td class="subheader" rowspan="4">
+					SPHERES</td>
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/3c6cbe77-222b-444e-b83c-0e9ebc1a61c3">Make Paper SPHERES</a></td>
+				<td class="description">
+					Create a 3D SPHERES model</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/4659b3b4-19f2-4310-bf13-e69c0a0fb4d7">Label the SPHERES</a></td>
+				<td class="description">
+					Label the components of a SPHERES satellite</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/b81fe48e-e755-49d0-83c5-6b32e4a7d345">Communications</a></td>
+				<td class="description">
+					Learn the basic principle of satellite communication</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/2fa79ed3-c396-4d07-b8d6-40663d873154">Trilateration Ropes</a></td>
+				<td class="description">
+					Learn about trilateration and SPHERES positioning</td>
+			</tr>
+			<tr class="link">
+				<td class="subheader" rowspan="10">
+					Physics</td>
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/67004e36-2f2a-49b7-9cd3-138baab33848">Grids and Coordinates</a></td>
+				<td class="description">
+					Reinforce basic algebra and explore the coordinate plane</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/477cd103-399b-47e5-8dd5-121082dfc931">Vector Hunt</a></td>
+				<td class="description">
+					Underscore the importance of both magnitude and direction</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/5fe931a2-b507-42b2-9c31-1cc4f8246a30">Soccer Ball Demo</a></td>
+				<td class="description">
+					Use a soccer ball to understand Newton's First Law</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/e7d70600-8726-4ea9-86bf-ee32379b2307">Chairs on Wheels</a></td>
+				<td class="description">
+					Use rolling chairs to understand Newton's Third Law</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/2db6d013-8b12-4e80-9b7d-bf9a54f1b434">Thruster Balloons</a></td>
+				<td class="description">
+					Demonstration to reinforce Newton's Third Law</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/2a56f1ed-d531-4806-819c-2b1b7241ff84">Free Body Diagrams</a></td>
+				<td class="description">
+					Visualize forces with free body diagrams</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/3586c524-5acd-457e-a893-06d62f71b933">Bottle Rockets</a></td>
+				<td class="description">
+					Design, build, and launch your own bottle rocket to better understand kinematics and force</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/cf86d04e-f354-47d7-8e55-32d9db56ad2b">Bouncy Balls</a></td>
+				<td class="description">
+					Understand core elements of physics using bouncy balls</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/1d1747b1-f341-48e9-b6e3-f965153a186a">Dry Ice Dynamics</a></td>
+				<td class="description">
+					Experience frictionless dynamics with dry ice</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/5a5d6d90-6fad-4cff-9c9e-afe6819f05b2">Speed of Sound</a></td>
+				<td class="description">
+					Demonstrate that sound travels slower than light</td>
+			</tr>
+			<tr class="link">
+				<td class="subheader" rowspan="2">
+					Programming</td>
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/589e8740-e650-4a0a-b0a1-430740822369">Programming Peanut Butter and Jelly</a></td>
+				<td class="description">
+					Learn the fundamental principle of programming by making a sandwich</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/3722a4c5-d19d-47bb-872e-27e08b0487e0">Write it then Do it - Programming</a></td>
+				<td class="description">
+					Reinforce the concepts of explicitness and thoroughness in programming</td>
+			</tr>
+			<tr class="link">
+				<td class="subheader" rowspan="2">
+					Review</td>
+				<td class="name">
+					<a href="{% static 'tutorials/JeopardyGame.pdf' %}">Jeopardy</a></td>
+				<td class="description">
+					Test your knowledge with an interactive review game</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/1c96c1ff-4977-4f70-ad0a-0b55e042b591">ZR Team Management FAQs</a></td>
+				<td class="description">
+					Questions and answers for mentors and competitors</td>
+			</tr>
+		</tbody>
+	</table>
+<!--End HS tutorials-->	<table class="fulltable" id="other">
+		<tbody>
+			<tr>
+				<td class="title" colspan="3" onmousedown="toggleBody('otherbody')">
+					Other Resources</td>
+			</tr>
+		</tbody>
+		<tbody class="hidable" id="otherbody">
+			<tr class="link">
+				<td class="subheader" rowspan="2">
+					Reference Documents</td>
+				<td class="name">
+					<a href="{% static 'tutorials/ZR_user_API.pdf' %}">ZR User API</a></td>
+				<td class="description">
+					Quick guide to all non-game-specific ZR control functions</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.zerorobotics.org/documents/10429/0/CosmoSPHERES_Manual.pdf' %}">CosmoSPHERES Game Manual</a></td>
+				<td class="description">
+					Comprehensive guide to the 2013 high school tournament</td>
+			</tr>
+			<tr class="link">
+				<td class="subheader" rowspan="3">
+					Links</td>
+				<td class="name">
+					<a href="http://www.zerorobotics.org/web/zero-robotics/curriculum">Middle School Student Materials </a></td>
+				<td class="description">
+					Resources for students and educators in the ZR middle school summer program; may also be useful for high school teams using the graphical editor or needing more help with math or physics. Must be logged in to access.</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.tinyurl.com/ZRW-2013">Pope John Workshop</a></td>
+				<td class="description">
+					A series of videos and problem sets produced by Stephen Pendergrast, Pope John XXIII Regional High School, Sparta, NJ, to train new team members. Complementary to the tutorials on this page.</td>
+			</tr>
+			<tr class="link">
+				<td class="name">
+					<a href="http://www.yobotics.org/index.php?option=com_content&view=article&id=67&Itemid=270">y0b0tics! Circle Tutorial</a></td>
+				<td class="description">
+					A text-based tutorial to help new teams get off the ground. Courtesy of Team y0b0tics!, Montclair High School, Montclair, NJ.</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+<!--
+function toggleBody(bodyId) {
+	bod = document.getElementById(bodyId);
+	if(bod.style.display == 'table-row-group')
+		bod.style.display = 'none';
+	else
+		bod.style.display = 'table-row-group';
+}
+//-->
+</script>
+<noscript>
+	<style type="text/css">
+		.hidable {
+			display:table-row-group;
+		}
+	</style>
+</noscript>

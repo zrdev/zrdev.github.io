@@ -2,7 +2,7 @@
 # Compresses the core Blockly files into a single JavaScript file.
 #
 # Copyright 2012 Google Inc.
-# http://blockly.googlecode.com/
+# https://blockly.googlecode.com/
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -108,9 +108,6 @@ var dir = window.BLOCKLY_DIR.match(/[^\\/]+$/)[0];
     m = re.search('[\\/]([^\\/]+)[\\/]core[\\/]blockly.js', add_dependency)
     add_dependency = re.sub('([\\/])' + re.escape(m.group(1)) +
         '([\\/]core[\\/])', '\\1" + dir + "\\2', add_dependency)
-    m = re.search('[\\/]([^\\/]+)[\\/]realtime[\\/]realtime.js', add_dependency)
-    add_dependency = re.sub('([\\/])' + re.escape(m.group(1)) +
-        '([\\/]realtime[\\/])', '\\1" + dir + "\\2', add_dependency)
     f.write(add_dependency + '\n')
 
     provides = []
@@ -287,6 +284,28 @@ class Gen_compressed(threading.Thread):
       code = HEADER + '\n' + json_data['compiledCode']
       code = code.replace(remove, '')
 
+      # Trim down Google's Apache licences.
+      LICENSE = re.compile("""/\\*
+
+ [\w ]+
+
+ (Copyright \\d+ Google Inc.)
+ https://blockly.googlecode.com/
+
+ Licensed under the Apache License, Version 2.0 \(the "License"\);
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+\\*/""")
+      code = re.sub(LICENSE, r"\n// \1  Apache License 2.0", code)
+
       stats = json_data['statistics']
       original_b = stats['originalSize']
       compressed_b = stats['compressedSize']
@@ -389,7 +408,7 @@ if __name__ == '__main__':
 http://code.google.com/p/blockly/wiki/Closure""")
     sys.exit(1)
   search_paths = calcdeps.ExpandDirectories(
-      ['core', 'realtime', os.path.join(os.path.pardir, 'closure-library-read-only')])
+      ['core', os.path.join(os.path.pardir, 'closure-library-read-only')])
 
   # Run both tasks in parallel threads.
   # Uncompressed is limited by processor speed.

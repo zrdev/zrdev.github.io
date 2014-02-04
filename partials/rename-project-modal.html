@@ -1,0 +1,17 @@
+<div class="modal-header">
+	<button type="button" class="close" aria-hidden="true" ng-click="cancel()">&times;</button>
+	<h4 class="modal-title">Rename Project</h4>
+</div>
+<div class="modal-body">
+	<form>
+		<div class="form-group">
+			<label for="project-name" class="control-label">Project Name</label>
+			<input id="project-name" type="text" class="form-control" ng-model="data.name" fieldfocus="data.shouldBeOpen" ui-keypress="{'enter':'rename()'}">
+		</div>
+	</form>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+	<button type="button" class="btn btn-primary" ng-click="rename()">Rename Project</button>
+</div>
+
