@@ -1,4 +1,4 @@
-zr.controller('RenameProjectController', function($scope, $modalInstance, realtime) {
+zr.controller('RenameProjectController', function($scope, $modalInstance, realtime, drive) {
 	$scope.data = {
 		name: ''
 	};
@@ -10,7 +10,7 @@ zr.controller('RenameProjectController', function($scope, $modalInstance, realti
 	
 	$scope.rename = function() {
 		realtime.requireAuth().then(function() {
-			realtime.renameFile($scope.data.name, realtime.id);
+			drive.renameFile($scope.data.name, realtime.id);
 		});
 		$scope.data.shouldBeOpen = false;
 		$modalInstance.close();

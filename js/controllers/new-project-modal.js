@@ -1,4 +1,4 @@
-zr.controller('NewProjectModalController', function($scope, $modalInstance, $location, realtime) {
+zr.controller('NewProjectModalController', function($scope, $modalInstance, $location, realtime, folder) {
 	$scope.data = {
 		name: '',
 		editorMode: 'text'
@@ -12,7 +12,7 @@ zr.controller('NewProjectModalController', function($scope, $modalInstance, $loc
 	
 	$scope.createProject = function() {
 		realtime.requireAuth().then(function () {
-			realtime.createDocument($scope.data.name).then(function (file) {
+			realtime.createDocument($scope.data.name, folder).then(function (file) {
 				realtime.ideGraphical = $scope.data.editorMode === 'graphical';
 				$location.url('/ide/' + file.id + '/');
 			});
@@ -26,5 +26,8 @@ zr.controller('NewProjectModalController', function($scope, $modalInstance, $loc
 	$scope.cancel = function() {
 		$scope.data.shouldBeOpen = false;
 		$modalInstance.dismiss('cancel');
+		if(folder) { //Redirected from Drive
+			$location.path('/');
+		}
 	};
 });

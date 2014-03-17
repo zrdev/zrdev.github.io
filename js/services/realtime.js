@@ -64,7 +64,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 		 * @param title
 		 * @returns {angular.$q.promise}
 		 */
-		this.createDocument = function (title) {
+		this.createDocument = function (title, folder) {
 			var deferred = $q.defer();
 			var onComplete = function (result) {
 				if (result && !result.error) {
@@ -74,14 +74,8 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 				}
 			};
 			
-			//Parse state parameter from Drive UI
-			var state = $routeParams['state'];
-			var folders = [];
-			if(state) {
-				state = JSON.parse(state);
-				if(state.action === 'create') {
-					folders = [{ id: state.folderId }];
-				}
+			if(!folder) {
+				folder = [];
 			}
 			
 			gapi.client.request({
@@ -90,25 +84,10 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 				'body': JSON.stringify({
 					title: title,
 					mimeType: 'application/vnd.google-apps.drive-sdk',
-					parents: folders
+					parents: folder
 				})
 			}).execute(onComplete);
 			return deferred.promise;
-		};
-		
-		//Renames the current file in Drive. 
-		this.renameFile = function(title, id) {
-			gapi.client.request({
-				'path': '/drive/v2/files/' + id,
-				'method': 'PUT',
-				'params': {
-					'fields': '',
-					'key': config.apiKey
-				},
-				'body': JSON.stringify({
-					title: title
-				})
-			}).execute(function(){});
 		};
 
 		/**

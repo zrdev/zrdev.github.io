@@ -30,9 +30,9 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	}).when('/ide/simulation/', {
 		templateUrl: '/partials/visualization.html',
 		controller: 'VisualizationController'
-	}).when('/ide/', {
+	}).when('/ide/open/', {
 		redirectTo: function(routeParams, path, search) {
-			//Parse state paramter from Drive UI
+			//Parse state parameter from Drive UI
 			var state = search['state'];
 			state = JSON.parse(state);
 			if(state.action === 'open') {
@@ -40,12 +40,26 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 			}
 			return '/';
 		}
+	}).when('/ide/new/', {
+		template: '',
+		controller: 'NewProjectController',
+		resolve: {
+			folder: function($route) {
+				//Parse state parameter from Drive UI
+				var state = $route.current.params['state'];
+				state = JSON.parse(state);
+				if(state.action === 'create') {
+					return [{ id: state.folderId }];
+				}
+				return [];
+			}
+		}
 	}).when('/ide/:fileId/', {
 		templateUrl: '/partials/ide.html',
 		controller: 'IdeController',
-        resolve: {
-          realtimeDocument: loadFile
-        }
+		resolve: {
+			realtimeDocument: loadFile
+		}
 	}).when('/tournaments/', {
 		templateUrl: '/partials/tournaments-index.html',
 		controller: 'TournamentsListController'

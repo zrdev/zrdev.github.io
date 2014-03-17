@@ -1,4 +1,4 @@
-zr.controller('IdeController', function($scope, $modal, $http, $timeout, config, realtime, realtimeDocument) {
+zr.controller('IdeController', function($scope, $modal, $http, $timeout, config, realtime, drive, realtimeDocument) {
 	$scope.model = realtimeDocument.getModel();
 	var graphical = $scope.model.getRoot().get('graphical');
 	$scope.graphical = graphical;
@@ -24,6 +24,14 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 			$scope.aceEditor = ace;
 		}
 	};
+	
+	$scope.newProject = function() {
+		drive.newProject();
+	}
+	
+	$scope.openProject = function() {
+		drive.openProject();
+	}
 	
 	$scope.focusLog = function(title) {
 		if($scope.logFocus === title) {
