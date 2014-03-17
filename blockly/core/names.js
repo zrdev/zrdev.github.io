@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Visual Blocks Editor
  *
@@ -21,7 +22,7 @@
  * @fileoverview Utility functions for handling variables and procedure names.
  * @author fraser@google.com (Neil Fraser)
  */
-'use strict';
+
 
 goog.provide('Blockly.Names');
 

@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Visual Blocks Editor
  *
@@ -23,7 +24,7 @@
  * instances would be Blockly.FieldTextInput, Blockly.FieldDropdown, etc.
  * @author fraser@google.com (Neil Fraser)
  */
-'use strict';
+
 
 goog.provide('Blockly.Field');
 

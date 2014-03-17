@@ -1,0 +1,15 @@
+<div class="page-content">
+	<div class="page-header"><h1>Announcements</h1></div>
+	<div class="panel panel-primary" ng-repeat="a in data.announcements | orderBy:'-date' | limitTo:10*data.currentPage | limitTo:-10">
+		<div class="panel-heading">
+			{{ a.title }}
+		</div>
+		<div class="panel-body">
+			<p><i>Posted by {{ a.user }}<br>{{ a.date | date:'longDate' }}</i></p>
+			{{ a.content | striptags | limitTo:255 }}
+			<a href="/announcements/{{ a.id }}">Read&nbsp;more...</a>
+		</div>
+	</div>
+	<pagination page="data.currentPage" total-items="data.announcements.length"></pagination>
+	<p><a href="/">Back to Front Page</a></p>
+</div>

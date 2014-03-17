@@ -16,7 +16,7 @@
 
 //This code was borrowed from the Google Drive realtime-tasks sample. 
 
-zr.service('realtime', ['$q', '$rootScope', 'config',
+zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config', 
 	/**
 	 * Handles document creation & loading for the app. Keeps only
 	 * one document loaded at a time.
@@ -25,7 +25,8 @@ zr.service('realtime', ['$q', '$rootScope', 'config',
 	 * @param $rootScope
 	 * @param config
 	 */
-	function ($q, $rootScope, config) {
+	function ($q, $rootScope, $routeParams, config) {
+		this.ideGraphical = false;
 		this.id = null;
 		this.document = null;
 		var PROJ_INIT_TEXT = 'void init() {\n\t\n}\n\nvoid loop() {\n\t\n}\n';
@@ -34,6 +35,9 @@ zr.service('realtime', ['$q', '$rootScope', 'config',
 		 * Close the current document.
 		 */
 		this.closeDocument = function () {
+			Blockly.Realtime.model_ = null;
+			Blockly.Realtime.blocksMap_ = null;
+			Blockly.Realtime.topBlocks_ = null;
 			this.document.close();
 			this.document = null;
 			this.id = null;
@@ -68,14 +72,25 @@ zr.service('realtime', ['$q', '$rootScope', 'config',
 				} else {
 					deferred.reject(result);
 				}
-				$rootScope.$digest();
 			};
+			
+			//Parse state parameter from Drive UI
+			var state = $routeParams['state'];
+			var folders = [];
+			if(state) {
+				state = JSON.parse(state);
+				if(state.action === 'create') {
+					folders = [{ id: state.folderId }];
+				}
+			}
+			
 			gapi.client.request({
 				'path': '/drive/v2/files',
 				'method': 'POST',
 				'body': JSON.stringify({
 					title: title,
-					mimeType: 'application/vnd.google-apps.drive-sdk'
+					mimeType: 'application/vnd.google-apps.drive-sdk',
+					parents: folders
 				})
 			}).execute(onComplete);
 			return deferred.promise;
@@ -130,6 +145,7 @@ zr.service('realtime', ['$q', '$rootScope', 'config',
 			}
 		};
 
+		var this_ = this;
 		/**
 		 * Actually load a document. If the document is new, initializes
 		 * the model with an empty list of todos.
@@ -142,7 +158,27 @@ zr.service('realtime', ['$q', '$rootScope', 'config',
 			var initialize = function (model) {
 				var pages = model.createMap();
 				model.getRoot().set('pages', pages);
-				pages.set('main', model.createString(PROJ_INIT_TEXT));
+				//Initialize the main pages
+				if(!this_.ideGraphical) {
+					model.getRoot().set('graphical', false);
+					pages.set('main', model.createString(PROJ_INIT_TEXT));
+				}
+				else {
+					var root = model.getRoot();
+					root.set('graphical', true);
+					root.set('cglobals', model.createMap());
+					var pageRoot = model.createMap();
+					pages.set('main', pageRoot);
+					//This code copied from blockly/core/realtime.js
+					pageRoot.set('blocks', model.createMap());
+					pageRoot.set('topBlocks', model.createList());
+					pageRoot.set('type','loop');
+					var pageRoot2 = model.createMap();
+					pages.set('init', pageRoot2);
+					pageRoot2.set('type','init');
+					pageRoot2.set('blocks', model.createMap());
+					pageRoot2.set('topBlocks', model.createList());
+				}
 				var log = model.createMap();
 				model.getRoot().set('log', log);
 				//Log entries are identified by timestamp, plus some random digits to avoid collisions
@@ -155,6 +191,9 @@ zr.service('realtime', ['$q', '$rootScope', 'config',
 			};
 			var onLoad = function (document) {
 				this.setDocument(id, document);
+				var model = document.getModel()
+				Blockly.Realtime.model_ = model;
+				Blockly.zr_cpp.C_GLOBAL_VARS = model.getRoot().get('cglobals');
 				deferred.resolve(document);
 				$rootScope.$digest();
 			}.bind(this);
@@ -182,7 +221,10 @@ zr.service('realtime', ['$q', '$rootScope', 'config',
 			if (!event.isLocal) {
 				$rootScope.$digest();
 			}
+			window.lastEvent = event;
 		};
+		
+		window.lastEvent = null;
 
 		this.setDocument = function (id, document) {
 			document.getModel().getRoot().addEventListener(

@@ -3,40 +3,69 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Zero Robotics</title>
-	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
+	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+	
+	<script type="text/javascript" src="/blockly/blockly_uncompressed.js"></script>
+	<script type="text/javascript" src="/blockly/blocks/text.js"></script>
+	<script type="text/javascript" src="/blockly/blocks/variables.js"></script>
+	<script type="text/javascript" src="/blockly/blocks/logic.js"></script>
+	<script type="text/javascript" src="/blockly/blocks/math.js"></script>
+	<script type="text/javascript" src="/blockly/blocks/loops.js"></script>
+	<script type="text/javascript" src="/blockly/blocks/procedures.js"></script>
+	<script type="text/javascript" src="/blockly/blocks/zr-base-api.js"></script>
+	<script type="text/javascript" src="/blockly/generators/zr_cpp.js"></script>
+	<script type="text/javascript" src="/blockly/generators/zr_cpp/text.js"></script>
+	<script type="text/javascript" src="/blockly/generators/zr_cpp/variables.js"></script>
+	<script type="text/javascript" src="/blockly/generators/zr_cpp/logic.js"></script>
+	<script type="text/javascript" src="/blockly/generators/zr_cpp/math.js"></script>
+	<script type="text/javascript" src="/blockly/generators/zr_cpp/loops.js"></script>
+	<script type="text/javascript" src="/blockly/generators/zr_cpp/procedures.js"></script>
+	<script type="text/javascript" src="/blockly/generators/zr_cpp/zr-base-api.js"></script>
+	<script type="text/javascript" src="/blockly/msg/js/en.js"></script>
 	
 	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="css/main.css" rel="stylesheet" />
-	<link href="css/css-social-buttons/zocial.css" rel="stylesheet" />
+	<link href="/css/main.css" rel="stylesheet" />
+	<link href="/css/css-social-buttons/zocial.css" rel="stylesheet" />
+	<link type="text/css" rel="stylesheet" href="/css/angular-form-builder.css"/>
 	
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-route.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-sanitize.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
-	<script src="js/directives/ui-ace.js"></script>
-	<script src="js/keypress.js"></script>
+	<script src="/js/directives/ui-ace.js"></script>
+	<script src="/js/keypress.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="text/javascript" src="/js/angular-form-builder.js"></script>
+	<script type="text/javascript" src="/js/angular-form-builder-components.js"></script>
+	<script type="text/javascript" src="/js/angular-validator.js"></script>
+	<script type="text/javascript" src="/js/angular-validator-rules.js"></script>
 	
 	<script type="text/javascript" src="//apis.google.com/js/api.js"></script>
 	<script type="text/javascript" src="//apis.google.com/js/client:plusone.js"></script>
 	
-	<script src="js/main.js"></script>
-	<script type="text/javascript" src="js/services/realtime.js"></script>
-	<script type="text/javascript" src="js/controllers/tournaments-index.js"></script>
-	<script type="text/javascript" src="js/controllers/tournaments-info.js"></script>
-	<script type="text/javascript" src="js/controllers/open-project.js"></script>
-	<script type="text/javascript" src="js/controllers/rename-project.js"></script>
-	<script type="text/javascript" src="js/controllers/new-project.js"></script>
-	<script type="text/javascript" src="js/controllers/new-project-modal.js"></script>
-	<script type="text/javascript" src="js/controllers/new-page.js"></script>
-	<script type="text/javascript" src="js/controllers/auth.js"></script>
-	<script type="text/javascript" src="js/controllers/ide.js"></script>
-	<script type="text/javascript" src="js/directives/fieldfocus.js"></script>
-	<script type="text/javascript" src="js/directives/adjustheight.js"></script>
+	<script src="/js/main.js"></script>
+	<script type="text/javascript" src="/js/services/realtime.js"></script>
+	<script type="text/javascript" src="/js/controllers/tournaments-list.js"></script>
+	<script type="text/javascript" src="/js/controllers/tournaments-info.js"></script>
+	<script type="text/javascript" src="/js/controllers/rename-project.js"></script>
+	<script type="text/javascript" src="/js/controllers/new-project-modal.js"></script>
+	<script type="text/javascript" src="/js/controllers/new-page.js"></script>
+	<script type="text/javascript" src="/js/controllers/navbar.js"></script>
+	<script type="text/javascript" src="/js/controllers/simulation.js"></script>
+	<script type="text/javascript" src="/js/controllers/announcements.js"></script>
+	<script type="text/javascript" src="/js/controllers/ide.js"></script>
+	<script type="text/javascript" src="/js/controllers/form-builder.js"></script>
+	<script type="text/javascript" src="/js/controllers/team-management.js"></script>
+	<script type="text/javascript" src="/js/controllers/visualization.js"></script>
+	<script type="text/javascript" src="/js/directives/fieldfocus.js"></script>
+	<script type="text/javascript" src="/js/directives/adjustheight.js"></script>
+	<script type="text/javascript" src="/js/filters/striptags.js"></script>
+	
 </head>
 
 <body>
-	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" ng-controller="NavbarController">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-collapse">
@@ -45,38 +74,38 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#/">Zero Robotics</a>
+				<a class="navbar-brand" href="/">Zero Robotics</a>
 			</div>
 			<div id="main-collapse" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li class="dropdown">
 						<a class="dropdown-toggle">About ZR<b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="#/">Announcements</a></li>
+							<li><a href="/announcements/">Announcements</a></li>
 							<li><a>What is ZR?</a></li>
-							<li><a href="#/vision-mission/">Vision and Mission</a></li>
-							<li><a href="#/in-the-news/">ZR in the News</a></li>
-							<li><a href="#/history/">History</a></li>
-							<li><a href="#/zr-team/">Meet the ZR Team</a></li>
-							<li><a href="#/multimedia/">Multimedia Gallery</a></li>
+							<li><a href="/vision-mission/">Vision and Mission</a></li>
+							<li><a href="/in-the-news/">ZR in the News</a></li>
+							<li><a href="/history/">History</a></li>
+							<li><a href="/zr-team/">Meet the ZR Team</a></li>
+							<li><a href="/multimedia/">Multimedia Gallery</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown">Tournaments<b class="caret"></b></a>
 						<ul class="dropdown-menu" ng-controller="TournamentsListController">
-							<li><a href="#/tournaments/">All Tournaments</a></li>
-							<li><a>Manage Teams</a></li>
+							<li><a href="/tournaments/">All Tournaments</a></li>
+							<li><a href="/manage-teams/">Manage Teams</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Current tournaments</li>
-							<li ng-repeat="t in data.activeTournaments"><a href="#/tournaments/{{ t.id }}/">{{ t.name }}</a></li>
+							<li ng-repeat="t in data.activeTournaments"><a href="/tournaments/{{ t.id }}/">{{ t.name }}</a></li>
 						</ul>
 					</li>
 					<li class="dropdown active">
 						<a class="dropdown-toggle">IDE<b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="#/ide/new-project/">New Project</a></li>
-							<li><a href="#/ide/open-project/">Open Project</a></li>
-							<li><a href="#/ide/?opensim=true">Open Simulation</a></li>
+							<li><a ng-click="newProject()">New Project</a></li>
+							<li><a ng-click="openProject()">Open Project</a></li>
+							<li><a href="/ide/simulation/">Open Simulation</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Recent projects</li>
 							<li><a>Blah</a></li>
@@ -85,15 +114,15 @@
 					<li class="dropdown">
 						<a class="dropdown-toggle">Resources<b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="#/tutorials/">Tutorials</a></li>
+							<li><a href="/tutorials/">Tutorials</a></li>
 							<li><a>Middle School Curriculum</a></li>
 							<li><a>Forums</a></li>
-							<li><a href="#/contact-us/">Contact Us</a></li>
-							<li><a>Admin Tools</a></li>
+							<li><a href="/contact-us/">Contact Us</a></li>
+							<li><a href="/form/">Admin Tools</a></li>
 						</ul>
 					</li>
 				</ul>
-				<form class="navbar-form navbar-right" ng-controller="AuthController">
+				<form class="navbar-form navbar-right">
 					<button class="zocial google" ng-click="authorize()">Sign in with Google</button>
 				</form>
 			</div><!--/.navbar-collapse -->

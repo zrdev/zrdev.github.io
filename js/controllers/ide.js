@@ -1,56 +1,120 @@
-zr.controller('IdeController', function($scope, $modal, config, realtimeDocument) {
-	var model = realtimeDocument.getModel();
-	$scope.pages = model.getRoot().get('pages');
+zr.controller('IdeController', function($scope, $modal, $http, $timeout, config, realtime, realtimeDocument) {
+	$scope.model = realtimeDocument.getModel();
+	var graphical = $scope.model.getRoot().get('graphical');
+	$scope.graphical = graphical;
+	$scope.editorMode = graphical ? 'graphical' : 'text';
+	$scope.pages = $scope.model.getRoot().get('pages');
 	$scope.currentPageName = '';
 	$scope.currentPage = {
 		text: ''
 	};
-	$scope.log = model.getRoot().get('log');
+	$scope.log = $scope.model.getRoot().get('log');
+	$scope.logFocus = '';
+	$scope.logOpen = false;
 	$scope.chat = {
 		message: ''
 	};
-	$scope.editorMode = 'graphical';
+	$scope.blocklyText='';
+	$scope.aceEditor = null;
+	$scope.aceOptions = {
+		theme:'chrome',
+		mode: 'c_cpp',
+		showPrintMargin: false,
+		onLoad: function(ace) {
+			$scope.aceEditor = ace;
+		}
+	};
 	
-	//TODO: Replace this hack
-	$scope.windowHeight = window.innerHeight;
+	$scope.focusLog = function(title) {
+		if($scope.logFocus === title) {
+			$scope.logFocus = '';
+		}
+		else {
+			$scope.logFocus = title;
+		}
+	}
+	
+	var getMyName = function() {
+		var collaborators = realtimeDocument.getCollaborators();
+		var len = collaborators.length;
+		for(var i = 0; i < len; i++) {
+			if(collaborators[i].isMe) {
+				return collaborators[i].displayName;
+			}
+		}
+		return '';
+	}
 	
 	//Opens the new page dialog
 	$scope.newPage = function() {
 		$modal.open({
-			templateUrl: 'partials/new-page-modal.html',
-			controller: 'NewPageController'
-		}).result.then(function(title) {
-			if(!$scope.pages.has(title)) {
-				$scope.pages.set(title, model.createString(''));
-				$scope.setActivePage(title);
+			templateUrl: '/partials/new-page-modal.html',
+			controller: 'NewPageController',
+			resolve: {
+				isGraphical: function(){ return graphical; }
+			}
+		}).result.then(function(result) {
+			if(result.title==='') {
+				alert('Enter a page name.');
+				return;
+			}
+			if($scope.pages.has(result.title)) {
+				alert('Page "' + result.title + '" already exists.');
+				return;
+			}
+			if(!graphical) {
+				$scope.pages.set(result.title, $scope.model.createString(''));
 			}
 			else {
-				alert('Page "' + title + '" already exists.');
+				var pageRoot = $scope.model.createMap();
+				$scope.pages.set(result.title, pageRoot);
+				//This code copied from blockly/core/realtime.js
+				var blocksMap = $scope.model.createMap();
+				pageRoot.set('blocks', blocksMap);
+				var topBlocks = $scope.model.createList();
+				pageRoot.set('topBlocks', topBlocks);
+				pageRoot.set('type',result.returnValue ? 'return' : 'noreturn');
 			}
+			$scope.setActivePage(result.title);
+		});
+	};
+	
+	//Opens the simulation dialog
+	$scope.simulate = function() {
+		$modal.open({
+			templateUrl: '/partials/simulation-modal.html',
+			controller: 'SimulationController',
+			resolve: {
+				
+			}
+		}).result.then(function(result) {
+			
 		});
 	};
 	
 	//Opens the project rename dialog
 	$scope.renameProject = function() {
 		$modal.open({
-			templateUrl: 'partials/rename-project-modal.html',
+			templateUrl: '/partials/rename-project-modal.html',
 			controller: 'RenameProjectController'
 		});
 	};
 	
 	$scope.deletePage = function(title) {
-		if(title !== 'main') {
-			if($scope.pages.has(title)) {
-				$scope.pages.delete(title);
-				$scope.setActivePage('main');
-			}
-			else {
-				alert('Page "' + title + '" does not exist.');
-			}
-		}
-		else {
+		if(title === 'main') {
 			alert('The main page cannot be deleted.');
+			return;
 		}
+		if(!$scope.pages.has(title)) {
+			alert('Page "' + title + '" does not exist.');
+			return;
+		}
+		if(graphical && title === 'init') {
+			alert('The init page cannot be deleted.');
+			return;
+		}
+		$scope.pages.delete(title);
+		$scope.setActivePage('main');
 	};
 	
 	//Changes the active page
@@ -61,6 +125,21 @@ zr.controller('IdeController', function($scope, $modal, config, realtimeDocument
 		}
 		$scope.currentPageName = title;
 		$scope.currentPage = $scope.pages.get(title);
+		if(graphical && Blockly.mainWorkspace && Blockly.mainWorkspace.getMetrics()) {
+			Blockly.Realtime.loadPage($scope.currentPage);
+			//Reload the Blockly toolbox to account for changes in blocks
+			$timeout(function() {
+				if(Blockly.Toolbox.HtmlDiv && graphical) {
+					Blockly.Toolbox.HtmlDiv.innerHTML = '';
+					Blockly.languageTree = document.getElementById('toolbox');
+					Blockly.Toolbox.init();
+				}
+			}, 0);
+		}
+		//If Blockly is not yet loaded, it will load the page on its own when it finishes
+		
+		//Exit the read-only C mode in a graphical project
+		$scope.editorMode = graphical ? 'graphical' : 'text';
 	};
 	
 	var getDocAsString = function() {
@@ -73,8 +152,51 @@ zr.controller('IdeController', function($scope, $modal, config, realtimeDocument
 		return str;
 	};
 	
+	$scope.compile = function(codesize) {
+		var CONNECTION_ERROR = 'The server did not respond. Please check your Internet connection and try again.'
+				+ 'If this problem persists for more than a few minutes, please contact us at zerorobotics@mit.edu.'
+		var data = {
+			gameId: 24,
+			code: getDocAsString(),
+			codesize: codesize
+		};
+		
+		var getCompilationStatus = function(id) {
+			$http.get(config.serviceDomain + '/compilationresource/single/' + id)
+			.success(function(data,status,headers,config) {
+				if(data.status === 'COMPILING') {
+					$timeout(function() {
+						getCompilationStatus(id);
+					}, 1000);
+				}
+				else if(data.status === 'SUCCEEDED') {
+					$scope.logInsert('Compilation succeeded. '
+							+ (typeof data.codesizePct === 'number' ? data.codesizePct + '% codesize usage.' : ''),
+							data.message);
+					$scope.logOpen = true;
+				}
+				else if(data.status === 'FAILED') {
+					$scope.logInsert('Compilation failed.\n', data.message);
+					$scope.logOpen = true;
+				}
+			})
+			.error(function(data,status,headers,config) {
+				alert(CONNECTION_ERROR);
+			});
+		};
+		
+		$http.post(config.serviceDomain + '/compilationresource/compile', data)
+		.success(function(data,status,headers,config) {
+			getCompilationStatus(data.compilationId);
+		})
+		.error(function(data,status,headers,config) {
+			alert(CONNECTION_ERROR);
+		});
+	}
+	
 	$scope.download = function() {
-		//Create phantom link with data URI to download content. Needed to specify the name of the file with download attribute (window.open gives the file a random name in Firefox.)
+		//Create phantom link with data URI to download content. Needed to specify the name of the file with 
+		//download attribute (window.open gives the file a random name in Firefox.)
 		var link = document.createElement('a');
 		link.setAttribute('href', 'data:text/x-c,' + encodeURIComponent(getDocAsString()));
 		link.setAttribute('download', 'project.cpp');
@@ -97,12 +219,56 @@ zr.controller('IdeController', function($scope, $modal, config, realtimeDocument
 		//Log entries are identified by timestamp, plus some random digits to avoid collisions
 		var key = String(new Date().getTime() + Math.random());
 		$scope.log.set(key, {
-			user: 'Ethan DiNinno', //TODO: Actually implement this
+			user: getMyName(),
 			title: title,
 			content: content
 		});
 	};
 	
+	$scope.toggleBlocklyText = function(title, content) {
+		if($scope.editorMode === 'graphical-c') {
+			$scope.editorMode = 'graphical';
+		}
+		else if($scope.editorMode === 'graphical') {
+			$scope.blocklyText = Blockly.zr_cpp.workspaceToCode();
+			$scope.editorMode = 'graphical-c';
+		}
+	}
+	
+	var shareClient = null;
+	$scope.share = function() {
+		if(!shareClient) {
+			shareClient = new gapi.drive.share.ShareClient(config.appId);
+		}
+		shareClient.setItemIds(realtime.id);
+		shareClient.showSettingsDialog();
+	};
+	
+	//Callback to load Blockly when everything is rendered
+	if(graphical) {
+		//This triggers after the DOM is all compiled/rendered
+		$timeout(function() {
+			Blockly.inject(document.getElementById('blockly-frame'),{path:'/blockly/',toolbox: document.getElementById('toolbox')});
+			//Scroll over to keep procedure in center
+			var dims = Blockly.mainWorkspace.getMetrics();
+			Blockly.mainWorkspace.scrollX += dims.viewWidth / 3;
+			Blockly.mainWorkspace.scrollY += dims.viewHeight / 4;
+			Blockly.Realtime.loadPage($scope.currentPage);
+		}, 0);
+	}
+	
+	//TODO: This is disabled because it has lots of timing issues
+	/*//Listener to log leaving the document
+	var closeAction = function() {
+		$scope.logInsert('Stopped editing','');
+		return null;
+	};
+	//For leaving ZR
+	window.addEventListener('beforeunload',closeAction,false);
+	//For switching views within Angular
+	$scope.$on("$destroy", closeAction);*/
+	
 	//Last initialization
+	$scope.logInsert('Started editing','');
 	$scope.setActivePage('main');
 });

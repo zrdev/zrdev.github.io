@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Visual Blocks Editor
  *
@@ -21,7 +22,7 @@
  * @fileoverview Object representing a trash can icon.
  * @author fraser@google.com (Neil Fraser)
  */
-'use strict';
+
 
 goog.provide('Blockly.Trashcan');
 

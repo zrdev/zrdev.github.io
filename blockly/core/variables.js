@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Visual Blocks Editor
  *
@@ -25,7 +26,7 @@
  * one can't have a variable and a procedure of the same name. Modified for ZR C++ variable scoping. 
  * @author fraser@google.com (Neil Fraser), dininno@mit.edu (Ethan DiNinno)
  */
-'use strict';
+
 
 goog.provide('Blockly.Variables');
 
@@ -73,7 +74,9 @@ Blockly.Variables.allVariables = function(opt_block) {
 		variableList.push(variableHash[name]);
 	}
 	//To the variables from this workspace, add the list of global variables
-	variableList = variableList.concat(Blockly.zr_cpp.C_GLOBAL_VARS); 
+	if(Blockly.Realtime.enabled_) {
+		variableList = variableList.concat(Blockly.zr_cpp.C_GLOBAL_VARS.values()); 
+	}
 	return variableList;
 };
 
@@ -155,7 +158,7 @@ Blockly.Variables.generateUniqueName = function() {
 			i = 0;
 			inUse = false;
 			while (i < variableList.length && !inUse) {
-				if (variableList[i].toLowerCase() == potName) {
+				if (variableList[i].name.toLowerCase() == potName) {
 					// This potential name is already used.
 					inUse = true;
 				}

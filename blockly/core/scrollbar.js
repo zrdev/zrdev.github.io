@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Visual Blocks Editor
  *
@@ -21,7 +22,7 @@
  * @fileoverview Library for creating scrollbars.
  * @author fraser@google.com (Neil Fraser)
  */
-'use strict';
+
 
 goog.provide('Blockly.Scrollbar');
 goog.provide('Blockly.ScrollbarPair');

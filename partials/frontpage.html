@@ -1,0 +1,22 @@
+<div class="page-content">
+	<div class="container">
+		<div class="col-md-6">
+			<div class="page-header"><h1>Welcome to Zero Robotics</h1></div>
+			<a href="/ide/simulation/">Vis</a>
+		</div>
+		<div class="col-md-6" ng-controller="AnnouncementsController">
+			<div class="page-header"><h1>Announcements</h1></div>
+			<div class="panel panel-primary" ng-repeat="a in data.announcements | orderBy:'-date' | limitTo:5">
+				<div class="panel-heading">
+					{{ a.title }}
+				</div>
+				<div class="panel-body">
+					<p><i>Posted by {{ a.user }}<br>{{ a.date | date:'longDate' }}</i></p>
+					{{ a.content | striptags | limitTo:255 }}
+					<a href="/announcements/{{ a.id }}">Read&nbsp;more...</a>
+				</div>
+			</div>
+			<a href="/announcements/">See all announcements...</a>
+		</div>
+	</div>
+</div>

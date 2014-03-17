@@ -8,6 +8,12 @@
 			<label for="new-page-name" class="control-label">Page Name</label>
 			<input id="new-page-name" type="text" class="form-control" ng-model="data.name" fieldfocus="data.shouldBeOpen" ui-keypress="{'enter':'createPage()'}">
 		</div>
+		<div ng-show="graphical" class="checkbox">
+			<label>
+				<input type="checkbox" ng-model="data.returnValue" ui-keypress="{'enter':'createPage()'}">
+				Return value
+			</label>
+		</div>
 	</form>
 </div>
 <div class="modal-footer">

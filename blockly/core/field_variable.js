@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Visual Blocks Editor
  *
@@ -23,7 +24,7 @@
  * @fileoverview Variable input field. Modified for ZR C++ variable scoping. 
  * @author fraser@google.com (Neil Fraser), dininno@mit.edu (Ethan DiNinno)
  */
-'use strict';
+
 
 goog.provide('Blockly.FieldVariable');
 
@@ -47,7 +48,7 @@ Blockly.FieldVariable = function(varname, opt_changeHandler, showArrays) {
 
 	Blockly.FieldVariable.superClass_.constructor.call(this,
 			Blockly.FieldVariable.dropdownCreate, opt_changeHandler);
-
+			
 	if (varname) {
 		this.setValue(varname);
 	} else {
@@ -79,6 +80,21 @@ Blockly.FieldVariable.prototype.getValue = function() {
  * @param {string} text New text.
  */
 Blockly.FieldVariable.prototype.setValue = function(text) {
+	if(Blockly.Realtime.initializing) {
+		//Check that the variable actually exists (has not been renamed.)
+		var opts = Blockly.Variables.allVariables();
+		var len = opts.length;
+		var okay = false;
+		for(var i = 0; i < len; i++) {
+			if(opts[i].name === text) {
+				okay = true;
+				break;
+			}
+		}
+		if(!okay) {
+			text = ' ';
+		}
+	}
 	this.value_ = text;
 	this.setText(text);
 };
@@ -103,14 +119,8 @@ Blockly.FieldVariable.dropdownCreate = function() {
 			}
 		}
 	}
-	// Ensure that the currently selected variable is an option.
-	var name = this.getText();
-	if (name && variableList.indexOf(name) == -1) {
-		variableList.push(name);
-	}
-	if(!variableList.length) {
-		variableList.push('');
-	}
+	// Ensure that there is a blank option.
+	variableList.push(' ');
 	variableList.sort(goog.string.caseInsensitiveCompare);
 	// Variables are not language-specific, use the name as both the user-facing
 	// text and the internal representation.
@@ -118,5 +128,6 @@ Blockly.FieldVariable.dropdownCreate = function() {
 	for (var x = 0; x < variableList.length; x++) {
 		options[x] = [variableList[x], variableList[x]];
 	}
+	this.vars_ = options;
 	return options;
 };

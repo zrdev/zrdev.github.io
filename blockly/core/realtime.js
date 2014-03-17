@@ -48,7 +48,7 @@ goog.require('goog.array');
  * @type {boolean}
  * @private
  */
-Blockly.Realtime.enabled_ = false;
+Blockly.Realtime.enabled_ = true;
 
 /**
  * The Realtime model of this doc.
@@ -57,12 +57,14 @@ Blockly.Realtime.enabled_ = false;
  */
 Blockly.Realtime.model_ = null;
 
+Blockly.Realtime.initializing = false;
+
 /**
  * The function used to initialize the UI after realtime is initialized.
  * @type {Function()}
  * @private
  */
-Blockly.Realtime.initUi_ = null;
+Blockly.Realtime.initUi_ = function(){};
 
 /**
  * A map from block id to blocks.
@@ -78,35 +80,11 @@ Blockly.Realtime.blocksMap_ = null;
 Blockly.Realtime.withinSync = false;
 
 /**
- * The current instance of the realtime loader client
- * @type {rtclient.RealtimeLoader}
- * @private
- */
-Blockly.Realtime.realtimeLoader_ = null;
-
-/**
  * Returns whether realtime collaboration is enabled.
  * @returns {boolean}
  */
 Blockly.Realtime.isEnabled = function() {
-  return Blockly.Realtime.enabled_;
-};
-
-/**
- * This function is called the first time that the Realtime model is created
- * for a file. This function should be used to initialize any values of the
- * model.
- * @param model {gapi.drive.realtime.Model} model The Realtime root model
- *     object.
- */
-Blockly.Realtime.initializeModel_ = function(model) {
-  Blockly.Realtime.model_ = model;
-  var blocksMap = model.createMap();
-  model.getRoot().set('blocks', blocksMap);
-  var topBlocks = model.createList();
-  model.getRoot().set('topBlocks', topBlocks);
-  var string = model.createString(Blockly.Msg.CHAT);
-  model.getRoot().set('text', string);
+	return Blockly.Realtime.enabled_;
 };
 
 /**
@@ -114,7 +92,7 @@ Blockly.Realtime.initializeModel_ = function(model) {
  * @param {!Blockly.Block} block The block to remove.
  */
 Blockly.Realtime.removeBlock = function(block) {
-  Blockly.Realtime.blocksMap_.delete(block.id.toString());
+	Blockly.Realtime.blocksMap_.delete(block.id.toString());
 };
 
 /**
@@ -122,9 +100,9 @@ Blockly.Realtime.removeBlock = function(block) {
  * @param {!Blockly.Block} block The block to add.
  */
 Blockly.Realtime.addTopBlock = function(block) {
-  if (Blockly.Realtime.topBlocks_.indexOf(block) == -1) {
-    Blockly.Realtime.topBlocks_.push(block);
-  }
+	if (Blockly.Realtime.topBlocks_.indexOf(block) == -1) {
+		Blockly.Realtime.topBlocks_.push(block);
+	}
 };
 
 /**
@@ -132,7 +110,7 @@ Blockly.Realtime.addTopBlock = function(block) {
  * @param {!Blockly.Block} block The block to remove.
  */
 Blockly.Realtime.removeTopBlock = function(block) {
-  Blockly.Realtime.topBlocks_.removeValue(block);
+	Blockly.Realtime.topBlocks_.removeValue(block);
 };
 
 /**
@@ -142,9 +120,9 @@ Blockly.Realtime.removeTopBlock = function(block) {
  * @return {!Blockly.Block}
  */
 Blockly.Realtime.obtainBlock = function(workspace, prototypeName) {
-  var newBlock =
-      Blockly.Realtime.model_.create(Blockly.Block, workspace, prototypeName);
-  return newBlock;
+	var newBlock =
+			Blockly.Realtime.model_.create(Blockly.Block, workspace, prototypeName);
+	return newBlock;
 };
 
 /**
@@ -153,7 +131,7 @@ Blockly.Realtime.obtainBlock = function(workspace, prototypeName) {
  * @return {Blockly.Block} The found block.
  */
 Blockly.Realtime.getBlockById = function(id) {
-  return Blockly.Realtime.blocksMap_.get(id);
+	return Blockly.Realtime.blocksMap_.get(id);
 };
 
 /**
@@ -162,34 +140,34 @@ Blockly.Realtime.getBlockById = function(id) {
  * @private
  */
 Blockly.Realtime.onObjectChange_ = function(evt) {
-  var events = evt.events;
-  var eventCount = evt.events.length;
-  for (var i = 0; i < eventCount; i++) {
-    var event = events[i];
-    if (!event.isLocal) {
-      if (event.type == 'value_changed') {
-        if (event.property == 'xmlDom') {
-          var block = event.target;
-          Blockly.Realtime.doWithinSync_(function(){
-            Blockly.Realtime.placeBlockOnWorkspace_(block, false);
-            Blockly.Realtime.moveBlock_(block);
-          });
-        } else if (event.property == 'relativeX' ||
-                   event.property == 'relativeY') {
-          var block2 = event.target;
-          Blockly.Realtime.doWithinSync_(function () {
-            if (!block2.svg_) {
-              // If this is a move of a newly disconnected (i.e newly top level)
-              // block it will not have any svg (because it has been disposed of
-              // by it's parent), so we need to handle that here.
-              Blockly.Realtime.placeBlockOnWorkspace_(block2, false);
-            }
-            Blockly.Realtime.moveBlock_(block2);
-          });
-         }
-      }
-    }
-  }
+	var events = evt.events;
+	var eventCount = evt.events.length;
+	for (var i = 0; i < eventCount; i++) {
+		var event = events[i];
+		if (!event.isLocal) {
+			if (event.type === 'value_changed') {
+				if (event.property === 'xmlDom') {
+					var block = event.target;
+					Blockly.Realtime.doWithinSync_(function(){
+						Blockly.Realtime.placeBlockOnWorkspace_(block, false);
+						Blockly.Realtime.moveBlock_(block);
+					});
+				} else if (event.property == 'relativeX' ||
+									 event.property == 'relativeY') {
+					var block2 = event.target;
+					Blockly.Realtime.doWithinSync_(function () {
+						if (!block2.svg_) {
+							// If this is a move of a newly disconnected (i.e newly top level)
+							// block it will not have any svg (because it has been disposed of
+							// by it's parent), so we need to handle that here.
+							Blockly.Realtime.placeBlockOnWorkspace_(block2, false);
+						}
+						Blockly.Realtime.moveBlock_(block2);
+					});
+				 }
+			}
+		}
+	}
 };
 
 /**
@@ -198,17 +176,17 @@ Blockly.Realtime.onObjectChange_ = function(evt) {
  * @private
  */
 Blockly.Realtime.onBlocksMapChange_ = function(evt) {
-  console.log('Blocks Map event:');
-  console.log('  id: ' + evt.property);
-  if (!evt.isLocal) {
-    var block = evt.newValue;
-    if (block) {
-      Blockly.Realtime.placeBlockOnWorkspace_(block, !(evt.oldValue));
-    } else {
-      block = evt.oldValue;
-      Blockly.Realtime.deleteBlock(block);
-    }
-  }
+	console.log('Blocks Map event:');
+	console.log('  id: ' + evt.property);
+	if (!evt.isLocal) {
+		var block = evt.newValue;
+		if (block) {
+			Blockly.Realtime.placeBlockOnWorkspace_(block, !(evt.oldValue));
+		} else {
+			block = evt.oldValue;
+			Blockly.Realtime.deleteBlock(block);
+		}
+	}
 };
 
 /**
@@ -218,16 +196,16 @@ Blockly.Realtime.onBlocksMapChange_ = function(evt) {
  * @private
  */
 Blockly.Realtime.doWithinSync_ = function(thunk) {
-  if (Blockly.Realtime.withinSync) {
-    thunk();
-  } else {
-    try {
-      Blockly.Realtime.withinSync = true;
-      thunk();
-    } finally {
-      Blockly.Realtime.withinSync = false;
-    }
-  }
+	if (Blockly.Realtime.withinSync) {
+		thunk();
+	} else {
+		try {
+			Blockly.Realtime.withinSync = true;
+			thunk();
+		} finally {
+			Blockly.Realtime.withinSync = false;
+		}
+	}
 };
 
 /**
@@ -239,24 +217,24 @@ Blockly.Realtime.doWithinSync_ = function(thunk) {
  * @private
  */
 Blockly.Realtime.placeBlockOnWorkspace_ = function(block, addToTop) {
-  Blockly.Realtime.doWithinSync_(function() {
-    var blockDom = Blockly.Xml.textToDom(block.xmlDom).firstChild;
-    var newBlock =
-        Blockly.Xml.domToBlock(Blockly.mainWorkspace, blockDom, true);
-    // TODO: The following is for debugging.  It should never actually happen.
-    if (!newBlock) {
-      return;
-    }
-    // Since Blockly.Xml.blockDomToBlock() purposely won't add blocks to
-    // workspace.topBlocks_ we sometimes need to do it explicitly here.
-    if (addToTop) {
-      newBlock.workspace.addTopBlock(newBlock);
-    }
-    if (addToTop ||
-        goog.array.contains(Blockly.Realtime.topBlocks_, newBlock)) {
-      Blockly.Realtime.moveBlock_(newBlock);
-    }
-  });
+	Blockly.Realtime.doWithinSync_(function() {
+		var blockDom = Blockly.Xml.textToDom(block.xmlDom).firstChild;
+		var newBlock =
+				Blockly.Xml.domToBlock(Blockly.mainWorkspace, blockDom, true);
+		// TODO: The following is for debugging.  It should never actually happen.
+		if (!newBlock) {
+			return;
+		}
+		// Since Blockly.Xml.blockDomToBlock() purposely won't add blocks to
+		// workspace.topBlocks_ we sometimes need to do it explicitly here.
+		if (addToTop) {
+			newBlock.workspace.addTopBlock(newBlock);
+		}
+		if (addToTop ||
+				goog.array.contains(Blockly.Realtime.topBlocks_, newBlock)) {
+			Blockly.Realtime.moveBlock_(newBlock);
+		}
+	});
 };
 
 /**
@@ -265,13 +243,13 @@ Blockly.Realtime.placeBlockOnWorkspace_ = function(block, addToTop) {
  * @private
  */
 Blockly.Realtime.moveBlock_ = function(block) {
-  if (!isNaN(block.relativeX) && !isNaN(block.relativeY)) {
-    var width = Blockly.svgSize().width;
-    var curPos = block.getRelativeToSurfaceXY();
-    var dx = block.relativeX - curPos.x;
-    var dy = block.relativeY - curPos.y;
-    block.moveBy(Blockly.RTL ? width - dx : dx, dy);
-  }
+	if (!isNaN(block.relativeX) && !isNaN(block.relativeY)) {
+		var width = Blockly.svgSize().width;
+		var curPos = block.getRelativeToSurfaceXY();
+		var dx = block.relativeX - curPos.x;
+		var dy = block.relativeY - curPos.y;
+		block.moveBy(Blockly.RTL ? width - dx : dx, dy);
+	}
 };
 
 /**
@@ -280,9 +258,9 @@ Blockly.Realtime.moveBlock_ = function(block) {
  * @private
  */
 Blockly.Realtime.deleteBlock = function(block) {
-  Blockly.Realtime.doWithinSync_(function() {
-    block.dispose(true, true, true);
-  });
+	Blockly.Realtime.doWithinSync_(function() {
+		block.dispose(true, true, true);
+	});
 };
 
 /**
@@ -291,21 +269,21 @@ Blockly.Realtime.deleteBlock = function(block) {
  * @private
  */
 Blockly.Realtime.loadBlocks_ = function() {
-  var blocks = Blockly.Realtime.blocksMap_.values();
-  for (var i = 0; i < blocks.length; i++) {
-    var block = blocks[i];
-    // Since we now have blocks with already existing ids, we have to make sure
-    // that new blocks don't get any of the existing ids.
-    var blockIdNum = parseInt(block.id, 10);
-    if (blockIdNum > Blockly.getUidCounter()) {
-      Blockly.setUidCounter(blockIdNum + 1);
-    }
-  }
-  var topBlocks = Blockly.Realtime.topBlocks_;
-  for (var j = 0; j < topBlocks.length; j++) {
-    var topBlock = topBlocks.get(j);
-    Blockly.Realtime.placeBlockOnWorkspace_(topBlock, true);
-  }
+	var blocks = Blockly.Realtime.blocksMap_.values();
+	for (var i = 0; i < blocks.length; i++) {
+		var block = blocks[i];
+		// Since we now have blocks with already existing ids, we have to make sure
+		// that new blocks don't get any of the existing ids.
+		var blockIdNum = parseInt(block.id, 10);
+		if (blockIdNum > Blockly.getUidCounter()) {
+			Blockly.setUidCounter(blockIdNum + 1);
+		}
+	}
+	var topBlocks = Blockly.Realtime.topBlocks_;
+	for (var j = 0; j < topBlocks.length; j++) {
+		var topBlock = topBlocks.get(j);
+		Blockly.Realtime.placeBlockOnWorkspace_(topBlock, true);
+	}
 };
 
 /**
@@ -314,245 +292,70 @@ Blockly.Realtime.loadBlocks_ = function() {
  * @param {!Blockly.Block} block The block that changed.
  */
 Blockly.Realtime.blockChanged = function(block) {
-  if (block.workspace == Blockly.mainWorkspace) {
-    var rootBlock = block.getRootBlock();
-    var xy = rootBlock.getRelativeToSurfaceXY();
-    var changed = false;
-    var xml = Blockly.Xml.blockToDom_(rootBlock);
-    xml.setAttribute('id', rootBlock.id);
-    var topXml = goog.dom.createDom('xml');
-    topXml.appendChild(xml);
-    var newXml = Blockly.Xml.domToText(topXml);
-    if (newXml != rootBlock.xmlDom) {
-      changed = true;
-      rootBlock.xmlDom = newXml;
-    }
-    if (rootBlock.relativeX != xy.x || rootBlock.relativeY != xy.y){
-      rootBlock.relativeX = xy.x;
-      rootBlock.relativeY = xy.y;
-      changed = true;
-    }
-    if (changed) {
-      var blockId = rootBlock.id.toString();
-      Blockly.Realtime.blocksMap_.set(blockId, rootBlock);
-    }
-  }
+	if (block.workspace == Blockly.mainWorkspace) {
+		var rootBlock = block.getRootBlock();
+		var xy = rootBlock.getRelativeToSurfaceXY();
+		var changed = false;
+		var xml = Blockly.Xml.blockToDom_(rootBlock);
+		xml.setAttribute('id', rootBlock.id);
+		var topXml = goog.dom.createDom('xml');
+		topXml.appendChild(xml);
+		var newXml = Blockly.Xml.domToText(topXml);
+		if (newXml != rootBlock.xmlDom) {
+			changed = true;
+			rootBlock.xmlDom = newXml;
+		}
+		if (rootBlock.relativeX != xy.x || rootBlock.relativeY != xy.y){
+			rootBlock.relativeX = xy.x;
+			rootBlock.relativeY = xy.y;
+			changed = true;
+		}
+		if (changed) {
+			var blockId = rootBlock.id.toString();
+			Blockly.Realtime.blocksMap_.set(blockId, rootBlock);
+		}
+	}
 };
 
-/**
- * This function is called when the Realtime file has been loaded. It should
- * be used to initialize any user interface components and event handlers
- * depending on the Realtime model. In this case, create a text control binder
- * and bind it to our string model that we created in initializeModel.
- * @param {!gapi.drive.realtime.Document} doc The Realtime document.
- * @private
- */
-Blockly.Realtime.onFileLoaded_ = function(doc) {
-  Blockly.Realtime.model_ = doc.getModel();
-  Blockly.Realtime.blocksMap_ =
-      Blockly.Realtime.model_.getRoot().get('blocks');
-  Blockly.Realtime.topBlocks_ =
-      Blockly.Realtime.model_.getRoot().get('topBlocks');
+//Load a project page
+Blockly.Realtime.loadPage = function(pageRoot) {
+	//Destroy old listeners before wiping workspace
+	if(Blockly.Realtime.blocksMap_) {
+		Blockly.Realtime.blocksMap_.removeEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED,
+				Blockly.Realtime.onBlocksMapChange_);
+	}
+	Blockly.Realtime.model_.getRoot().removeEventListener(
+			gapi.drive.realtime.EventType.OBJECT_CHANGED,
+			Blockly.Realtime.onObjectChange_);
 
-  Blockly.Realtime.model_.getRoot().addEventListener(
-      gapi.drive.realtime.EventType.OBJECT_CHANGED,
-      Blockly.Realtime.onObjectChange_);
-  Blockly.Realtime.blocksMap_.addEventListener(
-      gapi.drive.realtime.EventType.VALUE_CHANGED,
-      Blockly.Realtime.onBlocksMapChange_);
+	//Remove all blocks from GUI
+	Blockly.Realtime.enabled_ = false;
+	Blockly.mainWorkspace.clear();
+	Blockly.Realtime.enabled_ = true;
+	
+	
+	//Initialize new Realtime page
+	Blockly.Realtime.topBlocks_ =
+			pageRoot.get('topBlocks');
+	Blockly.Realtime.blocksMap_ =
+			pageRoot.get('blocks');
+	Blockly.Realtime.blocksMap_.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED,
+			Blockly.Realtime.onBlocksMapChange_);
+	Blockly.Realtime.model_.getRoot().addEventListener(
+			gapi.drive.realtime.EventType.OBJECT_CHANGED,
+			Blockly.Realtime.onObjectChange_);
 
-  Blockly.Realtime.initUi_();
-
-  Blockly.Realtime.loadBlocks_();
-
-  // Add logic for undo button.
-  // TODO: Uncomment this when undo/redo are fixed.
-/*
-  var undoButton = document.getElementById('undoButton');
-  var redoButton = document.getElementById('redoButton');
-
-  undoButton.onclick = function(e) {
-    Blockly.Realtime.model_.undo();
-  };
-  redoButton.onclick = function(e) {
-    Blockly.Realtime.model_.redo();
-  };
-
-  // Add event handler for UndoRedoStateChanged events.
-  var onUndoRedoStateChanged = function(e) {
-    undoButton.disabled = !e.canUndo;
-    redoButton.disabled = !e.canRedo;
-  };
-  Blockly.Realtime.model_.addEventListener(
-      gapi.drive.realtime.EventType.UNDO_REDO_STATE_CHANGED,
-      onUndoRedoStateChanged);
- */
-};
-
-/**
- * Register the Blockly types and attributes that are reflected in the realtime
- * model.
- * @private
- */
-Blockly.Realtime.registerTypes_ = function() {
-  var custom = gapi.drive.realtime.custom;
-
-  custom.registerType(Blockly.Block, 'Block');
-  Blockly.Block.prototype.id = custom.collaborativeField('id');
-  Blockly.Block.prototype.type = custom.collaborativeField('type');
-  Blockly.Block.prototype.xmlDom = custom.collaborativeField('xmlDom');
-  Blockly.Block.prototype.relativeX = custom.collaborativeField('relativeX');
-  Blockly.Block.prototype.relativeY = custom.collaborativeField('relativeY');
-
-  custom.setInitializer(Blockly.Block, Blockly.Block.prototype.initialize);
-};
-
-Blockly.Realtime.REAUTH_INTERVAL_IN_MILLISECONDS_ = 30 * 60 * 1000;
-
-/**
- * What to do after Realtime authorization.
- * @private
- */
-Blockly.Realtime.afterAuth_ = function() {
-  // This is a workaround for the fact that the code in realtime-client-utils.js
-  // doesn't deal with auth timeouts correctly.  So we explicitly reauthorize at
-  // regular intervals.
-  window.setTimeout(
-      function() {
-        Blockly.Realtime.realtimeLoader_.authorizer.authorize(
-            Blockly.Realtime.afterAuth_);
-      },
-      Blockly.Realtime.REAUTH_INTERVAL_IN_MILLISECONDS_);
-};
-
-/**
- * Add "Anyone with the link" permissions to the file.
- * @param {string} fileId the file id
- */
-Blockly.Realtime.afterCreate_ = function(fileId) {
-  var resource = {
-    'type': 'anyone',
-    'role': 'writer',
-    'value': 'default',
-    'withLink': true
-  };
-  var request = gapi.client.drive.permissions.insert({
-    'fileId': fileId,
-    'resource': resource
-  });
-  request.execute(function(resp) {
-    // If we have an error try to just set the permission for all users
-    // of the domain.
-    if (resp.error) {
-      Blockly.Realtime.getUserDomain(fileId, function(domain) {
-        var resource = {
-          'type': 'domain',
-          'role': 'writer',
-          'value': domain,
-          'withLink': true
-        };
-        request = gapi.client.drive.permissions.insert({
-          'fileId': fileId,
-          'resource': resource
-        });
-        request.execute(function(resp) { });
-      });
-    }
-  });
-};
-
-/**
- * Get the domain (if it exists) associated with a realtime file.  The callback
- * will be called with the domain, if it exists.
- * @param fileId {string} the id of the file
- * @param callback {function(string)} a function to call back with the domain
- */
-Blockly.Realtime.getUserDomain = function (fileId, callback) {
-  /**
-   * Note that there may be a more direct way to get the domain by, for example,
-   * using the Google profile API but this way we don't need any additional
-   * APIs or scopes.  But if it turns out that the permissions API stops
-   * providing the domain this might have to change.
-   */
-  var request = gapi.client.drive.permissions.list({
-    'fileId': fileId
-  });
-  request.execute(function(resp) {
-    for (var i = 0; i < resp.items.length; i++) {
-      var item = resp.items[i];
-      if (item.role == 'owner') {
-        callback(item.domain);
-        return;
-      }
-    }
-  });
-};
-
-/**
- * Options for the Realtime loader.
- */
-Blockly.Realtime.realtimeOptions_ = {
-  /**
-   * Client ID from the console.
-   */
-//  clientId: 'INSERT YOUR CLIENT ID HERE',
-  clientId: '922110111899.apps.googleusercontent.com',
-
-  /**
-   * The ID of the button to click to authorize. Must be a DOM element ID.
-   */
-  authButtonElementId: 'authorizeButton',
-
-  /**
-   * Function to be called when a Realtime model is first created.
-   */
-  initializeModel: Blockly.Realtime.initializeModel_,
-
-  /**
-   * Autocreate files right after auth automatically.
-   */
-  autoCreate: true,
-
-  /**
-   * The name of newly created Drive files.
-   */
-  defaultTitle: 'New Realtime Blockly File',
-
-  /**
-   * The MIME type of newly created Drive Files. By default the application
-   * specific MIME type will be used:
-   *     application/vnd.google-apps.drive-sdk.
-   */
-  newFileMimeType: null, // Using default.
-
-  /**
-   * Function to be called every time a Realtime file is loaded.
-   */
-  onFileLoaded: Blockly.Realtime.onFileLoaded_,
-
-  /**
-   * Function to be called to initialize custom Collaborative Objects types.
-   */
-  registerTypes: Blockly.Realtime.registerTypes_,
-
-  /**
-   * Function to be called after authorization and before loading files.
-   */
-  afterAuth: Blockly.Realtime.afterAuth_,
-
-  /**
-   * Function to be called after file creation, if autoCreate is true.
-   */
-  afterCreate: Blockly.Realtime.afterCreate_
-};
-
-/**
- * Start the Realtime loader with the options.
- */
-Blockly.Realtime.startRealtime = function (uiInitialize) {
-  Blockly.Realtime.enabled_ = true;
-  Blockly.Realtime.initUi_ = uiInitialize;
-  Blockly.Realtime.realtimeLoader_ =
-      new rtclient.RealtimeLoader(Blockly.Realtime.realtimeOptions_);
-  Blockly.Realtime.realtimeLoader_.start();
+	Blockly.Realtime.initUi_();
+	
+	Blockly.Realtime.initializing = true; //Flag to suppress block adjusters
+	Blockly.Realtime.loadBlocks_();
+	Blockly.Realtime.initializing = false;
+	
+	//Add procedure block if the page is empty
+	if(Blockly.Realtime.blocksMap_.isEmpty()) {
+		var type = pageRoot.get('type');
+		var block = Blockly.Block.obtain(Blockly.mainWorkspace, 'procedures_def' + type);
+		block.initSvg();
+		block.render();
+	}
 };

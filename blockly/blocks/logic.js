@@ -36,11 +36,13 @@ Blockly.Blocks['controls_if'] = {
 		this.setHelpUrl(Blockly.Msg.CONTROLS_IF_HELPURL);
 		this.setColour(210);
 		this.appendValueInput('IF0')
-				.appendField(Blockly.Msg.CONTROLS_IF_MSG_IF);
+				.appendField(Blockly.Msg.CONTROLS_IF_MSG_IF)
+				.setCheck('number');
 		this.appendStatementInput('DO0')
-				.appendField('then');
-		this.setPreviousStatement(true);
-		this.setNextStatement(true);
+				.appendField('then')
+				.setCheck('statement');
+		this.setPreviousStatement(true, 'statement');
+		this.setNextStatement(true, 'statement');
 		this.setMutator(new Blockly.Mutator(['controls_if_elseif',
 																				 'controls_if_else']));
 		// Assign 'this' to a variable for use in the tooltip closure below.
@@ -78,9 +80,11 @@ Blockly.Blocks['controls_if'] = {
 		this.elseCount_ = parseInt(xmlElement.getAttribute('else'), 10);
 		for (var x = 1; x <= this.elseifCount_; x++) {
 			this.appendValueInput('IF' + x)
-					.appendField(Blockly.Msg.CONTROLS_IF_MSG_ELSEIF);
+					.appendField(Blockly.Msg.CONTROLS_IF_MSG_ELSEIF)
+					.setCheck('number');
 			this.appendStatementInput('DO' + x)
-					.appendField('then');
+					.appendField('then')
+					.setCheck('statement');
 		}
 		if (this.elseCount_) {
 			this.appendStatementInput('ELSE')
@@ -176,7 +180,8 @@ Blockly.Blocks['controls_if'] = {
 			clauseBlock = clauseBlock.nextConnection &&
 					clauseBlock.nextConnection.targetBlock();
 		}
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['controls_if_if'] = {
@@ -229,10 +234,12 @@ Blockly.Blocks['logic_compare'] = {
 			];
 		this.setHelpUrl(Blockly.Msg.LOGIC_COMPARE_HELPURL);
 		this.setColour(210);
-		this.setOutput(true, 'bool');
-		this.appendValueInput('A');
+		this.setOutput(true, 'number');
+		this.appendValueInput('A')
+				.setCheck('number');
 		this.appendValueInput('B')
-				.appendField(new Blockly.FieldDropdown(OPERATORS), 'OP');
+				.appendField(new Blockly.FieldDropdown(OPERATORS), 'OP')
+				.setCheck('number');
 		this.setInputsInline(true);
 		// Assign 'this' to a variable for use in the tooltip closure below.
 		var thisBlock = this;
@@ -248,7 +255,8 @@ Blockly.Blocks['logic_compare'] = {
 			};
 			return TOOLTIPS[op];
 		});
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['logic_operation'] = {
@@ -259,10 +267,12 @@ Blockly.Blocks['logic_operation'] = {
 				 [Blockly.Msg.LOGIC_OPERATION_OR, 'OR']];
 		this.setHelpUrl(Blockly.Msg.LOGIC_OPERATION_HELPURL);
 		this.setColour(210);
-		this.setOutput(true, 'bool');
-		this.appendValueInput('A');
+		this.setOutput(true, 'number');
+		this.appendValueInput('A')
+				.setCheck('number');
 		this.appendValueInput('B')
-				.appendField(new Blockly.FieldDropdown(OPERATORS), 'OP');
+				.appendField(new Blockly.FieldDropdown(OPERATORS), 'OP')
+				.setCheck('number');
 		this.setInputsInline(true);
 		// Assign 'this' to a variable for use in the tooltip closure below.
 		var thisBlock = this;
@@ -274,7 +284,8 @@ Blockly.Blocks['logic_operation'] = {
 			};
 			return TOOLTIPS[op];
 		});
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 
@@ -283,12 +294,13 @@ Blockly.Blocks['logic_negate'] = {
 	init: function() {
 		this.setHelpUrl(Blockly.Msg.LOGIC_NEGATE_HELPURL);
 		this.setColour(210);
-		this.setOutput(true, 'bool');
+		this.setOutput(true, 'number');
 		this.interpolateMsg(Blockly.Msg.LOGIC_NEGATE_TITLE,
-												['BOOL', null, Blockly.ALIGN_RIGHT],
+												['BOOL', 'number', Blockly.ALIGN_RIGHT],
 												Blockly.ALIGN_RIGHT);
 		this.setTooltip(Blockly.Msg.LOGIC_NEGATE_TOOLTIP);
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['logic_boolean'] = {
@@ -299,11 +311,12 @@ Blockly.Blocks['logic_boolean'] = {
 				 [Blockly.Msg.LOGIC_BOOLEAN_FALSE, 'FALSE']];
 		this.setHelpUrl(Blockly.Msg.LOGIC_BOOLEAN_HELPURL);
 		this.setColour(210);
-		this.setOutput(true, 'bool');
+		this.setOutput(true, 'number');
 		this.appendDummyInput()
 				.appendField(new Blockly.FieldDropdown(BOOLEANS), 'BOOL');
 		this.setTooltip(Blockly.Msg.LOGIC_BOOLEAN_TOOLTIP);
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['logic_ternary'] = {
@@ -312,12 +325,16 @@ Blockly.Blocks['logic_ternary'] = {
 		this.setHelpUrl(Blockly.Msg.LOGIC_TERNARY_HELPURL);
 		this.setColour(210);
 		this.appendValueInput('IF')
-				.appendField(Blockly.Msg.LOGIC_TERNARY_CONDITION);
+				.appendField(Blockly.Msg.LOGIC_TERNARY_CONDITION)
+				.setCheck('number');
 		this.appendValueInput('THEN')
-				.appendField(Blockly.Msg.LOGIC_TERNARY_IF_TRUE);
+				.appendField(Blockly.Msg.LOGIC_TERNARY_IF_TRUE)
+				.setCheck('number');
 		this.appendValueInput('ELSE')
-				.appendField(Blockly.Msg.LOGIC_TERNARY_IF_FALSE);
-		this.setOutput(true);
+				.appendField(Blockly.Msg.LOGIC_TERNARY_IF_FALSE)
+				.setCheck('number');
+		this.setOutput(true, 'number');
 		this.setTooltip(Blockly.Msg.LOGIC_TERNARY_TOOLTIP);
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };

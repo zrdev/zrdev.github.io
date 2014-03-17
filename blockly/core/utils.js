@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Visual Blocks Editor
  *
@@ -23,7 +24,7 @@
  * a JavaScript framework such as Closure were used.
  * @author fraser@google.com (Neil Fraser)
  */
-'use strict';
+
 
 goog.provide('Blockly.utils');
 

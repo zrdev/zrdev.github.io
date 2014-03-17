@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Visual Blocks Editor
  *
@@ -21,7 +22,7 @@
  * @fileoverview Utility functions for handling procedures.
  * @author fraser@google.com (Neil Fraser)
  */
-'use strict';
+
 
 goog.provide('Blockly.Procedures');
 
@@ -168,18 +169,6 @@ Blockly.Procedures.rename = function(text) {
  * @param {!Blockly.Workspace} workspace The flyout's workspace.
  */
 Blockly.Procedures.flyoutCategory = function(blocks, gaps, margin, workspace) {
-  if (Blockly.Blocks['procedures_defnoreturn']) {
-    var block = Blockly.Block.obtain(workspace, 'procedures_defnoreturn');
-    block.initSvg();
-    blocks.push(block);
-    gaps.push(margin * 2);
-  }
-  if (Blockly.Blocks['procedures_defreturn']) {
-    var block = Blockly.Block.obtain(workspace, 'procedures_defreturn');
-    block.initSvg();
-    blocks.push(block);
-    gaps.push(margin * 2);
-  }
   if (Blockly.Blocks['procedures_ifreturn']) {
     var block = Blockly.Block.obtain(workspace, 'procedures_ifreturn');
     block.initSvg();

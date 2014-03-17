@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Visual Blocks Editor
  *
@@ -21,7 +22,7 @@
  * @fileoverview Core JavaScript library for Blockly.
  * @author scr@google.com (Sheridan Rawlins)
  */
-'use strict';
+
 
 /**
  * Name space for the Msg singleton.

@@ -37,11 +37,12 @@
 				Blockly.inject(document.body,
 						{path: './', toolbox: document.getElementById('toolbox')});
 				// Let the top-level application know that Blockly is ready.
-				//window.parent.ide.blocklyLoaded(Blockly);
+				window.parent.blocklyLoaded(Blockly);
 			}
 		</script>
 	</head>
 	<body onload="init()">
+		<button style="position:fixed; bottom:0;left:0;z-index:9999;" onclick="alert(Blockly.zr_cpp.workspaceToCode())">C Code</button>
 		<xml id="toolbox" style="display: none">
 			<category name="SPHERES Controls">
 				<block type="spheres_setPos">
@@ -63,13 +64,13 @@
 				</block>
 				<block type="spheres_setTarget">
 					<value name="ARGUMENT">
-						<block type="variables_get">
+						<block type="variables_array_get_pointer">
 						</block>
 					</value>
 				</block>
 				<block type="spheres_getZRState">
 					<value name="ARGUMENT">
-						<block type="variables_get">
+						<block type="variables_array_get_pointer">
 						</block>
 					</value>
 				</block>
@@ -100,6 +101,7 @@
 						</block>
 					</value>
 				</block>
+				<block type="variables_array_get_pointer"></block>
 				<block type="variables_array_get">
 					<value name="INDEX">
 						<block type="math_number">
@@ -119,10 +121,13 @@
 						</block>
 					</value>
 				</block>
-				<block type="variables_array_declare"></block>
-				<block type="procedures_definit"></block>
-				<block type="procedures_defloop"></block>
-				<block type="variables_globalvars"></block>
+				<block type="variables_array_declare">
+					<value name="VALUE0">
+						<block type="math_number">
+							<field name="NUM">0</field>
+						</block>
+					</value>
+				</block>
 			</category>
 			<category name="Logic">
 				<block type="controls_if"></block>

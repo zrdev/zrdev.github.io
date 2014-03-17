@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Game Mode-->
+<!--
+Scene scale changed from 800 to 2000, this increases the size of the game area
+If changed all of the position values for the fixed objects must be changed
+-->
+<scene scale="2000.0" tics="500">
+  <light x="0" y="1000" z="0"/>
+  
+  <!-- Test volume boundaries in the positive direction in meters (assumed symmetric) -->
+  <bounds x="0.75" y="0.9" z="0.75"/>
+<!--
+Camera distanced changed from 1500 to 2500 in order to view the entire game area without zooming out
+-->
+  <camera pitch="60.0" yaw="313.0" distance="4000"/>
+<!--
+Wall layout type sphere
+-->
+  <walls type="sphere" radius="8000">
+	<surface image="images/p15.jpg"/>
+	<surface1 image="images/p11.jpg"/>
+	<surface2 image="images/p12.jpg"/>
+	<surface3 image="images/p13.jpg"/>
+	<surface4 image="images/p15.jpg"/>
+	<surface5 image="images/p11.jpg"/>
+	<surface6 color="0x0f0f00"/>
+  </walls>
+  
+<!-- Define the game -->
+<game name="ZRASCC"/>
+<!--
+Two dynamic satellite objects
+-->
+<!--blue sphere-->
+  <visobject id="s1" type="asobject" class="SphereSat" scale="2000" basequat="0.707, 0, 0.707,0">
+    <surface name="SatTexture" image="images/bluesph.png"/>
+  </visobject>
+<!--red sphere-->
+  <visobject id="s2" type="asobject" class="SphereSat" scale="2000" basequat="0.707, 0, 0.707,0">
+    <surface name="SatTexture" image="images/redsph.png"/>
+  </visobject>
+
+ </scene>
+
+

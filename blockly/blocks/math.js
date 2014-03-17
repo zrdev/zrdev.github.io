@@ -37,9 +37,10 @@ Blockly.Blocks['math_number'] = {
 		this.appendDummyInput()
 				.appendField(new Blockly.FieldTextInput('0',
 				Blockly.FieldTextInput.numberValidator), 'NUM');
-		this.setOutput(true, ['float','int','unsigned int','short','unsigned short']);
+		this.setOutput(true, 'number');
 		this.setTooltip(Blockly.Msg.MATH_NUMBER_TOOLTIP);
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['math_arithmetic'] = {
@@ -53,11 +54,11 @@ Blockly.Blocks['math_arithmetic'] = {
 				 ['^', 'POWER']];
 		this.setHelpUrl(Blockly.Msg.MATH_ARITHMETIC_HELPURL);
 		this.setColour(230);
-		this.setOutput(true, ['float','int','unsigned int','short','unsigned short']);
+		this.setOutput(true, 'number');
 		this.appendValueInput('A')
-				.setCheck(['float','int','unsigned int','short','unsigned short']);
+				.setCheck('number');
 		this.appendValueInput('B')
-				.setCheck(['float','int','unsigned int','short','unsigned short'])
+				.setCheck('number')
 				.appendField(new Blockly.FieldDropdown(OPERATORS), 'OP');
 		this.setInputsInline(true);
 		// Assign 'this' to a variable for use in the tooltip closure below.
@@ -73,7 +74,8 @@ Blockly.Blocks['math_arithmetic'] = {
 			};
 			return TOOLTIPS[mode];
 		});
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['math_single'] = {
@@ -88,10 +90,10 @@ Blockly.Blocks['math_single'] = {
 				 ['e^', 'expf']];
 		this.setHelpUrl(Blockly.Msg.MATH_SINGLE_HELPURL);
 		this.setColour(230);
-		this.setOutput(true, 'float');
+		this.setOutput(true, 'number');
 		this.interpolateMsg('%1 %2',
 				['OP', new Blockly.FieldDropdown(OPERATORS)],
-				['NUM', ['float','int','unsigned int','short','unsigned short'], Blockly.ALIGN_RIGHT],
+				['NUM', 'number', Blockly.ALIGN_RIGHT],
 				Blockly.ALIGN_RIGHT);
 		// Assign 'this' to a variable for use in the tooltip closure below.
 		var thisBlock = this;
@@ -108,7 +110,8 @@ Blockly.Blocks['math_single'] = {
 			};
 			return TOOLTIPS['ROOT'];
 		});
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['math_trig'] = {
@@ -123,9 +126,9 @@ Blockly.Blocks['math_trig'] = {
 				 ['arctan', 'atanf']];
 		this.setHelpUrl(Blockly.Msg.MATH_TRIG_HELPURL);
 		this.setColour(230);
-		this.setOutput(true, 'float');
+		this.setOutput(true, 'number');
 		this.appendValueInput('NUM')
-				.setCheck(['float','int','unsigned int','short','unsigned short'])
+				.setCheck('number')
 				.appendField(new Blockly.FieldDropdown(OPERATORS), 'OP');
 		// Assign 'this' to a variable for use in the tooltip closure below.
 		var thisBlock = this;
@@ -141,7 +144,8 @@ Blockly.Blocks['math_trig'] = {
 			};
 			return TOOLTIPS['SIN'];
 		});
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['math_constant'] = {
@@ -157,11 +161,12 @@ Blockly.Blocks['math_constant'] = {
 				 ['rad2deg', 'RAD2DEG']];
 		this.setHelpUrl(Blockly.Msg.MATH_CONSTANT_HELPURL);
 		this.setColour(230);
-		this.setOutput(true, 'float');
+		this.setOutput(true, 'number');
 		this.appendDummyInput()
 				.appendField(new Blockly.FieldDropdown(CONSTANTS), 'CONSTANT');
 		this.setTooltip(Blockly.Msg.MATH_CONSTANT_TOOLTIP);
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['math_change'] = {
@@ -171,12 +176,12 @@ Blockly.Blocks['math_change'] = {
 		this.setColour(230);
 		this.appendDummyInput().appendField('increment');
 		this.appendValueInput('VAR')
-				.setCheck(['float','int','unsigned int','short','unsigned short']);
+				.setCheck('number');
 		this.appendDummyInput().appendField('by');
 		this.appendValueInput('DELTA')
-				.setCheck(['float','int','unsigned int','short','unsigned short']);
-		this.setPreviousStatement(true);
-		this.setNextStatement(true);
+				.setCheck('number');
+		this.setPreviousStatement(true, 'statement');
+		this.setNextStatement(true, 'statement');
 		this.setInputsInline(true);
 		// Assign 'this' to a variable for use in the tooltip closure below.
 		var thisBlock = this;
@@ -192,7 +197,8 @@ Blockly.Blocks['math_change'] = {
 		if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
 			this.setFieldValue(newName, 'VAR');
 		}
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['math_round'] = {
@@ -204,12 +210,13 @@ Blockly.Blocks['math_round'] = {
 				 ['round down', 'floorf']];
 		this.setHelpUrl(Blockly.Msg.MATH_ROUND_HELPURL);
 		this.setColour(230);
-		this.setOutput(true, 'float');
+		this.setOutput(true, 'number');
 		this.appendValueInput('NUM')
-				.setCheck('float')
+				.setCheck('number')
 				.appendField(new Blockly.FieldDropdown(OPERATORS), 'OP');
 		this.setTooltip(Blockly.Msg.MATH_ROUND_TOOLTIP);
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 
@@ -218,12 +225,13 @@ Blockly.Blocks['math_modulo'] = {
 	init: function() {
 		this.setHelpUrl(Blockly.Msg.MATH_MODULO_HELPURL);
 		this.setColour(230);
-		this.setOutput(true, ['float','int','unsigned int','short','unsigned short']);
+		this.setOutput(true, 'number');
 		this.interpolateMsg('remainder of %1 / %2',
-												['DIVIDEND', ['float','int','unsigned int','short','unsigned short'], Blockly.ALIGN_RIGHT],
-												['DIVISOR', ['float','int','unsigned int','short','unsigned short'], Blockly.ALIGN_RIGHT],
+												['DIVIDEND', 'number', Blockly.ALIGN_RIGHT],
+												['DIVISOR', 'number', Blockly.ALIGN_RIGHT],
 												Blockly.ALIGN_RIGHT);
 		this.setInputsInline(true);
 		this.setTooltip(Blockly.Msg.MATH_MODULO_TOOLTIP);
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };

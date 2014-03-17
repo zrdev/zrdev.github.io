@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Visual Blocks Editor
  *
@@ -21,7 +22,7 @@
  * @fileoverview Components for creating connections between blocks.
  * @author fraser@google.com (Neil Fraser)
  */
-'use strict';
+
 
 goog.provide('Blockly.Connection');
 goog.provide('Blockly.ConnectionDB');
@@ -333,7 +334,7 @@ Blockly.Connection.prototype.moveBy = function(dx, dy) {
   this.moveTo(this.x_ + dx, this.y_ + dy);
 };
 
-/**
+/**pe_
  * Add highlighting around this connection.
  */
 Blockly.Connection.prototype.highlight = function() {

@@ -39,7 +39,8 @@ Blockly.Blocks['debug_string'] = {
 			.appendField(new Blockly.FieldTextInput('""'), 'TEXT');
 		this.setOutput(true, 'string');
 		this.setTooltip(Blockly.Msg.TEXT_TEXT_TOOLTIP);
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['debug'] = {
@@ -50,8 +51,9 @@ Blockly.Blocks['debug'] = {
 		this.interpolateMsg('DEBUG %1',
 			['TEXT', 'string', Blockly.ALIGN_RIGHT],
 			Blockly.ALIGN_RIGHT);
-		this.setPreviousStatement(true);
-		this.setNextStatement(true);
+		this.setPreviousStatement(true, 'statement');
+		this.setNextStatement(true, 'statement');
 		this.setTooltip(Blockly.Msg.TEXT_PRINT_TOOLTIP);
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };

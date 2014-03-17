@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Visual Blocks Editor
  *
@@ -26,7 +27,7 @@
  * Third, call Blockly.Tooltip.bindMouseEvents(e) passing the SVG element.
  * @author fraser@google.com (Neil Fraser)
  */
-'use strict';
+
 
 goog.provide('Blockly.Tooltip');
 

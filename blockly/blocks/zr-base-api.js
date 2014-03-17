@@ -33,14 +33,15 @@ Blockly.Blocks['spheres_setPos'] = {
 		this.setColour(65);
 		this.interpolateMsg(
 				'setPos %1, %2, %3',
-				['X', ['float','int','unsigned int','short','unsigned short'], Blockly.ALIGN_RIGHT],
-				['Y', ['float','int','unsigned int','short','unsigned short'], Blockly.ALIGN_RIGHT],
-				['Z', ['float','int','unsigned int','short','unsigned short'], Blockly.ALIGN_RIGHT],
+				['X', 'number', Blockly.ALIGN_RIGHT],
+				['Y', 'number', Blockly.ALIGN_RIGHT],
+				['Z', 'number', Blockly.ALIGN_RIGHT],
 				Blockly.ALIGN_RIGHT);
-		this.setPreviousStatement(true);
-		this.setNextStatement(true);
+		this.setPreviousStatement(true, 'statement');
+		this.setNextStatement(true, 'statement');
 		this.setTooltip('');
 	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['spheres_setTarget'] = {
@@ -56,11 +57,12 @@ Blockly.Blocks['spheres_setTarget'] = {
 		this.setColour(65);
 		this.appendValueInput('ARGUMENT')
 			.appendField(new Blockly.FieldDropdown(FUNCTIONS), 'FUNCTION')
-			.setCheck('float[3]');
-		this.setPreviousStatement(true);
-		this.setNextStatement(true);
+			.setCheck('array');
+		this.setPreviousStatement(true, 'statement');
+		this.setNextStatement(true, 'statement');
 		this.setTooltip('');
 	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['spheres_getZRState'] = {
@@ -72,11 +74,12 @@ Blockly.Blocks['spheres_getZRState'] = {
 		this.setColour(65);
 		this.appendValueInput('ARGUMENT')
 			.appendField(new Blockly.FieldDropdown(FUNCTIONS), 'FUNCTION')
-			.setCheck('float[12]');
-		this.setPreviousStatement(true);
-		this.setNextStatement(true);
+			.setCheck('array');
+		this.setPreviousStatement(true, 'statement');
+		this.setNextStatement(true, 'statement');
 		this.setTooltip('');
 	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['spheres_getTime'] = {
@@ -86,7 +89,8 @@ Blockly.Blocks['spheres_getTime'] = {
 		this.setColour(65);
 		this.appendDummyInput()
 				.appendField('getTime');
-		this.setOutput(true, 'unsigned int');
+		this.setOutput(true, 'number');
 		this.setTooltip(Blockly.Msg.VARIABLES_GET_TOOLTIP);
 	},
+	onchange: Blockly.Blocks.requireInFunction,
 };

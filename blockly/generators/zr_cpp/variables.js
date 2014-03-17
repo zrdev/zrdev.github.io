@@ -37,6 +37,13 @@ Blockly.zr_cpp['variables_get'] = function(block) {
 	return [code, Blockly.zr_cpp.ORDER_ATOMIC];
 };
 
+Blockly.zr_cpp['variables_array_get_pointer'] = function(block) {
+	// Variable getter.
+	var code = Blockly.zr_cpp.variableDB_.getName(block.getFieldValue('VAR'),
+			Blockly.Variables.NAME_TYPE);
+	return [code, Blockly.zr_cpp.ORDER_ATOMIC];
+};
+
 Blockly.zr_cpp['variables_set'] = function(block) {
 	// Variable setter.
 	var argument0 = Blockly.zr_cpp.valueToCode(block, 'VALUE',

@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Visual Blocks Editor
  *
@@ -21,7 +22,7 @@
  * @fileoverview Core JavaScript library for Blockly.
  * @author fraser@google.com (Neil Fraser)
  */
-'use strict';
+
 goog.require('goog.asserts');
 
 /**
@@ -174,3 +175,15 @@ Blockly.Blocks.addTemplate = function(details) {
   // Add new block to Blockly.Blocks.
   Blockly.Blocks[details.blockName] = block;
 };
+
+Blockly.Blocks.requireInFunction = function() {
+		if (!this.workspace) {
+			// Block has been deleted.
+			return;
+		}
+		if (this.getSurroundParent()) {
+			this.setWarningText(null);
+		} else {
+			this.setWarningText('Place this block inside a function.');
+		}
+	}

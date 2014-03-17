@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Game Mode-->
+<!--
+Scene scale changed from 800 to 2000, this increases the size of the game area
+If changed all of the position values for the fixed objects must be changed
+-->
+<scene scale="2000.0" tics="500">
+  <light x="0" y="1000" z="0"/>
+  
+  <!-- Test volume boundaries in the positive direction in meters (assumed symmetric) -->
+  <bounds x="0.64" y="0.8" z="0.64"/>
+<!--
+Camera distanced changed from 1500 to 2500 in order to view the entire game area without zooming out
+-->
+  <camera pitch="60.0" yaw="313.0" distance="4000"/>
+<!--
+Wall layout type sphere
+-->
+  <walls type="sphere" radius="8000">
+	<surface image="images/p15.jpg"/>
+	<surface1 image="images/p11.jpg"/>
+	<surface2 image="images/p12.jpg"/>
+	<surface3 image="images/p13.jpg"/>
+	<surface4 image="images/p15.jpg"/>
+	<surface5 image="images/p11.jpg"/>
+	<surface6 color="0x0f0f00"/>
+  </walls>
+  
+<!-- Define the game -->
+<game name="ZRHS2013"/>
+
+<!--
+Two dynamic satellite objects
+-->
+<!--blue sphere-->
+  <visobject id="s2" type="asobject" class="SphereSat" scale="2000" basequat="0.707, 0, 0.707,0">
+    <surface name="SatTexture" image="images/redsph.png"/>
+  </visobject>
+<!--red sphere-->
+  <visobject id="s1" type="asobject" class="SphereSat" scale="2000" basequat="0.707, 0, 0.707,0">
+    <surface name="SatTexture" image="images/bluesph.png"/>
+  </visobject>
+ 
+<!--debris
+x values {-0.495, -0.165, 0.165, 0.495}, y values {-0.40, -0.07, 0.26, 0.59}, z values 0.0
+-->
+
+<visobject id="d0" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d1" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d2" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d3" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d4" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d5" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d6" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d7" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d8" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d9" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d10" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d11" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d12" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d13" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d14" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d15" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<!-- comets -->
+<visobject id="comet0" type="sphere" radius="0.1" scale="1" initial_x="-0.1" initial_y="0.8" initial_z="0.6">
+	<surface name="solid" color="0x0000FF" ambient="0x0000FF" />
+</visobject>
+<visobject id="comet1" type="sphere" radius="0.1" scale="1" initial_x="-0.1" initial_y="0.8" initial_z="0.6">
+	<surface name="solid" color="0xFF0000" ambient="0xFF0000" />
+</visobject>
+
+
+<!-- items -->
+  <visobject id="item0" type="cube" x="100" y="100" z="100" initial_x="0.5" initial_y="0.65" initial_z="0" scale="2">
+	<top image="images/laser.png"/>
+	<bottom image="images/laser.png"/>
+	<front image="images/laser.png"/>
+	<back image="images/laser.png"/>
+	<left image="images/laser.png"/>
+	<right image="images/laser.png"/>
+  </visobject>
+  
+  <visobject id="item1" type="cube" x="100" y="100" z="100" initial_x="-0.5" initial_y="0.61" initial_z="0" scale="2">
+	<top image="images/laser.png"/>
+	<bottom image="images/laser.png"/>
+	<front image="images/laser.png"/>
+	<back image="images/laser.png"/>
+	<left image="images/laser.png"/>
+	<right image="images/laser.png"/>
+  </visobject>
+  
+ </scene>
+
+

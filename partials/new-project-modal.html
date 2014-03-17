@@ -8,6 +8,25 @@
 			<label for="new-project-name" class="control-label">Project Name</label>
 			<input id="new-project-name" type="text" class="form-control" ng-model="data.name" fieldfocus="data.shouldBeOpen" ui-keypress="{'enter':'createProject()'}">
 		</div>
+		<div class="form-group">
+			<div class="radio">
+				<label>
+					<input type="radio" name="editorRadios" ng-model="data.editorMode" value="text">Text Editor
+				</label>
+			</div>
+			<div class="radio">
+				<label>
+					<input type="radio" name="editorRadios" ng-model="data.editorMode" value="graphical">Graphical Editor
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="new-project-game" class="control-label">Game</label>
+			<select id="new-project-game" class="form-control">
+				<option>Free Mode</option>
+				<option>CosmoSPHERES MS</option>
+			</select>
+		</div>
 	</form>
 </div>
 <div class="modal-footer">

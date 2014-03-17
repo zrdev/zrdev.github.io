@@ -39,7 +39,7 @@ Blockly.Blocks['variables_get'] = {
 				.appendField(Blockly.Msg.VARIABLES_GET_TITLE)
 				.appendField(new Blockly.FieldVariable(' ', null, false), 'VAR')
 				.appendField(Blockly.Msg.VARIABLES_GET_TAIL);
-		this.setOutput(true);
+		this.setOutput(true, 'number');
 		this.setTooltip(Blockly.Msg.VARIABLES_GET_TOOLTIP);
 		this.contextMenuMsg_ = Blockly.Msg.VARIABLES_GET_CREATE_SET;
 		this.contextMenuType_ = 'variables_set';
@@ -59,7 +59,41 @@ Blockly.Blocks['variables_get'] = {
 		xmlBlock.setAttribute('type', this.contextMenuType_);
 		option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
 		options.push(option);
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
+};
+
+Blockly.Blocks['variables_array_get_pointer'] = {
+	// Array getter.
+	init: function() {
+		this.setHelpUrl(Blockly.Msg.VARIABLES_GET_HELPURL);
+		this.setColour(260);
+		this.appendDummyInput()
+				.appendField(Blockly.Msg.VARIABLES_GET_TITLE)
+				.appendField(new Blockly.FieldVariable(' ', null, true), 'VAR')
+				.appendField(Blockly.Msg.VARIABLES_GET_TAIL);
+		this.setOutput(true, 'array');
+		this.setTooltip(Blockly.Msg.VARIABLES_GET_TOOLTIP);
+		this.contextMenuMsg_ = Blockly.Msg.VARIABLES_GET_CREATE_SET;
+		this.contextMenuType_ = 'variables_set';
+	},
+	renameVar: function(oldName, newName) {
+		if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
+			this.setFieldValue(newName, 'VAR');
+		}
+	},
+	customContextMenu: function(options) {
+		var option = {enabled: true};
+		var name = this.getFieldValue('VAR');
+		option.text = this.contextMenuMsg_.replace('%1', name);
+		var xmlField = goog.dom.createDom('field', null, name);
+		xmlField.setAttribute('name', 'VAR');
+		var xmlBlock = goog.dom.createDom('block', null, xmlField);
+		xmlBlock.setAttribute('type', this.contextMenuType_);
+		option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+		options.push(option);
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['variables_set'] = {
@@ -73,8 +107,8 @@ Blockly.Blocks['variables_set'] = {
 				['VAR', new Blockly.FieldVariable(' ', null, false)],
 				['VALUE', null, Blockly.ALIGN_RIGHT],
 				Blockly.ALIGN_RIGHT);
-		this.setPreviousStatement(true);
-		this.setNextStatement(true);
+		this.setPreviousStatement(true, 'statement');
+		this.setNextStatement(true, 'statement');
 		this.setTooltip(Blockly.Msg.VARIABLES_SET_TOOLTIP);
 		this.contextMenuMsg_ = Blockly.Msg.VARIABLES_SET_CREATE_GET;
 		this.contextMenuType_ = 'variables_get';
@@ -84,7 +118,8 @@ Blockly.Blocks['variables_set'] = {
 			this.setFieldValue(newName, 'VAR');
 		}
 	},
-	customContextMenu: Blockly.Blocks['variables_get'].customContextMenu
+	customContextMenu: Blockly.Blocks['variables_get'].customContextMenu,
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['variables_declare'] = {
@@ -97,25 +132,44 @@ Blockly.Blocks['variables_declare'] = {
 				.appendField('name:')
 				.appendField(new Blockly.FieldTextInput('myVariable', this.validator), 'NAME')
 				.appendField('initial value:');
-		this.appendValueInput('VALUE');
+		this.appendValueInput('VALUE')
+				.setCheck('number');
 		this.setInputsInline(true);
-		this.setPreviousStatement(true);
-		this.setNextStatement(true);
+		this.setPreviousStatement(true, 'declare');
+		this.setNextStatement(true, 'declare');
 		this.setTooltip('');
-	},
-	getGlobals: function() {
-		//Has different name from getVars so the variable will not be double counted
-		return {
-			type: this.getFieldValue('TYPE'),
-			name: this.getFieldValue('NAME'),
-			isArray: 'FALSE',
-		};
 	},
 	validator: function(newVar) {
 		// Merge runs of whitespace.  Strip leading and trailing whitespace.
 		// Beyond this, all names are legal.
 		newVar = newVar.replace(/[\s\xa0]+/g, ' ').replace(/^ | $/g, '');
 		return newVar || null;
+	},
+	onchange: function() {
+		if (!this.workspace) {
+			// Block has been deleted.
+			return;
+		}
+		if(Blockly.Realtime.enabled_ && !Blockly.Realtime.initializing && !this.isInFlyout) {
+			if(this.getSurroundParent()) {
+				Blockly.zr_cpp.C_GLOBAL_VARS.set(String(this.id), {
+					type: this.getFieldValue('TYPE'),
+					name: this.getFieldValue('NAME'),
+					isArray: 'FALSE',
+				});
+			}
+		}
+		if (this.getSurroundParent()) {
+			this.setWarningText(null);
+		} else {
+			this.setWarningText('Place this block inside the global variables block.');
+		}
+	},
+	beforedispose: function() {
+		if(!Blockly.Realtime.enabled_ || this.isInFlyout) {
+			return;
+		}
+		Blockly.zr_cpp.C_GLOBAL_VARS.delete(String(this.id));
 	}
 };
 
@@ -132,9 +186,10 @@ Blockly.Blocks['variables_array_get'] = {
 		this.appendDummyInput()
 				.appendField(']');
 		this.setInputsInline(true);
-		this.setOutput(true);
+		this.setOutput(true, 'number');
 		this.setTooltip(Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START);
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['variables_array_set'] = {
@@ -145,15 +200,18 @@ Blockly.Blocks['variables_array_set'] = {
 		this.appendDummyInput()
 				.appendField(new Blockly.FieldVariable(' ', null, true),'ARRAY')
 				.appendField('[');
-		this.appendValueInput('INDEX');
+		this.appendValueInput('INDEX')
+				.setCheck('number');
 		this.appendDummyInput()
 				.appendField('] =');
-		this.appendValueInput('VALUE');
+		this.appendValueInput('VALUE')
+				.setCheck('number');
 		this.setInputsInline(true);
-		this.setPreviousStatement(true);
-		this.setNextStatement(true);
+		this.setPreviousStatement(true, 'statement');
+		this.setNextStatement(true, 'statement');
 		this.setTooltip('');
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['variables_array_declare'] = {
@@ -168,12 +226,12 @@ Blockly.Blocks['variables_array_declare'] = {
 				.appendField('length:')
 				.appendField(new Blockly.FieldTextInput('1', this.adjustInputs), 'LENGTH')
 				.appendField('initial value:');
-		this.appendValueInput('VALUE0');
+		this.appendValueInput('VALUE0')
+				.setCheck('number');
 		this.setInputsInline(true);
-		this.setPreviousStatement(true);
-		this.setNextStatement(true);
+		this.setPreviousStatement(true, 'declare');
+		this.setNextStatement(true,'declare');
 		this.setTooltip('');
-		this.adjustInputs.parentBlock = this; //Hack to make the adjust function work when called from another context
 	},
 	getGlobals: function() {
 		//Has different name from getVars so the variable will not be double counted
@@ -189,54 +247,65 @@ Blockly.Blocks['variables_array_declare'] = {
 		if(isNaN(len) || len < 1) {
 			len = 1;
 		}
-		var block = this.changeHandler_.parentBlock; //Hack to make the adjust function work when called from another context
+		var block = this.sourceBlock_;
 		if(block.inputList !== void 0) { //inputList will not yet be initialized on the first call
-			var oldlen = block.inputList.length;
-			if(len != oldlen - 1) {
-				for (var i = 0; i < oldlen - 1; i++) {
-					block.removeInput('VALUE' + i);
+			var oldlen = block.inputList.length - 1;
+			if(len < oldlen) {
+				for (var i = len; i < oldlen; i++) {
+					var conn = block.getInput('VALUE' + i).connection;
+					var other = conn.targetBlock();
+					try {
+						conn.disconnect();
+					} catch(e) {}
+					if(other) {
+						other.workspace.addTopBlock(other);
+					}
+					conn.dispose();
+					block.removeInput('VALUE' + i, true);
 				}
-				for(var j = 0; j < len; j++) {
-					var newInput = block.appendValueInput('VALUE' + j);
-					var num = Blockly.Block.obtain(block.workspace, 'math_number');
-					num.initSvg();
-					newInput.connection.connect(num.ouputConnection);
+				block.workspace.render();
+			}
+			else if(len > oldlen) {
+				for(var j = oldlen; j < len; j++) {
+					var newInput = block.appendValueInput('VALUE' + j)
+							.setCheck('number');
+					if(!Blockly.Realtime.initializing) {
+						var num = Blockly.Block.obtain(block.workspace, 'math_number');
+						num.initSvg();
+						num.render();
+						newInput.connection.connect(num.outputConnection);
+					}
 				}
 			}
 		}
 		return '' + len; //Cast to string
 	},
-	validator: Blockly.Blocks['variables_declare'].validator
-};
-
-Blockly.Blocks['variables_globalvars'] = {
-	// Container for global variables.
-	init: function() {
-		this.setHelpUrl(Blockly.Msg.PROCEDURES_DEFNORETURN_HELPURL);
-		this.setColour(290);
-		var name = Blockly.Procedures.findLegalName(
-				Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE, this);
-		this.appendDummyInput()
-				.appendField('global variables');
-		this.appendStatementInput('STACK');
-		this.setTooltip('Declare global variables inside this block.');
-		this.arguments_ = [];
-		//The function block on a page cannot be deleted
-		this.setDeletable(false);
-	},
-	getVars: function() {
-		var children = this.getDescendants();
-		var len = children.length;
-		var globals = [];
-		if(len) {
-			for(var i = 0; i < len; i++) {
-				if (children[i].getGlobals !== void 0) {
-					globals.push(children[i].getGlobals());
-				}
+	validator: Blockly.Blocks['variables_declare'].validator,
+	onchange: function() {
+		if (!this.workspace) {
+			// Block has been deleted.
+			return;
+		}
+		if(Blockly.Realtime.enabled_ && !Blockly.Realtime.initializing && !this.isInFlyout) {
+			if(this.getSurroundParent()) {
+				Blockly.zr_cpp.C_GLOBAL_VARS.set(String(this.id), {
+					type: this.getFieldValue('TYPE'),
+					name: this.getFieldValue('NAME'),
+					length: this.getFieldValue('LENGTH'),
+					isArray: 'TRUE',
+				});
 			}
 		}
-		Blockly.zr_cpp.C_GLOBAL_VARS = globals;
-		return [{name: null}];
+		if (this.getSurroundParent()) {
+			this.setWarningText(null);
+		} else {
+			this.setWarningText('Place this block inside the global variables block.');
+		}
 	},
-	callType_: 'procedures_callnoreturn'
+	beforedispose: function() {
+		if(!Blockly.Realtime.enabled_ || this.isInFlyout) {
+			return;
+		}
+		Blockly.zr_cpp.C_GLOBAL_VARS.delete(String(this.id));
+	}
 };

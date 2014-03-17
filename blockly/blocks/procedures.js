@@ -42,12 +42,14 @@ Blockly.Blocks['procedures_defnoreturn'] = {
 				.appendField(new Blockly.FieldTextInput(name,
 				Blockly.Procedures.rename), 'NAME')
 				.appendField('', 'PARAMS');
-		this.appendStatementInput('STACK');
+		this.appendStatementInput('STACK')
+				.setCheck('statement');
 		this.setMutator(new Blockly.Mutator(['procedures_mutatorarg']));
 		this.setTooltip(Blockly.Msg.PROCEDURES_DEFNORETURN_TOOLTIP);
 		this.arguments_ = [];
 		//The function block on a page cannot be deleted
 		this.setDeletable(false);
+		this.setMovable(false);
 	},
 	updateParams_: function() {
 		// Check for duplicated arguments.
@@ -224,7 +226,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
 		}
 		return argList;
 	},
-	callType_: 'procedures_callnoreturn'
+	callType_: 'procedures_callnoreturn',
 };
 
 Blockly.Blocks['procedures_defreturn'] = {
@@ -241,15 +243,18 @@ Blockly.Blocks['procedures_defreturn'] = {
 				Blockly.Procedures.rename), 'NAME')
 				.appendField('', 'PARAMS');
 		this.appendStatementInput('STACK')
-				.appendField(Blockly.Msg.PROCEDURES_DEFRETURN_DO);
+				.appendField(Blockly.Msg.PROCEDURES_DEFRETURN_DO)
+				.setCheck('statement');
 		this.appendValueInput('RETURN')
 				.setAlign(Blockly.ALIGN_RIGHT)
-				.appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN);
+				.appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN)
+				.setCheck('number');
 		this.setMutator(new Blockly.Mutator(['procedures_mutatorarg']));
 		this.setTooltip(Blockly.Msg.PROCEDURES_DEFRETURN_TOOLTIP);
 		this.arguments_ = [];
 		//The function block on a page cannot be deleted
 		this.setDeletable(false);
+		this.setMovable(false);
 	},
 	updateParams_: Blockly.Blocks['procedures_defnoreturn'].updateParams_,
 	mutationToDom: Blockly.Blocks['procedures_defnoreturn'].mutationToDom,
@@ -268,7 +273,7 @@ Blockly.Blocks['procedures_defreturn'] = {
 	customContextMenu: Blockly.Blocks['procedures_defnoreturn'].customContextMenu,
 	getArgString: Blockly.Blocks['procedures_defnoreturn'].getArgString,
 	getArgList: Blockly.Blocks['procedures_defnoreturn'].getArgList,
-	callType_: 'procedures_callreturn'
+	callType_: 'procedures_callreturn',
 };
 
 Blockly.Blocks['procedures_definit'] = {
@@ -280,30 +285,19 @@ Blockly.Blocks['procedures_definit'] = {
 				Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE, this);
 		this.appendDummyInput()
 				.appendField('global variables');
-		this.appendStatementInput('GLOBALS');
+		this.appendStatementInput('GLOBALS')
+				.setCheck('declare');
 		this.appendDummyInput()
 				.appendField('init');
-		this.appendStatementInput('STACK');
+		this.appendStatementInput('STACK')
+				.setCheck('statement');
 		this.setTooltip('This code runs once at the start of the match. Use it to declare and initialize global variables.');
 		this.arguments_ = [];
 		//The function block on a page cannot be deleted
 		this.setDeletable(false);
+		this.setMovable(false);
 	},
-	getVars: function() {
-		var children = this.getDescendants();
-		var len = children.length;
-		var globals = [];
-		if(len) {
-			for(var i = 0; i < len; i++) {
-				if (children[i].getGlobals !== void 0) {
-					globals.push(children[i].getGlobals());
-				}
-			}
-		}
-		Blockly.zr_cpp.C_GLOBAL_VARS = globals;
-		return [{name: null}];
-	},
-	callType_: 'procedures_callnoreturn'
+	callType_: 'procedures_callnoreturn',
 };
 
 Blockly.Blocks['procedures_defloop'] = {
@@ -315,13 +309,15 @@ Blockly.Blocks['procedures_defloop'] = {
 				Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE, this);
 		this.appendDummyInput()
 				.appendField('loop');
-		this.appendStatementInput('STACK');
+		this.appendStatementInput('STACK')
+				.setCheck('statement');
 		this.setTooltip('Main loop. This code runs once per second.');
 		this.arguments_ = [];
 		//The function block on a page cannot be deleted
 		this.setDeletable(false);
+		this.setMovable(false);
 	},
-	callType_: 'procedures_callnoreturn'
+	callType_: 'procedures_callnoreturn',
 };
 
 Blockly.Blocks['procedures_mutatorcontainer'] = {
@@ -369,8 +365,8 @@ Blockly.Blocks['procedures_callnoreturn'] = {
 		this.appendDummyInput()
 				.appendField(Blockly.Msg.PROCEDURES_CALLNORETURN_CALL)
 				.appendField('', 'NAME');
-		this.setPreviousStatement(true);
-		this.setNextStatement(true);
+		this.setPreviousStatement(true, 'statement');
+		this.setNextStatement(true, 'statement');
 		this.setTooltip(Blockly.Msg.PROCEDURES_CALLNORETURN_TOOLTIP);
 		this.arguments_ = [];
 		this.quarkConnections_ = null;
@@ -443,7 +439,7 @@ Blockly.Blocks['procedures_callnoreturn'] = {
 		for (var x = 0; x < this.arguments_.length; x++) {
 			var input = this.appendValueInput('ARG' + x)
 					.setAlign(Blockly.ALIGN_RIGHT)
-					.appendField(this.arguments_[x]);
+					.appendField(this.arguments_[x])
 			if (this.quarkArguments_) {
 				// Reconnect any child blocks.
 				var quarkName = this.quarkArguments_[x];
@@ -518,7 +514,8 @@ Blockly.Blocks['procedures_callnoreturn'] = {
 			def && def.select();
 		};
 		options.push(option);
-	}
+	},
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['procedures_callreturn'] = {
@@ -529,7 +526,7 @@ Blockly.Blocks['procedures_callreturn'] = {
 		this.appendDummyInput()
 				.appendField(Blockly.Msg.PROCEDURES_CALLRETURN_CALL)
 				.appendField('', 'NAME');
-		this.setOutput(true);
+		this.setOutput(true, 'number');
 		this.setTooltip(Blockly.Msg.PROCEDURES_CALLRETURN_TOOLTIP);
 		this.arguments_ = [];
 		this.quarkConnections_ = null;
@@ -543,7 +540,8 @@ Blockly.Blocks['procedures_callreturn'] = {
 	mutationToDom: Blockly.Blocks['procedures_callnoreturn'].mutationToDom,
 	domToMutation: Blockly.Blocks['procedures_callnoreturn'].domToMutation,
 	renameVar: Blockly.Blocks['procedures_callnoreturn'].renameVar,
-	customContextMenu: Blockly.Blocks['procedures_callnoreturn'].customContextMenu
+	customContextMenu: Blockly.Blocks['procedures_callnoreturn'].customContextMenu,
+	onchange: Blockly.Blocks.requireInFunction,
 };
 
 Blockly.Blocks['procedures_ifreturn'] = {
@@ -552,13 +550,14 @@ Blockly.Blocks['procedures_ifreturn'] = {
 		this.setHelpUrl('http://c2.com/cgi/wiki?GuardClause');
 		this.setColour(290);
 		this.appendValueInput('CONDITION')
-				.setCheck('Boolean')
+				.setCheck('number')
 				.appendField(Blockly.Msg.CONTROLS_IF_MSG_IF);
 		this.appendValueInput('VALUE')
-				.appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN);
+				.appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN)
+				.setCheck('number');
 		this.setInputsInline(true);
-		this.setPreviousStatement(true);
-		this.setNextStatement(true);
+		this.setPreviousStatement(true, 'statement');
+		this.setNextStatement(true, 'statement');
 		this.setTooltip(Blockly.Msg.PROCEDURES_IFRETURN_TOOLTIP);
 		this.hasReturnValue_ = true;
 	},
@@ -575,7 +574,8 @@ Blockly.Blocks['procedures_ifreturn'] = {
 		if (!this.hasReturnValue_) {
 			this.removeInput('VALUE');
 			this.appendDummyInput('VALUE')
-				.appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN);
+				.appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN)
+				.setCheck('number');
 		}
 	},
 	onchange: function() {
@@ -587,8 +587,10 @@ Blockly.Blocks['procedures_ifreturn'] = {
 		// Is the block nested in a procedure?
 		var block = this;
 		do {
-			if (block.type == 'procedures_defnoreturn' ||
-					block.type == 'procedures_defreturn') {
+			if (block.type === 'procedures_defnoreturn' ||
+					block.type === 'procedures_definit' ||
+					block.type === 'procedures_defloop' ||
+					block.type === 'procedures_defreturn') {
 				legal = true;
 				break;
 			}
@@ -596,21 +598,23 @@ Blockly.Blocks['procedures_ifreturn'] = {
 		} while (block);
 		if (legal) {
 			// If needed, toggle whether this block has a return value.
-			if (block.type == 'procedures_defnoreturn' && this.hasReturnValue_) {
+			if (block.type !== 'procedures_defreturn' && this.hasReturnValue_) {
 				this.removeInput('VALUE');
 				this.appendDummyInput('VALUE')
-					.appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN);
+					.appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN)
+					.setCheck('number');
 				this.hasReturnValue_ = false;
-			} else if (block.type == 'procedures_defreturn' &&
+			} else if (block.type === 'procedures_defreturn' &&
 								 !this.hasReturnValue_) {
 				this.removeInput('VALUE');
 				this.appendValueInput('VALUE')
-					.appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN);
+					.appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN)
+					.setCheck('number');
 				this.hasReturnValue_ = true;
 			}
 			this.setWarningText(null);
 		} else {
-			this.setWarningText(Blockly.Msg.PROCEDURES_IFRETURN_WARNING);
+			this.setWarningText('Place this block inside a function.');
 		}
-	}
+	},
 };
