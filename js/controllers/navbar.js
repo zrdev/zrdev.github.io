@@ -11,7 +11,7 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive',
 		};
 		
 		$scope.newProject = function() {
-			drive.openProject();
+			drive.newProject();
 		};
 		
 		$scope.openProject = function() {

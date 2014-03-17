@@ -71,7 +71,7 @@
 		<accordion>
 			<accordion-group heading="Pages" is-open="true">
 				<div class="list-group" adjustheight="325">
-					<a class="list-group-item {{ k === currentPageName ? 'active' : '' }}" ng-repeat="k in pages.keys().sort()" ng-click="setActivePage(k);">{{ k }}</a>
+					<a class="list-group-item {{ k === currentPageName ? 'active' : '' }}" ng-repeat="k in pages.keys().sort()" ng-click="setActivePage(k);" ng-style="{ 'font-weight': (k === 'init' || k === 'main' ? 'bold' : 'normal')}">{{ k }}</a>
 				</div>
 				<div class="btn-group btn-group-sm">
 					<button type="button" class="btn btn-default" ng-click="newPage()"><span class="glyphicon glyphicon-plus"></span></button>
