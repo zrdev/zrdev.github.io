@@ -14,6 +14,14 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 	$scope.chat = {
 		message: ''
 	};
+	
+	$scope.projectName = '';
+	drive.getFileMetadata(realtime.id, function(data) {
+		$scope.$apply(function() {
+			$scope.projectName = data.title;
+		});
+	});
+	
 	$scope.blocklyText='';
 	$scope.aceEditor = null;
 	$scope.aceOptions = {

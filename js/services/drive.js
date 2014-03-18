@@ -34,6 +34,14 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime',
 			}).execute(function(){});
 		};
 		
+		//Gets the metadata of a file in Drive. 
+		this.getFileMetadata = function(id, callback) {
+			gapi.client.request({
+				'path': '/drive/v2/files/' + id,
+				'method': 'GET'
+			}).execute(callback);
+		};
+		
 		//Opens new project modal. 
 		this.newProject = function(folder) {
 			$modal.open({

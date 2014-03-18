@@ -57,11 +57,11 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li ng-if="graphical" ng-switch="editorMode">
-					<a ng-click="toggleBlocklyText()" ng-switch-when="graphical">C Code</a>
-					<a ng-click="toggleBlocklyText()" ng-switch-when="graphical-c">Graphical Editor</a>
+					<button type="button" class="btn btn-default navbar-btn" ng-click="toggleBlocklyText()" ng-switch-when="graphical">C Code</button>
+					<button type="button" class="btn btn-default navbar-btn" ng-click="toggleBlocklyText()" ng-switch-when="graphical-c">Graphical Editor</button>
 				</li>
 			</ul>
-			<p id="project-name" class="navbar-text navbar-right"></p>
+			<p id="project-name" class="navbar-text navbar-right">{{ projectName }}&nbsp;&nbsp;</p>
 		</div><!--/.nav-collapse -->
 	</div>
 </div>
