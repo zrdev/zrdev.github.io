@@ -16,11 +16,14 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 	};
 	
 	$scope.projectName = '';
-	drive.getFileMetadata(realtime.id, function(data) {
-		$scope.$apply(function() {
-			$scope.projectName = data.title;
+	var setProjectName = function() {
+		drive.getFileMetadata(realtime.id, function(data) {
+			$scope.$apply(function() {
+				$scope.projectName = data.title;
+			});
 		});
-	});
+	}
+	setProjectName();
 	
 	$scope.blocklyText='';
 	$scope.aceEditor = null;
@@ -112,7 +115,10 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 	$scope.renameProject = function() {
 		$modal.open({
 			templateUrl: '/partials/rename-project-modal.html',
-			controller: 'RenameProjectController'
+			controller: 'RenameProjectController', 
+			resolve: {
+				callback: function() { return setProjectName; }
+			}
 		});
 	};
 	

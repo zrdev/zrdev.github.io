@@ -20,7 +20,7 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime',
 	function (config, $modal, $timeout, $location, realtime) {
 		
 		//Renames the current file in Drive. 
-		this.renameFile = function(title, id) {
+		this.renameFile = function(title, id, callback) {
 			gapi.client.request({
 				'path': '/drive/v2/files/' + id,
 				'method': 'PUT',
@@ -31,15 +31,28 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime',
 				'body': JSON.stringify({
 					title: title
 				})
-			}).execute(function(){});
+			}).execute(function(){
+				fileMetadata.title = title;
+				callback();
+			});
 		};
 		
+		var fileMetadata = null;
 		//Gets the metadata of a file in Drive. 
 		this.getFileMetadata = function(id, callback) {
-			gapi.client.request({
-				'path': '/drive/v2/files/' + id,
-				'method': 'GET'
-			}).execute(callback);
+			if(fileMetadata && fileMetadata.id === id) {
+				callback(fileMetadata);
+				return;
+			}
+			else {
+				gapi.client.request({
+					'path': '/drive/v2/files/' + id,
+					'method': 'GET'
+				}).execute(function(data) {
+					fileMetadata = data;
+					callback(data);
+				});
+			}
 		};
 		
 		//Opens new project modal. 

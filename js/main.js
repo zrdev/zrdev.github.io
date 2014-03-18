@@ -90,7 +90,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		templateUrl: '/partials/form.html',
 		controller: 'FormBuilderController'
 	}).otherwise({
-		
+		redirectTo: '/'
 	});
 })
 .config(function ($httpProvider) {
