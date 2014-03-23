@@ -77,7 +77,7 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 				return collaborators[i].displayName;
 			}
 		}
-		return '';
+		return 'Anonymous';
 	}
 	
 	//Opens the new page dialog

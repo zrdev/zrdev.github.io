@@ -95,8 +95,8 @@ Blockly.zr_cpp['math_change'] = function(block) {
 	// Add to a variable in place.
 	var argument0 = Blockly.zr_cpp.valueToCode(block, 'DELTA',
 			Blockly.zr_cpp.ORDER_ADDITION) || '0';
-	var varName = Blockly.zr_cpp.variableDB_.getName(
-			block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+	var varName = Blockly.zr_cpp.valueToCode(block, 'VAR',
+			Blockly.zr_cpp.ORDER_ADDITION) || '0';
 	return varName + ' += ' + argument0 + ';\n';
 };
 

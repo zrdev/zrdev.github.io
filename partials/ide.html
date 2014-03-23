@@ -67,7 +67,7 @@
 </div>
 
 <div id="main-container" class="container">
-	<div class="col-md-3 accordion-container" adjustheight="160">
+	<div class="col-sm-3 accordion-container" adjustheight="160">
 		<accordion>
 			<accordion-group heading="Pages" is-open="true">
 				<div class="list-group" adjustheight="325">
@@ -93,10 +93,10 @@
 		</accordion>
 	</div>
 	<div ng-switch="editorMode">
-		<div class="col-md-9" ui-ace="aceOptions" ng-model="currentPage.text" style="font-size: 18px;" heightoffset="160" ng-switch-when="text"></div>
-		<div class="col-md-9" readonly="true" ui-ace="aceOptions" ng-model="blocklyText" style="font-size: 18px;" heightoffset="160" ng-switch-when="graphical-c"></div>
+		<div class="col-sm-9" ui-ace="aceOptions" ng-model="currentPage.text" style="font-size: 18px;" heightoffset="160" ng-switch-when="text"></div>
+		<div class="col-sm-9" readonly="true" ui-ace="aceOptions" ng-model="blocklyText" style="font-size: 18px;" heightoffset="160" ng-switch-when="graphical-c"></div>
 	</div>
-	<div id="blockly-frame" class="col-md-9" adjustheight="160" ng-show="editorMode === 'graphical'"></div>
+	<div id="blockly-frame" class="col-sm-9" adjustheight="160" ng-show="editorMode === 'graphical'"></div>
 </div>
 
 <!-- Blockly toolbox -->
