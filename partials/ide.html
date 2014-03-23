@@ -83,10 +83,10 @@
 					<input type="text" class="form-control" id="log-chat-field" placeholder="Type here and press Enter" ng-model="chat.message" ui-keypress="{'enter':'sendChatMessage()'}">
 				</form>
 				<div class="list-group" id="log-list" adjustheight="325">
-					<a class="list-group-item" ng-repeat="l in log.keys().sort().reverse()" ng-click="focusLog(l)">
-						<strong>{{ log.get(l).user }}</strong> {{ l.split('.')[0] | date:'medium' }}<br>{{ log.get(l).title }}<br>
-						<span class="log-body" ng-if="logFocus !== l">{{ log.get(l).content | limitTo:128 }}</span>
-						<span class="log-body" ng-if="logFocus === l">{{ log.get(l).content }}</span>
+					<a class="list-group-item" ng-repeat="l in log" ng-click="focusLog(l[0])">
+						<strong>{{ l[1].user }}</strong> {{ l[0].substr(0,13) | date:'medium' }}<br>{{ l[1].title }}<br>
+						<span class="log-body" ng-if="logFocus !== l[0]">{{ l[1].content | limitTo:128 }}</span>
+						<span class="log-body" ng-if="logFocus === l[0]">{{ l[1].content }}</span>
 					</a>
 				</div>
 			</accordion-group>

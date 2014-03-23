@@ -8,7 +8,16 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 	$scope.currentPage = {
 		text: ''
 	};
-	$scope.log = $scope.model.getRoot().get('log');
+	
+	var collabLog = $scope.model.getRoot().get('log');
+	$scope.log = null;
+	var updateLog = function() {
+		$scope.log = collabLog.items().sort(function(a,b) {
+			return parseInt(b[0]) - parseInt(a[0]);
+		});
+	};
+	updateLog();
+	
 	$scope.logFocus = '';
 	$scope.logOpen = false;
 	$scope.chat = {
@@ -51,7 +60,14 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 		else {
 			$scope.logFocus = title;
 		}
-	}
+	};
+	
+	var logRemoteChange = function(e) {
+		if(!e.isLocal) {
+			$scope.$apply(updateLog);
+		}
+	};
+	collabLog.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, logRemoteChange);
 	
 	var getMyName = function() {
 		var collaborators = realtimeDocument.getCollaborators();
@@ -240,12 +256,15 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 	$scope.logInsert = function(title, content) {
 		//Log entries are identified by timestamp, plus some random digits to avoid collisions
 		var key = String(new Date().getTime() + Math.random());
-		$scope.log.set(key, {
+		var value = {
 			user: getMyName(),
 			title: title,
 			content: content
-		});
+		}
+		collabLog.set(key, value);
+		updateLog();
 	};
+	
 	
 	$scope.toggleBlocklyText = function(title, content) {
 		if($scope.editorMode === 'graphical-c') {
@@ -279,16 +298,18 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 		}, 0);
 	}
 	
-	//TODO: This is disabled because it has lots of timing issues
-	/*//Listener to log leaving the document
+	
+	//Listener to log leaving the document
 	var closeAction = function() {
-		$scope.logInsert('Stopped editing','');
+		//$scope.logInsert('Stopped editing','');
+		collabLog.removeEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, logRemoteChange);
 		return null;
 	};
+	//TODO: This is disabled because it has lots of timing issues
 	//For leaving ZR
-	window.addEventListener('beforeunload',closeAction,false);
+	//window.addEventListener('beforeunload',closeAction,false);
 	//For switching views within Angular
-	$scope.$on("$destroy", closeAction);*/
+	$scope.$on("$destroy", closeAction);
 	
 	//Last initialization
 	$scope.logInsert('Started editing','');
