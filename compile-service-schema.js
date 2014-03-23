@@ -313,14 +313,21 @@ POST request body to start sim:
 					"maxItems": 6
 				},
 				"gameVariables": {
-					"type": "object",
+					"type": "array",
 					"description": "Game-specific C global variables",
-					"patternProperties": {
-						".+": {
-							"type": "number"
-						}
-					},
-					"additionalProperties": false
+					"items": {
+						"type": "object",
+						"required": ["name", "value"],
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"value": {
+								"type": "number"
+							}
+						},
+						"additionalProperties": false
+					}
 				}
 			},
 			"additionalProperties": false
@@ -340,10 +347,16 @@ Example:
 		"timeout": 240,
 		"state1": [0.2, 0.65, 0.0, 0.0, 1.0, 0.0],
 		"state2": [-0.2, 0.65, 0.0, 0.0, 1.0, 0.0],
-		"gameVariables": {
-			"cometConfig": 4,
-			"debrisConfig": 3
-		}
+		"gameVariables": [
+			{
+				"name": "cometConfig",
+				"value": 3
+			},
+			{
+				"name": "debrisConfig",
+				"value": 1
+			}
+		]
 	}
 }
 	

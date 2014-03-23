@@ -190,9 +190,6 @@ Blockly.Blocks['math_change'] = {
 					thisBlock.getFieldValue('VAR'));
 		});
 	},
-	getVars: function() {
-		return [this.getFieldValue('VAR')];
-	},
 	renameVar: function(oldName, newName) {
 		if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
 			this.setFieldValue(newName, 'VAR');
