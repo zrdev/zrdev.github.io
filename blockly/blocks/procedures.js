@@ -289,6 +289,7 @@ Blockly.Blocks['procedures_defreturn'] = {
 	getArgString: Blockly.Blocks['procedures_defnoreturn'].getArgString,
 	getArgList: Blockly.Blocks['procedures_defnoreturn'].getArgList,
 	onchange: Blockly.Blocks['procedures_defnoreturn'].onchange,
+	beforedispose: Blockly.Blocks['procedures_defnoreturn'].beforedispose,
 	callType_: 'procedures_callreturn',
 };
 
