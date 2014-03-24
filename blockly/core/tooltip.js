@@ -1,9 +1,9 @@
-'use strict';
 /**
+ * @license
  * Visual Blocks Editor
  *
  * Copyright 2011 Google Inc.
- * http://blockly.googlecode.com/
+ * https://blockly.googlecode.com/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@
  * Third, call Blockly.Tooltip.bindMouseEvents(e) passing the SVG element.
  * @author fraser@google.com (Neil Fraser)
  */
-
+'use strict';
 
 goog.provide('Blockly.Tooltip');
 
@@ -208,9 +208,11 @@ Blockly.Tooltip.onMouseMove_ = function(e) {
   if (!Blockly.Tooltip.element_ || !Blockly.Tooltip.element_.tooltip) {
     // No tooltip here to show.
     return;
-  } else if ((Blockly.ContextMenu && Blockly.ContextMenu.visible) ||
-             Blockly.Block.dragMode_ != 0) {
-    // Don't display a tooltip when a context menu is active, or during a drag.
+  } else if (Blockly.Block.dragMode_ != 0) {
+    // Don't display a tooltip during a drag.
+    return;
+  } else if (Blockly.WidgetDiv.isVisible()) {
+    // Don't display a tooltip if a widget is open (tooltip would be under it).
     return;
   }
   if (Blockly.Tooltip.visible) {

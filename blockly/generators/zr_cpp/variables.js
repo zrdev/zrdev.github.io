@@ -56,7 +56,7 @@ Blockly.zr_cpp['variables_set'] = function(block) {
 Blockly.zr_cpp['variables_declare'] = function(block) {
 	// Declare variable. 
 	var varName = Blockly.zr_cpp.variableDB_.getName(block.getFieldValue('NAME'), Blockly.Variables.NAME_TYPE);
-	var val = Blockly.zr_cpp.valueToCode(block, 'VALUE', Blockly.zr_cpp.ORDER_ASSIGNMENT) || '0';
+	var val = block.getFieldValue('VALUE') || '0';
 	return varName + ' = ' + val + ';\n';
 };
 
@@ -87,7 +87,7 @@ Blockly.zr_cpp['variables_array_declare'] = function(block) {
 	var len = block.getFieldValue('LENGTH');
 	var code = '';
 	for(var i = 0; i < len; i++) {
-		var val = Blockly.zr_cpp.valueToCode(block, 'VALUE' + i, Blockly.zr_cpp.ORDER_ASSIGNMENT) || '0';
+		var val = block.getFieldValue('VALUE' + i) || '0';
 		code = code + varName + '[' + i + '] = ' + val + ';\n';
 	}
 	return code;

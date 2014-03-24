@@ -1,9 +1,9 @@
-'use strict';
 /**
+ * @license
  * Visual Blocks Editor
  *
  * Copyright 2013 Google Inc.
- * http://blockly.googlecode.com/
+ * https://blockly.googlecode.com/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
  * @fileoverview Core JavaScript library for Blockly.
  * @author scr@google.com (Sheridan Rawlins)
  */
-
+'use strict';
 
 /**
  * Name space for the Msg singleton.

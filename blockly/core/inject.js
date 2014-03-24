@@ -1,9 +1,9 @@
-'use strict';
 /**
+ * @license
  * Visual Blocks Editor
  *
  * Copyright 2011 Google Inc.
- * http://blockly.googlecode.com/
+ * https://blockly.googlecode.com/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
  * @fileoverview Functions for injecting Blockly into a web page.
  * @author fraser@google.com (Neil Fraser)
  */
-
+'use strict';
 
 goog.provide('Blockly.inject');
 
@@ -44,8 +44,19 @@ Blockly.inject = function(container, opt_options) {
 		// TODO(scr): don't mix this in to global variables.
 		goog.mixin(Blockly, Blockly.parseOptions_(opt_options));
 	}
-	Blockly.createDom_(container);
-	Blockly.init_();
+	var startUi = function() {
+		Blockly.createDom_(container);
+		Blockly.init_();
+	};
+	if (Blockly.enableRealtime) {
+		var realtimeElement = document.getElementById('realtime');
+		if (realtimeElement) {
+			realtimeElement.style.display = 'block';
+		}
+		Blockly.Realtime.startRealtime(startUi, container, Blockly.realtimeOptions);
+	} else {
+		startUi();
+	}
 };
 
 /**
@@ -97,6 +108,8 @@ Blockly.parseOptions_ = function(options) {
 			hasScrollbars = true;
 		}
 	}
+	var enableRealtime = !!options['realtime'];
+	var realtimeOptions = enableRealtime ? options['realtimeOptions'] : undefined;
 	return {
 		RTL: !!options['rtl'],
 		collapse: hasCollapse,
@@ -106,7 +119,9 @@ Blockly.parseOptions_ = function(options) {
 		hasCategories: hasCategories,
 		hasScrollbars: hasScrollbars,
 		hasTrashcan: hasTrashcan,
-		languageTree: tree
+		languageTree: tree,
+		enableRealtime: enableRealtime,
+		realtimeOptions: realtimeOptions
 	};
 };
 
@@ -297,14 +312,7 @@ Blockly.createDom_ = function(container) {
 		}
 	}
 
-	Blockly.Tooltip && svg.appendChild(Blockly.Tooltip.createDom());
-	if (!Blockly.readOnly && Blockly.FieldDropdown) {
-		svg.appendChild(Blockly.FieldDropdown.createDom());
-	}
-
-	if (Blockly.ContextMenu && Blockly.ContextMenu) {
-		svg.appendChild(Blockly.ContextMenu.createDom());
-	}
+	svg.appendChild(Blockly.Tooltip.createDom());
 
 	// The SVG is now fully assembled.  Add it to the container.
 	container.appendChild(svg);
@@ -313,6 +321,7 @@ Blockly.createDom_ = function(container) {
 
 	// Create an HTML container for popup overlays (e.g. editor widgets).
 	Blockly.WidgetDiv.DIV = goog.dom.createDom('div', 'blocklyWidgetDiv');
+	Blockly.WidgetDiv.DIV.style.direction = Blockly.RTL ? 'rtl' : 'ltr';
 	document.body.appendChild(Blockly.WidgetDiv.DIV);
 };
 
@@ -348,6 +357,8 @@ Blockly.init_ = function() {
 	Blockly.bindEvent_(Blockly.svg, 'mousedown', null, Blockly.onMouseDown_);
 	Blockly.bindEvent_(Blockly.svg, 'mousemove', null, Blockly.onMouseMove_);
 	Blockly.bindEvent_(Blockly.svg, 'contextmenu', null, Blockly.onContextMenu_);
+	Blockly.bindEvent_(Blockly.WidgetDiv.DIV, 'contextmenu', null,
+										 Blockly.onContextMenu_);
 
 	if (!Blockly.documentEventsBound_) {
 		// Only bind the window/document events once.
@@ -359,19 +370,19 @@ Blockly.init_ = function() {
 		if (goog.userAgent.IPAD) {
 			Blockly.bindEvent_(window, 'orientationchange', document, function() {
 				Blockly.fireUiEvent(window, 'resize');
-			}, false);
+			});
 		}
 		Blockly.documentEventsBound_ = true;
 	}
 
 	if (Blockly.languageTree) {
 		if (Blockly.hasCategories) {
-			//HACK: Sometimes this throws an error for some unknown reason; calling it again works
-			try{
-				Blockly.Toolbox.init();
-			} catch(e) {
-				Blockly.Toolbox.init();
-			}
+		//HACK: Sometimes this fails the first time. It will succeed if tried again. 
+		try {
+			Blockly.Toolbox.init();
+		} catch(e) {
+			Blockly.Toolbox.init();
+		}
 		} else {
 			// Build a fixed flyout with the root blocks.
 			Blockly.mainWorkspace.flyout_.init(Blockly.mainWorkspace, true);

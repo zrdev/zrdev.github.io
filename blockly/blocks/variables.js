@@ -131,10 +131,8 @@ Blockly.Blocks['variables_declare'] = {
 				.appendField(new Blockly.FieldDropdown(Blockly.zr_cpp.C_VARIABLE_TYPES), 'TYPE')
 				.appendField('name:')
 				.appendField(new Blockly.FieldTextInput('myVariable', this.validator), 'NAME')
-				.appendField('initial value:');
-		this.appendValueInput('VALUE')
-				.setCheck('number');
-		this.setInputsInline(true);
+				.appendField('initial value:')
+				.appendField(new Blockly.FieldTextInput('0', Blockly.FieldTextInput.numberValidator), 'VALUE');
 		this.setPreviousStatement(true, 'declare');
 		this.setNextStatement(true, 'declare');
 		this.setTooltip('');
@@ -218,16 +216,15 @@ Blockly.Blocks['variables_array_declare'] = {
 	// Global array declaration
 	init: function() {
 		this.setColour(260);
-		this.appendDummyInput()
+		this.appendDummyInput('INPUTS')
 				.appendField('type:')
 				.appendField(new Blockly.FieldDropdown(Blockly.zr_cpp.C_VARIABLE_TYPES), 'TYPE')
 				.appendField('name:')
 				.appendField(new Blockly.FieldTextInput('myArray', this.validator), 'NAME')
 				.appendField('length:')
 				.appendField(new Blockly.FieldTextInput('1', this.adjustInputs), 'LENGTH')
-				.appendField('initial value:');
-		this.appendValueInput('VALUE0')
-				.setCheck('number');
+				.appendField('initial value:')
+				.appendField(new Blockly.FieldTextInput('0', Blockly.FieldTextInput.numberValidator), 'VALUE0');
 		this.setInputsInline(true);
 		this.setPreviousStatement(true, 'declare');
 		this.setNextStatement(true,'declare');
@@ -249,32 +246,19 @@ Blockly.Blocks['variables_array_declare'] = {
 		}
 		var block = this.sourceBlock_;
 		if(block.inputList !== void 0) { //inputList will not yet be initialized on the first call
-			var oldlen = block.inputList.length - 1;
+			var oldlen = block.getFieldValue('LENGTH');
+			var input = block.getInput('INPUTS');
 			if(len < oldlen) {
 				for (var i = len; i < oldlen; i++) {
-					var conn = block.getInput('VALUE' + i).connection;
-					var other = conn.targetBlock();
-					try {
-						conn.disconnect();
-					} catch(e) {}
-					if(other) {
-						other.workspace.addTopBlock(other);
-					}
-					conn.dispose();
-					block.removeInput('VALUE' + i, true);
+					input.removeField('VALUE' + i);
+					input.removeField('SPACE' + i);
 				}
-				block.workspace.render();
+				block.render();
 			}
 			else if(len > oldlen) {
 				for(var j = oldlen; j < len; j++) {
-					var newInput = block.appendValueInput('VALUE' + j)
-							.setCheck('number');
-					if(!Blockly.Realtime.initializing) {
-						var num = Blockly.Block.obtain(block.workspace, 'math_number');
-						num.initSvg();
-						num.render();
-						newInput.connection.connect(num.outputConnection);
-					}
+					input.appendField(',', 'SPACE' + j)
+							.appendField(new Blockly.FieldTextInput('0', Blockly.FieldTextInput.numberValidator), 'VALUE' + j);
 				}
 			}
 		}

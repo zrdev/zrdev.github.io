@@ -1,9 +1,9 @@
-'use strict';
 /**
+ * @license
  * Visual Blocks Editor
  *
  * Copyright 2012 Google Inc.
- * http://blockly.googlecode.com/
+ * https://blockly.googlecode.com/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
  * @fileoverview Methods for graphically rendering a block as SVG.
  * @author fraser@google.com (Neil Fraser)
  */
-
+'use strict';
 
 goog.provide('Blockly.BlockSvg');
 
@@ -46,7 +46,7 @@ Blockly.BlockSvg = function(block) {
   this.svgPathLight_ = Blockly.createSvgElement('path',
       {'class': 'blocklyPathLight'}, this.svgGroup_);
   this.svgPath_.tooltip = this.block_;
-  Blockly.Tooltip && Blockly.Tooltip.bindMouseEvents(this.svgPath_);
+  Blockly.Tooltip.bindMouseEvents(this.svgPath_);
   this.updateMovable();
 };
 

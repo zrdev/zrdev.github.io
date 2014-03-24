@@ -27,7 +27,7 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 	$scope.projectName = '';
 	var setProjectName = function() {
 		drive.getFileMetadata(realtime.id, function(data) {
-			$scope.$apply(function() {
+			$timeout(function() {
 				$scope.projectName = data.title;
 			});
 		});
@@ -169,7 +169,7 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 			$timeout(function() {
 				if(Blockly.Toolbox.HtmlDiv && graphical) {
 					Blockly.Toolbox.HtmlDiv.innerHTML = '';
-					Blockly.languageTree = document.getElementById('toolbox');
+					Blockly.languageTree = document.getElementById('blockly-toolbox');
 					Blockly.Toolbox.init();
 				}
 			}, 0);
@@ -289,13 +289,13 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 	if(graphical) {
 		//This triggers after the DOM is all compiled/rendered
 		$timeout(function() {
-			Blockly.inject(document.getElementById('blockly-frame'),{path:'/blockly/',toolbox: document.getElementById('toolbox')});
+			Blockly.inject(document.getElementById('blockly-frame'),{path:'/blockly/',toolbox: document.getElementById('blockly-toolbox')});
 			//Scroll over to keep procedure in center
 			var dims = Blockly.mainWorkspace.getMetrics();
 			Blockly.mainWorkspace.scrollX += dims.viewWidth / 3;
 			Blockly.mainWorkspace.scrollY += dims.viewHeight / 4;
 			Blockly.Realtime.loadPage($scope.currentPage);
-		}, 0);
+		});
 	}
 	
 	

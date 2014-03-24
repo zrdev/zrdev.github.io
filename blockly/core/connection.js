@@ -1,9 +1,9 @@
-'use strict';
 /**
+ * @license
  * Visual Blocks Editor
  *
  * Copyright 2011 Google Inc.
- * http://blockly.googlecode.com/
+ * https://blockly.googlecode.com/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
  * @fileoverview Components for creating connections between blocks.
  * @author fraser@google.com (Neil Fraser)
  */
-
+'use strict';
 
 goog.provide('Blockly.Connection');
 goog.provide('Blockly.ConnectionDB');
@@ -334,7 +334,7 @@ Blockly.Connection.prototype.moveBy = function(dx, dy) {
   this.moveTo(this.x_ + dx, this.y_ + dy);
 };
 
-/**pe_
+/**
  * Add highlighting around this connection.
  */
 Blockly.Connection.prototype.highlight = function() {
@@ -462,8 +462,15 @@ Blockly.Connection.prototype.closest = function(maxLimit, dx, dy) {
     }
     // Offering to connect the top of a statement block to an already connected
     // connection is ok, we'll just insert it into the stack.
+
     // Offering to connect the left (male) of a value block to an already
     // connected value pair is ok, we'll splice it in.
+    // However, don't offer to splice into an unmovable block.
+    if (connection.type == Blockly.INPUT_VALUE &&
+        connection.targetConnection &&
+        !connection.targetBlock().isMovable()) {
+      return true;
+    }
 
     // Do type checking.
     if (!thisConnection.checkType_(connection)) {
@@ -523,7 +530,7 @@ Blockly.Connection.prototype.checkType_ = function(otherConnection) {
 Blockly.Connection.prototype.setCheck = function(check) {
   if (check) {
     // Ensure that check is in an array.
-    if (!(check instanceof Array)) {
+    if (!goog.isArray(check)) {
       check = [check];
     }
     this.check_ = check;

@@ -1,9 +1,9 @@
-'use strict';
 /**
+ * @license
  * Visual Blocks Editor
  *
  * Copyright 2012 Google Inc.
- * http://blockly.googlecode.com/
+ * https://blockly.googlecode.com/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
  * @fileoverview Colour input field.
  * @author fraser@google.com (Neil Fraser)
  */
-
+'use strict';
 
 goog.provide('Blockly.FieldColour');
 
@@ -66,10 +66,10 @@ Blockly.FieldColour.prototype.clone = function() {
 Blockly.FieldColour.prototype.CURSOR = 'default';
 
 /**
- * Dispose of all DOM objects belonging to this editable field.
+ * Close the colour picker if this input is being deleted.
  */
 Blockly.FieldColour.prototype.dispose = function() {
-  Blockly.WidgetDiv.hideIfField(this);
+  Blockly.WidgetDiv.hideIfOwner(this);
   Blockly.FieldColour.superClass_.dispose.call(this);
 };
 
@@ -89,6 +89,9 @@ Blockly.FieldColour.prototype.setValue = function(colour) {
   this.colour_ = colour;
   this.borderRect_.style.fill = colour;
   if (this.sourceBlock_ && this.sourceBlock_.rendered) {
+    // Since we're not re-rendering we need to explicitly call
+    // Blockly.Realtime.blockChanged()
+    Blockly.Realtime.blockChanged(this.sourceBlock_);
     this.sourceBlock_.workspace.fireChangeEvent();
   }
 };
@@ -111,27 +114,44 @@ Blockly.FieldColour.COLUMNS = 7;
  * @private
  */
 Blockly.FieldColour.prototype.showEditor_ = function() {
-  Blockly.WidgetDiv.show(this, Blockly.FieldColour.dispose_);
-  var div = Blockly.WidgetDiv.DIV;
+  Blockly.WidgetDiv.show(this, Blockly.FieldColour.widgetDispose_);
   // Create the palette using Closure.
   var picker = new goog.ui.ColorPicker();
   picker.setSize(Blockly.FieldColour.COLUMNS);
   picker.setColors(Blockly.FieldColour.COLOURS);
-  picker.render(div);
-  picker.setSelectedColor(this.getValue());
 
   // Position the palette to line up with the field.
+  // Record windowSize and scrollOffset before adding menu.
+  var windowSize = goog.dom.getViewportSize();
+  var scrollOffset = goog.style.getViewportPageOffset(document);
   var xy = Blockly.getAbsoluteXY_(/** @type {!Element} */ (this.borderRect_));
   var borderBBox = this.borderRect_.getBBox();
+  var div = Blockly.WidgetDiv.DIV;
+  picker.render(div);
+  picker.setSelectedColor(this.getValue());
+  // Record paletteSize after adding menu.
+  var paletteSize = goog.style.getSize(picker.getElement());
+
+  // Flip the palette vertically if off the bottom.
+  if (xy.y + paletteSize.height + borderBBox.height >=
+      windowSize.height + scrollOffset.y) {
+    xy.y -= paletteSize.height - 1;
+  } else {
+    xy.y += borderBBox.height - 1;
+  }
   if (Blockly.RTL) {
     xy.x += borderBBox.width;
+    // Don't go offscreen left.
+    if (xy.x < scrollOffset.x + paletteSize.width) {
+      xy.x = scrollOffset.x + paletteSize.width;
+    }
+  } else {
+    // Don't go offscreen right.
+    if (xy.x > windowSize.width + scrollOffset.x - paletteSize.width) {
+      xy.x = windowSize.width + scrollOffset.x - paletteSize.width;
+    }
   }
-  xy.y += borderBBox.height - 1;
-  if (Blockly.RTL) {
-    xy.x -= div.offsetWidth;
-  }
-  div.style.left = xy.x + 'px';
-  div.style.top = xy.y + 'px';
+  Blockly.WidgetDiv.position(xy.x, xy.y, windowSize, scrollOffset);
 
   // Configure event handler.
   var thisObj = this;
@@ -157,7 +177,7 @@ Blockly.FieldColour.prototype.showEditor_ = function() {
  * Hide the colour palette.
  * @private
  */
-Blockly.FieldColour.dispose_ = function() {
+Blockly.FieldColour.widgetDispose_ = function() {
   if (Blockly.FieldColour.changeEventKey_) {
     goog.events.unlistenByKey(Blockly.FieldColour.changeEventKey_);
   }

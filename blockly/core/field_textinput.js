@@ -1,9 +1,9 @@
-'use strict';
 /**
+ * @license
  * Visual Blocks Editor
  *
  * Copyright 2012 Google Inc.
- * http://blockly.googlecode.com/
+ * https://blockly.googlecode.com/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
  * @fileoverview Text input field.
  * @author fraser@google.com (Neil Fraser)
  */
-
+'use strict';
 
 goog.provide('Blockly.FieldTextInput');
 
@@ -64,10 +64,10 @@ Blockly.FieldTextInput.prototype.clone = function() {
 Blockly.FieldTextInput.prototype.CURSOR = 'text';
 
 /**
- * Dispose of all DOM objects belonging to this editable field.
+ * Close the input widget if this input is being deleted.
  */
 Blockly.FieldTextInput.prototype.dispose = function() {
-  Blockly.WidgetDiv.hideIfField(this);
+  Blockly.WidgetDiv.hideIfOwner(this);
   Blockly.FieldTextInput.superClass_.dispose.call(this);
 };
 
@@ -112,7 +112,7 @@ Blockly.FieldTextInput.prototype.showEditor_ = function() {
     return;
   }
 
-  Blockly.WidgetDiv.show(this, this.dispose_());
+  Blockly.WidgetDiv.show(this, this.widgetDispose_());
   var div = Blockly.WidgetDiv.DIV;
   // Create the input.
   var htmlInput = goog.dom.createDom('input', 'blocklyHtmlInput');
@@ -217,13 +217,12 @@ Blockly.FieldTextInput.prototype.resizeEditor_ = function() {
  * @return {!Function} Closure to call on destruction of the WidgetDiv.
  * @private
  */
-Blockly.FieldTextInput.prototype.dispose_ = function() {
+Blockly.FieldTextInput.prototype.widgetDispose_ = function() {
   var thisField = this;
   return function() {
     var htmlInput = Blockly.FieldTextInput.htmlInput_;
-    var text;
     // Save the edit (if it validates).
-    text = htmlInput.value;
+    var text = htmlInput.value;
     if (thisField.changeHandler_) {
       text = thisField.changeHandler_(text);
       if (text === null) {
@@ -232,11 +231,13 @@ Blockly.FieldTextInput.prototype.dispose_ = function() {
       }
     }
     thisField.setText(text);
-    thisField.sourceBlock_.render();
+    thisField.sourceBlock_.rendered && thisField.sourceBlock_.render();
     Blockly.unbindEvent_(htmlInput.onKeyUpWrapper_);
     Blockly.unbindEvent_(htmlInput.onKeyPressWrapper_);
     Blockly.unbindEvent_(htmlInput.onWorkspaceChangeWrapper_);
     Blockly.FieldTextInput.htmlInput_ = null;
+    // Delete the width property.
+    Blockly.WidgetDiv.DIV.style.width = 'auto';
   };
 };
 

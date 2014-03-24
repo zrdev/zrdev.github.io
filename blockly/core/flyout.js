@@ -1,9 +1,9 @@
-'use strict';
 /**
+ * @license
  * Visual Blocks Editor
  *
  * Copyright 2011 Google Inc.
- * http://blockly.googlecode.com/
+ * https://blockly.googlecode.com/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
  * @fileoverview Flyout tray containing blocks which may be created.
  * @author fraser@google.com (Neil Fraser)
  */
-
+'use strict';
 
 goog.provide('Blockly.Flyout');
 
@@ -360,7 +360,7 @@ Blockly.Flyout.prototype.show = function(xmlList) {
       // There is no good way to handle comment bubbles inside the flyout.
       // Blocks shouldn't come with predefined comments, but someone will
       // try this, I'm sure.  Kill the comment.
-      Blockly.Comment && child.setCommentText(null);
+      child.setCommentText(null);
     }
     block.render();
     var root = block.getSvgRoot();
@@ -449,8 +449,8 @@ Blockly.Flyout.prototype.reflow = function() {
 
 /**
  * Move a block to a specific location on the drawing surface.
- * @param {number} dx Horizontal location.
- * @param {number} dy Vertical location.
+ * @param {number} x Horizontal location.
+ * @param {number} y Vertical location.
  */
 Blockly.Block.prototype.moveTo = function(x, y) {
   var oldXY = this.getRelativeToSurfaceXY();
@@ -461,7 +461,7 @@ Blockly.Block.prototype.moveTo = function(x, y) {
 
 /**
  * Handle a mouse-down on an SVG block in a non-closing flyout.
- * @param {!Blockly.Block} originBlock The flyout block to copy.
+ * @param {!Blockly.Block} block The flyout block to copy.
  * @return {!Function} Function to call when block is clicked.
  * @private
  */
@@ -472,9 +472,7 @@ Blockly.Flyout.prototype.blockMouseDown_ = function(block) {
     Blockly.hideChaff();
     if (Blockly.isRightButton(e)) {
       // Right-click.
-      if (Blockly.ContextMenu) {
-        block.showContextMenu_(Blockly.mouseToSvg(e));
-      }
+      block.showContextMenu_(Blockly.mouseToSvg(e));
     } else {
       // Left-click (or middle click)
       Blockly.removeAllRanges();

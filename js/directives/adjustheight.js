@@ -1,9 +1,10 @@
 //Adjusts the height of components to fit in the window
 
-zr.directive('adjustheight', function($window) {
+zr.directive('adjustheight', function($window, $timeout) {
 	return {
 		link: function(scope, element, attrs) {
 			var offset = parseInt(attrs.adjustheight);
+			var lastHeight = null;
 			var update = function() {
 				var height = 0;
 				if(document.fullscreenElement ||
@@ -15,9 +16,15 @@ zr.directive('adjustheight', function($window) {
 				else {
 					height = window.innerHeight;
 				}
-				element.css({
-					'max-height': String(height - offset) + 'px'
-				});
+				if(height !== lastHeight) {
+					element.css({
+						'max-height': String(height - offset) + 'px'
+					});
+					if(!!Blockly.mainWorkspace) {
+						Blockly.mainWorkspace.render();
+					}
+				}
+				lastHeight = height;
 			};
 			update();
 			angular.element($window).bind('resize', update);

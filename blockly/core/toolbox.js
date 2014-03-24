@@ -1,9 +1,9 @@
-'use strict';
 /**
+ * @license
  * Visual Blocks Editor
  *
  * Copyright 2011 Google Inc.
- * http://blockly.googlecode.com/
+ * https://blockly.googlecode.com/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
  * @fileoverview Toolbox from whence to create blocks.
  * @author fraser@google.com (Neil Fraser)
  */
-
+'use strict';
 
 goog.provide('Blockly.Toolbox');
 
@@ -104,12 +104,13 @@ Blockly.Toolbox.init = function() {
       Blockly.pathToBlockly + 'media/1x1.gif';
   Blockly.Toolbox.CONFIG_['cssCollapsedFolderIcon'] =
       'blocklyTreeIconClosed' + (Blockly.RTL ? 'Rtl' : 'Ltr');
-		    var tree = new Blockly.Toolbox.TreeControl('root', Blockly.Toolbox.CONFIG_);
+  var tree = new Blockly.Toolbox.TreeControl('root', Blockly.Toolbox.CONFIG_);
   Blockly.Toolbox.tree_ = tree;
   tree.setShowRootNode(false);
   tree.setShowLines(false);
   tree.setShowExpandIcons(false);
   tree.setSelectedItem(null);
+
   Blockly.Toolbox.HtmlDiv.style.display = 'block';
   Blockly.Toolbox.flyout_.init(Blockly.mainWorkspace, true);
   Blockly.Toolbox.populate_();

@@ -48,7 +48,7 @@ goog.require('goog.array');
  * @type {boolean}
  * @private
  */
-Blockly.Realtime.enabled_ = true;
+Blockly.Realtime.enabled_ = false;
 
 /**
  * The Realtime model of this doc.
@@ -78,6 +78,14 @@ Blockly.Realtime.blocksMap_ = null;
  * @type {boolean}
  */
 Blockly.Realtime.withinSync = false;
+
+/**
+ * Indicator of whether we are in the context of an undo or redo operation.
+ * @type {boolean}
+ * @private
+ */
+Blockly.Realtime.withinUndo_ = false;
+
 
 /**
  * Returns whether realtime collaboration is enabled.
@@ -134,59 +142,78 @@ Blockly.Realtime.getBlockById = function(id) {
 	return Blockly.Realtime.blocksMap_.get(id);
 };
 
+
+/**
+ * Log the event for debugging purposses.
+ * @param {gapi.drive.realtime.BaseModelEvent} evt The event that occurred.
+ * @private
+ */
+Blockly.Realtime.logEvent_ = function(evt) {
+  console.log('Object event:');
+  console.log('  id: ' + evt.target.id);
+  console.log('  type: ' + evt.type);
+  var events = evt.events;
+  if (events) {
+    var eventCount = events.length;
+    for (var i = 0; i < eventCount; i++) {
+      var event = events[i];
+      console.log('  child event:');
+      console.log('    id: ' + event.target.id);
+      console.log('    type: ' + event.type);
+    }
+  }
+};
+
 /**
  * Event handler to call when a block is changed.
- * @param {gapi.drive.realtime.ObjectChangedEvent} evt The event that occurred.
+ * @param {!gapi.drive.realtime.ObjectChangedEvent} evt The event that occurred.
  * @private
  */
 Blockly.Realtime.onObjectChange_ = function(evt) {
-	var events = evt.events;
-	var eventCount = evt.events.length;
-	for (var i = 0; i < eventCount; i++) {
-		var event = events[i];
-		if (!event.isLocal) {
-			if (event.type === 'value_changed') {
-				if (event.property === 'xmlDom') {
-					var block = event.target;
-					Blockly.Realtime.doWithinSync_(function(){
-						Blockly.Realtime.placeBlockOnWorkspace_(block, false);
-						Blockly.Realtime.moveBlock_(block);
-					});
-				} else if (event.property == 'relativeX' ||
-									 event.property == 'relativeY') {
-					var block2 = event.target;
-					Blockly.Realtime.doWithinSync_(function () {
-						if (!block2.svg_) {
-							// If this is a move of a newly disconnected (i.e newly top level)
-							// block it will not have any svg (because it has been disposed of
-							// by it's parent), so we need to handle that here.
-							Blockly.Realtime.placeBlockOnWorkspace_(block2, false);
-						}
-						Blockly.Realtime.moveBlock_(block2);
-					});
-				 }
-			}
-		}
-	}
+  var events = evt.events;
+  var eventCount = evt.events.length;
+  for (var i = 0; i < eventCount; i++) {
+    var event = events[i];
+    if (!event.isLocal || Blockly.Realtime.withinUndo_) {
+      var block = event.target;
+      if (event.type == 'value_changed') {
+        if (event.property == 'xmlDom') {
+          Blockly.Realtime.doWithinSync_(function() {
+            Blockly.Realtime.placeBlockOnWorkspace_(block, false);
+            Blockly.Realtime.moveBlock_(block);
+          });
+        } else if (event.property == 'relativeX' ||
+            event.property == 'relativeY') {
+          Blockly.Realtime.doWithinSync_(function() {
+            if (!block.svg_) {
+              // If this is a move of a newly disconnected (i.e newly top
+              // level) block it will not have any svg (because it has been
+              // disposed of by it's parent), so we need to handle that here.
+              Blockly.Realtime.placeBlockOnWorkspace_(block, false);
+            }
+            Blockly.Realtime.moveBlock_(block);
+          });
+        }
+      }
+    }
+  }
 };
 
 /**
  * Event handler to call when there is a change to the realtime blocks map.
- * @param {gapi.drive.realtime.ValueChangedEvent} evt The event that occurred.
+ * @param {!gapi.drive.realtime.ValueChangedEvent} evt The event that occurred.
  * @private
  */
 Blockly.Realtime.onBlocksMapChange_ = function(evt) {
-	console.log('Blocks Map event:');
-	console.log('  id: ' + evt.property);
-	if (!evt.isLocal) {
-		var block = evt.newValue;
-		if (block) {
-			Blockly.Realtime.placeBlockOnWorkspace_(block, !(evt.oldValue));
-		} else {
-			block = evt.oldValue;
-			Blockly.Realtime.deleteBlock(block);
-		}
-	}
+  if (!evt.isLocal || Blockly.Realtime.withinUndo_) {
+    var block = evt.newValue;
+    if (block) {
+      Blockly.Realtime.placeBlockOnWorkspace_(block, !(evt.oldValue));
+    } else {
+      block = evt.oldValue;
+      Blockly.Realtime.deleteBlock(block);
+    }
+  }
 };
 
 /**
@@ -269,16 +296,6 @@ Blockly.Realtime.deleteBlock = function(block) {
  * @private
  */
 Blockly.Realtime.loadBlocks_ = function() {
-	var blocks = Blockly.Realtime.blocksMap_.values();
-	for (var i = 0; i < blocks.length; i++) {
-		var block = blocks[i];
-		// Since we now have blocks with already existing ids, we have to make sure
-		// that new blocks don't get any of the existing ids.
-		var blockIdNum = parseInt(block.id, 10);
-		if (blockIdNum > Blockly.getUidCounter()) {
-			Blockly.setUidCounter(blockIdNum + 1);
-		}
-	}
 	var topBlocks = Blockly.Realtime.topBlocks_;
 	for (var j = 0; j < topBlocks.length; j++) {
 		var topBlock = topBlocks.get(j);
@@ -292,7 +309,9 @@ Blockly.Realtime.loadBlocks_ = function() {
  * @param {!Blockly.Block} block The block that changed.
  */
 Blockly.Realtime.blockChanged = function(block) {
-	if (block.workspace == Blockly.mainWorkspace) {
+	if (block.workspace == Blockly.mainWorkspace &&
+      Blockly.Realtime.isEnabled() &&
+      !Blockly.Realtime.withinSync) {
 		var rootBlock = block.getRootBlock();
 		var xy = rootBlock.getRelativeToSurfaceXY();
 		var changed = false;
@@ -358,4 +377,47 @@ Blockly.Realtime.loadPage = function(pageRoot) {
 		block.initSvg();
 		block.render();
 	}
+};
+
+/**
+ * Execute a command.  Generally, a command is the result of a user action
+ * e.g., a click, drag or context menu selection.
+ * @param {function()} cmdThunk A function representing the command execution.
+ */
+Blockly.Realtime.doCommand = function(cmdThunk) {
+  // TODO(): We'd like to use the realtime API compound operations as in the
+  // commented out code below.  However, it appears that the realtime API is
+  // re-ordering events when they're within compound operations in a way which
+  // breaks us.  We might need to implement our own compound operations as a
+  // workaround.  Doing so might give us some other advantages since we could
+  // then allow compound operations that span synchronous blocks of code (e.g.,
+  // span multiple Blockly events).  It would also allow us to deal with the
+  // fact that the current realtime API puts some operations into the undo stack
+  // that we would prefer weren't there; namely local changes that occur as a
+  // result of remote realtime events.
+//  try {
+//    Blockly.Realtime.model_.beginCompoundOperation();
+//    cmdThunk();
+//  } finally {
+//    Blockly.Realtime.model_.endCompoundOperation();
+//  }
+  cmdThunk();
+};
+
+/**
+ * Generate an id that is unique among the all the sessions that ever
+ * collaborated on this document.
+ * @param {string} extra A string id which is unique within this particular
+ * session.
+ * @return {string}
+ */
+Blockly.Realtime.genUid = function(extra) {
+  /* FOR ZR: Uses random number instead of session ID. Chance of collisions is extremely low. 
+   */
+  var potentialUid = String(Math.random()) + '-' + extra;
+  if (!Blockly.Realtime.blocksMap_.has(potentialUid)) {
+    return potentialUid;
+  } else {
+    return (Blockly.Realtime.genUid('-' + extra));
+  }
 };

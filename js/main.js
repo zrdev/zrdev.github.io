@@ -127,7 +127,6 @@ gapi.load('auth:client:drive-share:drive-realtime', function () {
 	var custom = gapi.drive.realtime.custom;
 	custom.registerType(Blockly.Block, 'Block');
 	Blockly.Block.prototype.id = custom.collaborativeField('id');
-	Blockly.Block.prototype.type = custom.collaborativeField('type');
 	Blockly.Block.prototype.xmlDom = custom.collaborativeField('xmlDom');
 	Blockly.Block.prototype.relativeX = custom.collaborativeField('relativeX');
 	Blockly.Block.prototype.relativeY = custom.collaborativeField('relativeY');

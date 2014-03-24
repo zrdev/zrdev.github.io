@@ -100,7 +100,7 @@
 </div>
 
 <!-- Blockly toolbox -->
-<xml id="toolbox" style="display: none;" ng-if="graphical">
+<xml id="blockly-toolbox" style="display: none;" ng-if="graphical">
 	<category name="SPHERES Controls">
 		<block type="spheres_setPos" ng-if="currentPageName !== 'init'">
 			<value name="X">
@@ -144,18 +144,8 @@
 	</category>
 	<category name="Variables">
 		<block type="variables_declare" ng-if="currentPageName === 'init'">
-			<value name="VALUE">
-				<block type="math_number">
-					<field name="NUM">0</field>
-				</block>
-			</value>
 		</block>
 		<block type="variables_array_declare" ng-if="currentPageName === 'init'">
-			<value name="VALUE0">
-				<block type="math_number">
-					<field name="NUM">0</field>
-				</block>
-			</value>
 		</block>
 		<block type="variables_get"></block>
 		<block type="variables_set">
@@ -242,3 +232,4 @@
 	<category name="Functions" custom="PROCEDURE">
 	</category>
 </xml>
+
