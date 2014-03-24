@@ -226,6 +226,21 @@ Blockly.Blocks['procedures_defnoreturn'] = {
 		}
 		return argList;
 	},
+	onchange: function() {
+		if (!this.workspace) {
+			// Block has been deleted.
+			return;
+		}
+		if(Blockly.Realtime.enabled_ && !Blockly.Realtime.initializing && !this.isInFlyout) {
+				Blockly.zr_cpp.procedures.set(String(this.id), this.getProcedureDef());
+		}
+	},
+	beforedispose: function() {
+		if(!Blockly.Realtime.enabled_ || this.isInFlyout) {
+			return;
+		}
+		Blockly.zr_cpp.procedures.delete(String(this.id));
+	},
 	callType_: 'procedures_callnoreturn',
 };
 
@@ -273,6 +288,7 @@ Blockly.Blocks['procedures_defreturn'] = {
 	customContextMenu: Blockly.Blocks['procedures_defnoreturn'].customContextMenu,
 	getArgString: Blockly.Blocks['procedures_defnoreturn'].getArgString,
 	getArgList: Blockly.Blocks['procedures_defnoreturn'].getArgList,
+	onchange: Blockly.Blocks['procedures_defnoreturn'].onchange,
 	callType_: 'procedures_callreturn',
 };
 

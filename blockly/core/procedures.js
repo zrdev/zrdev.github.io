@@ -1,4 +1,4 @@
-'use strict';
+
 /**
  * Visual Blocks Editor
  *
@@ -46,26 +46,21 @@ Blockly.Procedures.NAME_TYPE = 'PROCEDURE';
  *     list, and return value boolean.
  */
 Blockly.Procedures.allProcedures = function() {
-  var blocks = Blockly.mainWorkspace.getAllBlocks();
-  var proceduresReturn = [];
-  var proceduresNoReturn = [];
-  for (var x = 0; x < blocks.length; x++) {
-    var func = blocks[x].getProcedureDef;
-    if (func) {
-      var tuple = func.call(blocks[x]);
-      if (tuple) {
-        if (tuple[2]) {
-          proceduresReturn.push(tuple);
-        } else {
-          proceduresNoReturn.push(tuple);
-        }
-      }
-    }
-  }
+	var procs = Blockly.zr_cpp.procedures.values();
+	var proceduresReturn = [];
+	var proceduresNoReturn = [];
+	for (var x = 0; x < procs.length; x++) {
+		var tuple = procs[x];
+		if (tuple[2]) {
+			proceduresReturn.push(tuple);
+		} else {
+			proceduresNoReturn.push(tuple);
+		}
+	}
 
-  proceduresNoReturn.sort(Blockly.Procedures.procTupleComparator_);
-  proceduresReturn.sort(Blockly.Procedures.procTupleComparator_);
-  return [proceduresNoReturn, proceduresReturn];
+	proceduresNoReturn.sort(Blockly.Procedures.procTupleComparator_);
+	proceduresReturn.sort(Blockly.Procedures.procTupleComparator_);
+	return [proceduresNoReturn, proceduresReturn];
 };
 
 /**
@@ -77,15 +72,15 @@ Blockly.Procedures.allProcedures = function() {
  * @private
  */
 Blockly.Procedures.procTupleComparator_ = function(ta, tb) {
-  var a = ta[0].toLowerCase();
-  var b = tb[0].toLowerCase();
-  if (a > b) {
-    return 1;
-  }
-  if (a < b) {
-    return -1;
-  }
-  return 0;
+	var a = ta[0].toLowerCase();
+	var b = tb[0].toLowerCase();
+	if (a > b) {
+		return 1;
+	}
+	if (a < b) {
+		return -1;
+	}
+	return 0;
 };
 
 /**
@@ -95,20 +90,20 @@ Blockly.Procedures.procTupleComparator_ = function(ta, tb) {
  * @return {string} Non-colliding name.
  */
 Blockly.Procedures.findLegalName = function(name, block) {
-  if (block.isInFlyout) {
-    // Flyouts can have multiple procedures called 'procedure'.
-    return name;
-  }
-  while (!Blockly.Procedures.isLegalName(name, block.workspace, block)) {
-    // Collision with another procedure.
-    var r = name.match(/^(.*?)(\d+)$/);
-    if (!r) {
-      name += '2';
-    } else {
-      name = r[1] + (parseInt(r[2], 10) + 1);
-    }
-  }
-  return name;
+	if (block.isInFlyout) {
+		// Flyouts can have multiple procedures called 'procedure'.
+		return name;
+	}
+	while (!Blockly.Procedures.isLegalName(name, block.workspace, block)) {
+		// Collision with another procedure.
+		var r = name.match(/^(.*?)(\d+)$/);
+		if (!r) {
+			name += '2';
+		} else {
+			name = r[1] + (parseInt(r[2], 10) + 1);
+		}
+	}
+	return name;
 };
 
 /**
@@ -121,21 +116,21 @@ Blockly.Procedures.findLegalName = function(name, block) {
  * @return {boolean} True if the name is legal.
  */
 Blockly.Procedures.isLegalName = function(name, workspace, opt_exclude) {
-  var blocks = workspace.getAllBlocks();
-  // Iterate through every block and check the name.
-  for (var x = 0; x < blocks.length; x++) {
-    if (blocks[x] == opt_exclude) {
-      continue;
-    }
-    var func = blocks[x].getProcedureDef;
-    if (func) {
-      var procName = func.call(blocks[x]);
-      if (Blockly.Names.equals(procName[0], name)) {
-        return false;
-      }
-    }
-  }
-  return true;
+	var blocks = workspace.getAllBlocks();
+	// Iterate through every block and check the name.
+	for (var x = 0; x < blocks.length; x++) {
+		if (blocks[x] == opt_exclude) {
+			continue;
+		}
+		var func = blocks[x].getProcedureDef;
+		if (func) {
+			var procName = func.call(blocks[x]);
+			if (Blockly.Names.equals(procName[0], name)) {
+				return false;
+			}
+		}
+	}
+	return true;
 };
 
 /**
@@ -145,20 +140,20 @@ Blockly.Procedures.isLegalName = function(name, workspace, opt_exclude) {
  * @this {!Blockly.FieldVariable}
  */
 Blockly.Procedures.rename = function(text) {
-  // Strip leading and trailing whitespace.  Beyond this, all names are legal.
-  text = text.replace(/^[\s\xa0]+|[\s\xa0]+$/g, '');
+	// Strip leading and trailing whitespace.  Beyond this, all names are legal.
+	text = text.replace(/^[\s\xa0]+|[\s\xa0]+$/g, '');
 
-  // Ensure two identically-named procedures don't exist.
-  text = Blockly.Procedures.findLegalName(text, this.sourceBlock_);
-  // Rename any callers.
-  var blocks = this.sourceBlock_.workspace.getAllBlocks();
-  for (var x = 0; x < blocks.length; x++) {
-    var func = blocks[x].renameProcedure;
-    if (func) {
-      func.call(blocks[x], this.text_, text);
-    }
-  }
-  return text;
+	// Ensure two identically-named procedures don't exist.
+	text = Blockly.Procedures.findLegalName(text, this.sourceBlock_);
+	// Rename any callers.
+	var blocks = this.sourceBlock_.workspace.getAllBlocks();
+	for (var x = 0; x < blocks.length; x++) {
+		var func = blocks[x].renameProcedure;
+		if (func) {
+			func.call(blocks[x], this.text_, text);
+		}
+	}
+	return text;
 };
 
 /**
@@ -169,29 +164,29 @@ Blockly.Procedures.rename = function(text) {
  * @param {!Blockly.Workspace} workspace The flyout's workspace.
  */
 Blockly.Procedures.flyoutCategory = function(blocks, gaps, margin, workspace) {
-  if (gaps.length) {
-    // Add slightly larger gap between system blocks and user calls.
-    gaps[gaps.length - 1] = margin * 3;
-  }
+	if (gaps.length) {
+		// Add slightly larger gap between system blocks and user calls.
+		gaps[gaps.length - 1] = margin * 3;
+	}
 
-  function populateProcedures(procedureList, templateName) {
-    for (var x = 0; x < procedureList.length; x++) {
-      var block = Blockly.Block.obtain(workspace, templateName);
-      block.setFieldValue(procedureList[x][0], 'NAME');
-      var tempIds = [];
-      for (var t = 0; t < procedureList[x][1].length; t++) {
-        tempIds[t] = 'ARG' + t;
-      }
-      block.setProcedureParameters(procedureList[x][1], tempIds);
-      block.initSvg();
-      blocks.push(block);
-      gaps.push(margin * 2);
-    }
-  }
+	function populateProcedures(procedureList, templateName) {
+		for (var x = 0; x < procedureList.length; x++) {
+			var block = Blockly.Block.obtain(workspace, templateName);
+			block.setFieldValue(procedureList[x][0], 'NAME');
+			var tempIds = [];
+			for (var t = 0; t < procedureList[x][1].length; t++) {
+				tempIds[t] = 'ARG' + t;
+			}
+			block.setProcedureParameters(procedureList[x][1], tempIds);
+			block.initSvg();
+			blocks.push(block);
+			gaps.push(margin * 2);
+		}
+	}
 
-  var tuple = Blockly.Procedures.allProcedures();
-  populateProcedures(tuple[0], 'procedures_callnoreturn');
-  populateProcedures(tuple[1], 'procedures_callreturn');
+	var tuple = Blockly.Procedures.allProcedures();
+	populateProcedures(tuple[0], 'procedures_callnoreturn');
+	populateProcedures(tuple[1], 'procedures_callreturn');
 };
 
 /**
@@ -201,20 +196,20 @@ Blockly.Procedures.flyoutCategory = function(blocks, gaps, margin, workspace) {
  * @return {!Array.<!Blockly.Block>} Array of caller blocks.
  */
 Blockly.Procedures.getCallers = function(name, workspace) {
-  var callers = [];
-  var blocks = workspace.getAllBlocks();
-  // Iterate through every block and check the name.
-  for (var x = 0; x < blocks.length; x++) {
-    var func = blocks[x].getProcedureCall;
-    if (func) {
-      var procName = func.call(blocks[x]);
-      // Procedure name may be null if the block is only half-built.
-      if (procName && Blockly.Names.equals(procName, name)) {
-        callers.push(blocks[x]);
-      }
-    }
-  }
-  return callers;
+	var callers = [];
+	var blocks = workspace.getAllBlocks();
+	// Iterate through every block and check the name.
+	for (var x = 0; x < blocks.length; x++) {
+		var func = blocks[x].getProcedureCall;
+		if (func) {
+			var procName = func.call(blocks[x]);
+			// Procedure name may be null if the block is only half-built.
+			if (procName && Blockly.Names.equals(procName, name)) {
+				callers.push(blocks[x]);
+			}
+		}
+	}
+	return callers;
 };
 
 /**
@@ -224,10 +219,10 @@ Blockly.Procedures.getCallers = function(name, workspace) {
  * @param {!Blockly.Workspace} workspace The workspace to delete callers from.
  */
 Blockly.Procedures.disposeCallers = function(name, workspace) {
-  var callers = Blockly.Procedures.getCallers(name, workspace);
-  for (var x = 0; x < callers.length; x++) {
-    callers[x].dispose(true, false);
-  }
+	var callers = Blockly.Procedures.getCallers(name, workspace);
+	for (var x = 0; x < callers.length; x++) {
+		callers[x].dispose(true, false);
+	}
 };
 
 /**
@@ -239,11 +234,11 @@ Blockly.Procedures.disposeCallers = function(name, workspace) {
  * @param {!Array.<string>} paramIds Array of unique parameter IDs.
  */
 Blockly.Procedures.mutateCallers = function(name, workspace,
-                                            paramNames, paramIds) {
-  var callers = Blockly.Procedures.getCallers(name, workspace);
-  for (var x = 0; x < callers.length; x++) {
-    callers[x].setProcedureParameters(paramNames, paramIds);
-  }
+																						paramNames, paramIds) {
+	var callers = Blockly.Procedures.getCallers(name, workspace);
+	for (var x = 0; x < callers.length; x++) {
+		callers[x].setProcedureParameters(paramNames, paramIds);
+	}
 };
 
 /**
@@ -253,15 +248,15 @@ Blockly.Procedures.mutateCallers = function(name, workspace,
  * @return {Blockly.Block} The procedure definition block, or null not found.
  */
 Blockly.Procedures.getDefinition = function(name, workspace) {
-  var blocks = workspace.getAllBlocks();
-  for (var x = 0; x < blocks.length; x++) {
-    var func = blocks[x].getProcedureDef;
-    if (func) {
-      var tuple = func.call(blocks[x]);
-      if (tuple && Blockly.Names.equals(tuple[0], name)) {
-        return blocks[x];
-      }
-    }
-  }
-  return null;
+	var blocks = workspace.getAllBlocks();
+	for (var x = 0; x < blocks.length; x++) {
+		var func = blocks[x].getProcedureDef;
+		if (func) {
+			var tuple = func.call(blocks[x]);
+			if (tuple && Blockly.Names.equals(tuple[0], name)) {
+				return blocks[x];
+			}
+		}
+	}
+	return null;
 };

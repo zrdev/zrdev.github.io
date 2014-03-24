@@ -146,6 +146,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 					var root = model.getRoot();
 					root.set('graphical', true);
 					root.set('cglobals', model.createMap());
+					root.set('procedures', model.createMap());
 					var pageRoot = model.createMap();
 					pages.set('main', pageRoot);
 					//This code copied from blockly/core/realtime.js
@@ -173,6 +174,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 				var model = document.getModel()
 				Blockly.Realtime.model_ = model;
 				Blockly.zr_cpp.C_GLOBAL_VARS = model.getRoot().get('cglobals');
+				Blockly.zr_cpp.procedures = model.getRoot().get('procedures');
 				deferred.resolve(document);
 				$rootScope.$digest();
 			}.bind(this);

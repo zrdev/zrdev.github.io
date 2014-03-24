@@ -115,7 +115,7 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 	};
 	
 	//Opens the simulation dialog
-	$scope.simulate = function() {
+	$scope.s = function() {
 		$modal.open({
 			templateUrl: '/partials/simulation-modal.html',
 			controller: 'SimulationController',
@@ -150,6 +150,10 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 		if(graphical && title === 'init') {
 			alert('The init page cannot be deleted.');
 			return;
+		}
+		//Dispose of blocks properly to avoid ghost procedures, etc.
+		if(graphical) {
+			Blockly.mainWorkspace.clear();
 		}
 		$scope.pages.delete(title);
 		$scope.setActivePage('main');
@@ -190,9 +194,10 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 		return str;
 	};
 	
+	var CONNECTION_ERROR = 'The server did not respond. Please check your Internet connection and try again.'
+			+ 'If this problem persists for more than a few minutes, please contact us at zerorobotics@mit.edu.'
+	
 	$scope.compile = function(codesize) {
-		var CONNECTION_ERROR = 'The server did not respond. Please check your Internet connection and try again.'
-				+ 'If this problem persists for more than a few minutes, please contact us at zerorobotics@mit.edu.'
 		var data = {
 			gameId: 24,
 			code: getDocAsString(),
@@ -200,27 +205,27 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 		};
 		
 		var getCompilationStatus = function(id) {
-			$http.get(config.serviceDomain + '/compilationresource/single/' + id)
-			.success(function(data,status,headers,config) {
-				if(data.status === 'COMPILING') {
-					$timeout(function() {
-						getCompilationStatus(id);
-					}, 1000);
-				}
-				else if(data.status === 'SUCCEEDED') {
-					$scope.logInsert('Compilation succeeded. '
-							+ (typeof data.codesizePct === 'number' ? data.codesizePct + '% codesize usage.' : ''),
-							data.message);
-					$scope.logOpen = true;
-				}
-				else if(data.status === 'FAILED') {
-					$scope.logInsert('Compilation failed.\n', data.message);
-					$scope.logOpen = true;
-				}
-			})
-			.error(function(data,status,headers,config) {
-				alert(CONNECTION_ERROR);
-			});
+			$timeout(function() {
+				$http.get(config.serviceDomain + '/compilationresource/single/' + id)
+				.success(function(data,status,headers,config) {
+					if(data.status === 'COMPILING') {
+							getCompilationStatus(id);
+					}
+					else if(data.status === 'SUCCEEDED') {
+						$scope.logInsert('Compilation succeeded. '
+								+ (typeof data.codesizePct === 'number' ? data.codesizePct + '% codesize usage.' : ''),
+								data.message);
+						$scope.logOpen = true;
+					}
+					else if(data.status === 'FAILED') {
+						$scope.logInsert('Compilation failed.\n', data.message);
+						$scope.logOpen = true;
+					}
+				})
+				.error(function(data,status,headers,config) {
+					alert(CONNECTION_ERROR);
+				});
+			}, 1000);
 		};
 		
 		$http.post(config.serviceDomain + '/compilationresource/compile', data)
@@ -230,6 +235,62 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 		.error(function(data,status,headers,config) {
 			alert(CONNECTION_ERROR);
 		});
+	}
+	
+	$scope.simulate = function() {
+		var data = {
+			"gameId": 24,
+			"code1": getDocAsString(),
+			"code2": "void init() {} void loop() {}",
+			"snapshot1": 94857,
+			"snapshot2": 203458,
+			"simConfig": {
+				"timeout": 240,
+				"state1": [0.2, -0.65, 0.0, 0.0, 1.0, 0.0],
+				"state2": [-0.2, -0.65, 0.0, 0.0, 1.0, 0.0],
+				"gameVariables": [
+					{
+						"name": "cometConfig",
+						"value": 3
+					},
+					{
+						"name": "debrisConfig",
+						"value": 1
+					}
+				]
+			}
+		};
+		
+		var getSimStatus = function(id) {
+			$timeout(function() {
+				$http.get(config.serviceDomain + '/simulationresource/single/' + id)
+				.success(function(data,status,headers,config) {
+					if(data.status === 'COMPILING' || data.status === 'SIMULATING') {
+							getSimStatus(id);
+					}
+					else if(data.status === 'SUCCEEDED') {
+						$scope.logInsert('Simulation succeeded',
+								data.message);
+						$scope.logOpen = true;
+					}
+					else if(data.status === 'FAILED') {
+						$scope.logInsert('Simulation failed.\n', data.message);
+						$scope.logOpen = true;
+					}
+				})
+				.error(function(data,status,headers,config) {
+					alert(CONNECTION_ERROR);
+				});
+			}, 1000);
+		};
+		getSimStatus(384);
+		/*$http.post(config.serviceDomain + '/simulationresource/simulate', data)
+		.success(function(data,status,headers,config) {
+			getSimStatus(data.simulationId);
+		})
+		.error(function(data,status,headers,config) {
+			alert(CONNECTION_ERROR);
+		});*/
 	}
 	
 	$scope.download = function() {
