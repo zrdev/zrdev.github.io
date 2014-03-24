@@ -130,6 +130,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
 		this.updateParams_();
 		Blockly.Procedures.mutateCallers(this.getFieldValue('NAME'),
 				this.workspace, this.getArgList(), this.paramIds_);
+		this.onchange();
 	},
 	dispose: function() {
 		// Dispose of any callers.
