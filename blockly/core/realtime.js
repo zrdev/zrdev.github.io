@@ -337,7 +337,8 @@ Blockly.Realtime.blockChanged = function(block) {
 };
 
 //Load a project page
-Blockly.Realtime.loadPage = function(pageRoot) {
+Blockly.Realtime.loadPage = function(pageName) {
+	var pageRoot = Blockly.Realtime.model_.getRoot().get('pages').get(pageName);
 	//Destroy old listeners before wiping workspace
 	if(Blockly.Realtime.blocksMap_) {
 		Blockly.Realtime.blocksMap_.removeEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED,
@@ -374,6 +375,9 @@ Blockly.Realtime.loadPage = function(pageRoot) {
 	if(Blockly.Realtime.blocksMap_.isEmpty()) {
 		var type = pageRoot.get('type');
 		var block = Blockly.Block.obtain(Blockly.mainWorkspace, 'procedures_def' + type);
+		if(type === 'return' || type === 'noreturn') {
+			block.setFieldValue(pageName, 'NAME');
+		}
 		block.initSvg();
 		block.render();
 	}

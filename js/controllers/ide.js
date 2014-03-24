@@ -115,7 +115,7 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 	};
 	
 	//Opens the simulation dialog
-	$scope.s = function() {
+	$scope.openSimDialog = function() {
 		$modal.open({
 			templateUrl: '/partials/simulation-modal.html',
 			controller: 'SimulationController',
@@ -168,7 +168,7 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 		$scope.currentPageName = title;
 		$scope.currentPage = $scope.pages.get(title);
 		if(graphical && Blockly.mainWorkspace && Blockly.mainWorkspace.getMetrics()) {
-			Blockly.Realtime.loadPage($scope.currentPage);
+			Blockly.Realtime.loadPage($scope.currentPageName);
 			//Reload the Blockly toolbox to account for changes in blocks
 			$timeout(function() {
 				if(Blockly.Toolbox.HtmlDiv && graphical) {
@@ -283,14 +283,13 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 				});
 			}, 1000);
 		};
-		getSimStatus(384);
-		/*$http.post(config.serviceDomain + '/simulationresource/simulate', data)
+		$http.post(config.serviceDomain + '/simulationresource/simulate', data)
 		.success(function(data,status,headers,config) {
 			getSimStatus(data.simulationId);
 		})
 		.error(function(data,status,headers,config) {
 			alert(CONNECTION_ERROR);
-		});*/
+		});
 	}
 	
 	$scope.download = function() {
@@ -355,7 +354,7 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 			var dims = Blockly.mainWorkspace.getMetrics();
 			Blockly.mainWorkspace.scrollX += dims.viewWidth / 3;
 			Blockly.mainWorkspace.scrollY += dims.viewHeight / 4;
-			Blockly.Realtime.loadPage($scope.currentPage);
+			Blockly.Realtime.loadPage($scope.currentPageName);
 		});
 	}
 	

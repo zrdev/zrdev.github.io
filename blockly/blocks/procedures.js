@@ -38,9 +38,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
 		var name = Blockly.Procedures.findLegalName(
 				'myFunction', this);
 		this.appendDummyInput()
-				.appendField('void')
-				.appendField(new Blockly.FieldTextInput(name,
-				Blockly.Procedures.rename), 'NAME')
+				.appendField('myFunction', 'NAME')
 				.appendField('', 'PARAMS');
 		this.appendStatementInput('STACK')
 				.setCheck('statement');
@@ -78,6 +76,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
 			parameter.setAttribute('isArray', this.arguments_[x].isArray);
 			container.appendChild(parameter);
 		}
+		container.setAttribute('procname', this.getFieldValue('NAME'));
 		return container;
 	},
 	domToMutation: function(xmlElement) {
@@ -92,6 +91,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
 				});
 			}
 		}
+		this.setFieldValue(xmlElement.getAttribute('procname'), 'NAME');
 		this.updateParams_();
 	},
 	decompose: function(workspace) {
@@ -253,9 +253,8 @@ Blockly.Blocks['procedures_defreturn'] = {
 				'myFunction', this);
 		this.appendDummyInput()
 				.appendField(new Blockly.FieldDropdown(Blockly.zr_cpp.C_VARIABLE_TYPES),'TYPE')
-				.appendField(' ') //Spacer
-				.appendField(new Blockly.FieldTextInput(name,
-				Blockly.Procedures.rename), 'NAME')
+				.appendField('') //Spacer
+				.appendField('myFunction', 'NAME')
 				.appendField('', 'PARAMS');
 		this.appendStatementInput('STACK')
 				.appendField(Blockly.Msg.PROCEDURES_DEFRETURN_DO)
