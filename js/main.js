@@ -12,6 +12,19 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		});
 	};
 	loadFile.$inject = ['$route', 'realtime'];
+	
+	var getSimData = function($route, config, $http) {
+		var id = $route.current.params['simId'];
+		return $http.get(config.serviceDomain + '/simulationresource/single/' + id)
+		.success(function(data) {
+			return data;
+		})
+		.error(function() {
+			alert('Could not retrieve simulation data.')
+			return null;
+		});
+	}
+	getSimData.$inject = ['$route', 'config', '$http'];
 
 	$routeProvider.when('/', {
 		templateUrl: '/partials/frontpage.html'
@@ -27,9 +40,12 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	}).when('/ide/open-project/', {
 		template: '',
 		controller: 'OpenProjectController'
-	}).when('/ide/simulation/', {
+	}).when('/ide/simulation/:simId/', {
 		templateUrl: '/partials/visualization.html',
-		controller: 'VisualizationController'
+		controller: 'VisualizationController',
+		resolve: {
+			simResource: getSimData
+		}
 	}).when('/ide/open/', {
 		redirectTo: function(routeParams, path, search) {
 			//Parse state parameter from Drive UI

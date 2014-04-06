@@ -42,7 +42,7 @@
 					<ul class="dropdown-menu">
 						<li> <a ng-click="compile(false)">Compile</a> </li>
 						<li> <a ng-click="compile(true)">Codesize Estimate</a> </li>
-						<li> <a ng-click="simulate()">Simulate</a> </li>
+						<li> <a ng-click="openSimDialog()">Simulate</a> </li>
 						<li> <a id="menu-profile">Profile</a> </li>
 						<li> <a id="menu-submit">Submit</a> </li>
 					</ul>
@@ -85,6 +85,7 @@
 				<div class="list-group" id="log-list" adjustheight="325">
 					<a class="list-group-item" ng-repeat="l in log" ng-click="focusLog(l[0])">
 						<strong>{{ l[1].user }}</strong> {{ l[0].substr(0,13) | date:'medium' }}<br>{{ l[1].title }}<br>
+						<button class="btn btn-primary" ng-if="l[1].simId" style="margin-left: auto; margin-right: auto;" ng-click="go('/ide/simulation/' + l[1].simId + '/')">View Results</button>
 						<span class="log-body" ng-if="logFocus !== l[0]">{{ l[1].content | limitTo:128 }}</span>
 						<span class="log-body" ng-if="logFocus === l[0]">{{ l[1].content }}</span>
 					</a>

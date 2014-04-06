@@ -1,4 +1,4 @@
-zr.controller('VisualizationController', function($scope) {
+zr.controller('VisualizationController', function($scope, simResource) {
 	$scope.isFullScreen = function() {
 		return !!(document.fullscreenElement ||
 				document.mozFullScreenElement || 
@@ -42,38 +42,40 @@ zr.controller('VisualizationController', function($scope) {
 	});
 	
 	$scope.speed = 1;
-	$scope.playing = false;
+	$scope.state = 'stop';
 	
 	var userSliding = false;
 	var simLoaded = false;
-	var simPaused = false;
-	simobject = document.getElementById('cubesphere_embed');
+	var simobject = document.getElementById('cubesphere_embed');
 				
 	$scope.setTime = function() {
 			simobject.asSetTime(value/100);
 	};
 					
 	$scope.playPause = function() {
-		if (simPaused) {
-			if (!simLoaded){
+		if ($scope.state === 'stop') {
+			if (!simLoaded) {
 				simLoaded = true;
-				simobject.asLoadSim("simrun1.xml");
-			} else {
-				if (!simPaused){
-					simobject.asStart();
-				} else {
-					simobject.asResume();
-				}
+				simobject.asLoadDirect(simResource.data.simData);
+			} 
+			else {
+				simobject.asStart();
 			}
-		} else {
+			$scope.state = 'play';
+		}
+		else if ($scope.state === 'pause'){
+			simobject.asResume();
+			$scope.state = 'play';
+		}
+		else {
 			simobject.asPause();
-			simPaused = true;
+			$scope.state = 'pause';
 		}
 	};
 				
 	$scope.stop = function() {
 		simobject.asPause();
-		simPaused = false;
+		$scope.state = 'stop';
 	};
 				
 	$scope.zoomIn = function(){
@@ -97,7 +99,7 @@ zr.controller('VisualizationController', function($scope) {
 		simobject.asCameraReset();
 	};
 					
-	$scope.setSpeed = function(val){
-		simobject.asSpeed(val);
+	$scope.setSpeed = function(speed){
+		simobject.asSpeed(speed);
 	};
 });

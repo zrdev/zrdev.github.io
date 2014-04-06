@@ -35,8 +35,6 @@ Blockly.Blocks['procedures_defnoreturn'] = {
 	init: function() {
 		this.setHelpUrl(Blockly.Msg.PROCEDURES_DEFNORETURN_HELPURL);
 		this.setColour(290);
-		var name = Blockly.Procedures.findLegalName(
-				'myFunction', this);
 		this.appendDummyInput()
 				.appendField('myFunction', 'NAME')
 				.appendField('', 'PARAMS');
@@ -250,8 +248,6 @@ Blockly.Blocks['procedures_defreturn'] = {
 	init: function() {
 		this.setHelpUrl(Blockly.Msg.PROCEDURES_DEFRETURN_HELPURL);
 		this.setColour(290);
-		var name = Blockly.Procedures.findLegalName(
-				'myFunction', this);
 		this.appendDummyInput()
 				.appendField(new Blockly.FieldDropdown(Blockly.zr_cpp.C_VARIABLE_TYPES),'TYPE')
 				.appendField('') //Spacer
@@ -298,8 +294,6 @@ Blockly.Blocks['procedures_definit'] = {
 	init: function() {
 		this.setHelpUrl(Blockly.Msg.PROCEDURES_DEFNORETURN_HELPURL);
 		this.setColour(290);
-		var name = Blockly.Procedures.findLegalName(
-				Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE, this);
 		this.appendDummyInput()
 				.appendField('global variables');
 		this.appendStatementInput('GLOBALS')
@@ -322,8 +316,6 @@ Blockly.Blocks['procedures_defloop'] = {
 	init: function() {
 		this.setHelpUrl(Blockly.Msg.PROCEDURES_DEFNORETURN_HELPURL);
 		this.setColour(290);
-		var name = Blockly.Procedures.findLegalName(
-				Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE, this);
 		this.appendDummyInput()
 				.appendField('loop');
 		this.appendStatementInput('STACK')

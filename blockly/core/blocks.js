@@ -187,3 +187,15 @@ Blockly.Blocks.requireInFunction = function() {
 		this.setWarningText('Place this block inside a function.');
 	}
 }
+
+Blockly.Blocks.CNameValidator = function(newVar) {
+	//Regex tests whether name is a valid C identifier
+	if(!new RegExp('^[a-zA-Z_][a-zA-Z0-9_]*$').test(newVar)) {
+		return null;
+	}
+	//Avoid clobbering global names
+	if(Blockly.zr_cpp.RESERVED_WORDS_.indexOf(',' + newVar + ',') !== -1) {
+		return null;
+	};
+	return newVar;
+};

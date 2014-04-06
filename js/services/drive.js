@@ -57,12 +57,14 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime',
 		
 		//Opens new project modal. 
 		this.newProject = function(folder) {
-			$modal.open({
-				templateUrl: '/partials/new-project-modal.html',
-				controller: 'NewProjectModalController',
-				resolve: {
-					folder: function() { return folder; }
-				}
+			realtime.requireAuth().then(function () {
+				$modal.open({
+					templateUrl: '/partials/new-project-modal.html',
+					controller: 'NewProjectModalController',
+					resolve: {
+						folder: function() { return folder; }
+					}
+				});
 			});
 		};
 		

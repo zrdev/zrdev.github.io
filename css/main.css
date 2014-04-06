@@ -86,7 +86,7 @@ body {
 }
 
 .modal-dialog {
-	width: 500px;
+	width: 60%;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -223,4 +223,8 @@ div.picker-dialog-bg {
 .log-body {
 	word-wrap: break-word;
 	white-space:pre-line;
+}
+
+.label-left {
+	text-align: center !important;
 }

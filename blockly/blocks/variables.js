@@ -130,18 +130,12 @@ Blockly.Blocks['variables_declare'] = {
 				.appendField('type:')
 				.appendField(new Blockly.FieldDropdown(Blockly.zr_cpp.C_VARIABLE_TYPES), 'TYPE')
 				.appendField('name:')
-				.appendField(new Blockly.FieldTextInput('myVariable', this.validator), 'NAME')
+				.appendField(new Blockly.FieldTextInput('myVariable', Blockly.Blocks.CNameValidator), 'NAME')
 				.appendField('initial value:')
 				.appendField(new Blockly.FieldTextInput('0', Blockly.FieldTextInput.numberValidator), 'VALUE');
 		this.setPreviousStatement(true, 'declare');
 		this.setNextStatement(true, 'declare');
 		this.setTooltip('');
-	},
-	validator: function(newVar) {
-		// Merge runs of whitespace.  Strip leading and trailing whitespace.
-		// Beyond this, all names are legal.
-		newVar = newVar.replace(/[\s\xa0]+/g, ' ').replace(/^ | $/g, '');
-		return newVar || null;
 	},
 	onchange: function() {
 		if (!this.workspace) {
@@ -220,7 +214,7 @@ Blockly.Blocks['variables_array_declare'] = {
 				.appendField('type:')
 				.appendField(new Blockly.FieldDropdown(Blockly.zr_cpp.C_VARIABLE_TYPES), 'TYPE')
 				.appendField('name:')
-				.appendField(new Blockly.FieldTextInput('myArray', this.validator), 'NAME')
+				.appendField(new Blockly.FieldTextInput('myArray', Blockly.Blocks.CNameValidator), 'NAME')
 				.appendField('length:')
 				.appendField(new Blockly.FieldTextInput('1', this.adjustInputs), 'LENGTH')
 				.appendField('initial value:')
@@ -264,7 +258,6 @@ Blockly.Blocks['variables_array_declare'] = {
 		}
 		return '' + len; //Cast to string
 	},
-	validator: Blockly.Blocks['variables_declare'].validator,
 	onchange: function() {
 		if (!this.workspace) {
 			// Block has been deleted.

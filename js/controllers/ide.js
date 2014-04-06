@@ -1,4 +1,4 @@
-zr.controller('IdeController', function($scope, $modal, $http, $timeout, config, realtime, drive, realtimeDocument) {
+zr.controller('IdeController', function($scope, $modal, $http, $timeout, $location, config, realtime, drive, realtimeDocument) {
 	$scope.model = realtimeDocument.getModel();
 	var graphical = $scope.model.getRoot().get('graphical');
 	$scope.graphical = graphical;
@@ -101,6 +101,10 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 				$scope.pages.set(result.title, $scope.model.createString(''));
 			}
 			else {
+				if(!Blockly.Blocks.CNameValidator(result.title)) {
+					alert('Not a valid C function name.');
+					return;
+				}
 				var pageRoot = $scope.model.createMap();
 				$scope.pages.set(result.title, pageRoot);
 				//This code copied from blockly/core/realtime.js
@@ -113,6 +117,10 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 			$scope.setActivePage(result.title);
 		});
 	};
+
+	$scope.go = function (path) {
+		$location.path( path );
+	};
 	
 	//Opens the simulation dialog
 	$scope.openSimDialog = function() {
@@ -121,9 +129,12 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 			controller: 'SimulationController',
 			resolve: {
 				
+			},
+			windowClass: {
+				'width': '1000px'
 			}
-		}).result.then(function(result) {
-			
+		}).result.then(function(data) {
+			simulate(data);
 		});
 	};
 	
@@ -185,13 +196,20 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 	};
 	
 	var getDocAsString = function() {
-		var str = "";
-		var keys = $scope.pages.keys().sort();
-		var len = keys.length;
-		for(var i = 0; i < len; i++) {
-			str = str + '//Begin page ' + keys[i] + '\n' + $scope.pages.get(keys[i]).getText() + '\n//End page ' + keys[i] + '\n';
+		if(!graphical) {
+			var str = "";
+			var keys = $scope.pages.keys().sort();
+			var len = keys.length;
+			for(var i = 0; i < len; i++) {
+				str = str + '//Begin page ' + keys[i] + '\n' + $scope.pages.get(keys[i]).getText() + '\n//End page ' + keys[i] + '\n';
+			}
+			return str;
 		}
-		return str;
+		else {
+			Blockly.Realtime.enabled_ = false;
+			var tempSpace = 
+			Blockly.Realtime.enabled_ = true;
+		}
 	};
 	
 	var CONNECTION_ERROR = 'The server did not respond. Please check your Internet connection and try again.'
@@ -230,36 +248,36 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 		
 		$http.post(config.serviceDomain + '/compilationresource/compile', data)
 		.success(function(data,status,headers,config) {
-			getCompilationStatus(data.compilationId);
+			getCompilationStatus(data.id);
 		})
 		.error(function(data,status,headers,config) {
 			alert(CONNECTION_ERROR);
 		});
 	}
 	
-	$scope.simulate = function() {
+	var simulate = function(dataIn) {
 		var data = {
 			"gameId": 24,
-			"code1": getDocAsString(),
-			"code2": "void init() {} void loop() {}",
 			"snapshot1": 94857,
 			"snapshot2": 203458,
 			"simConfig": {
-				"timeout": 240,
-				"state1": [0.2, -0.65, 0.0, 0.0, 1.0, 0.0],
-				"state2": [-0.2, -0.65, 0.0, 0.0, 1.0, 0.0],
-				"gameVariables": [
-					{
-						"name": "cometConfig",
-						"value": 3
-					},
-					{
-						"name": "debrisConfig",
-						"value": 1
-					}
-				]
+				"timeout": dataIn.timeout,
+				"state1": dataIn.sph1init,
+				"state2": dataIn.sph2init,
+				"gameVariables": dataIn.gameVars
 			}
 		};
+
+		var emptyCode = "void init() {} void loop() {}";
+
+		if(dataIn.sph === 1) {
+			data['code1'] = getDocAsString();
+			data['code2'] = emptyCode;
+		}
+		else {
+			data['code2'] = getDocAsString();
+			data['code1'] = emptyCode;
+		}
 		
 		var getSimStatus = function(id) {
 			$timeout(function() {
@@ -270,7 +288,7 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 					}
 					else if(data.status === 'SUCCEEDED') {
 						$scope.logInsert('Simulation succeeded',
-								data.message);
+								data.message, id);
 						$scope.logOpen = true;
 					}
 					else if(data.status === 'FAILED') {
@@ -285,7 +303,7 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 		};
 		$http.post(config.serviceDomain + '/simulationresource/simulate', data)
 		.success(function(data,status,headers,config) {
-			getSimStatus(data.simulationId);
+			getSimStatus(data.id);
 		})
 		.error(function(data,status,headers,config) {
 			alert(CONNECTION_ERROR);
@@ -313,13 +331,14 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, config,
 		$scope.chat.message = '';
 	};
 	
-	$scope.logInsert = function(title, content) {
+	$scope.logInsert = function(title, content, simId) {
 		//Log entries are identified by timestamp, plus some random digits to avoid collisions
 		var key = String(new Date().getTime() + Math.random());
 		var value = {
 			user: getMyName(),
 			title: title,
-			content: content
+			content: content,
+			simId: simId
 		}
 		collabLog.set(key, value);
 		updateLog();
