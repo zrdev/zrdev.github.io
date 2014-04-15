@@ -51,12 +51,16 @@ zr.controller('VisualizationController', function($scope, simResource) {
 
 	$scope.consoleOn = true;
 	$scope.$watch('consoleOn', function() {
-		simobject.asEnableConsole($scope.consoleOn);
+		if(simLoaded) {
+			simobject.asEnableConsole($scope.consoleOn);
+		}
 	});
 
 	$scope.bgOn = true;
 	$scope.$watch('bgOn', function() {
-		simobject.asBgImageOn($scope.bgOn);
+		if(simLoaded) {
+			simobject.asBgImageOn($scope.bgOn);
+		}
 	});
 
 	//these must be global because they are called by Flash
@@ -75,6 +79,10 @@ zr.controller('VisualizationController', function($scope, simResource) {
 			$scope.playPause();
 		}
 	};
+	window.asLoadComplete = function() {
+		simobject.asLoadDirect(simResource.data.simData);
+		simLoaded = true;
+	}
 
 	$scope.setTime = function(time) {
 		simobject.asSetTime(time/100);
@@ -82,13 +90,7 @@ zr.controller('VisualizationController', function($scope, simResource) {
 					
 	$scope.playPause = function() {
 		if ($scope.state === 'stop') {
-			if (!simLoaded) {
-				simLoaded = true;
-				simobject.asLoadDirect(simResource.data.simData);
-			} 
-			else {
-				simobject.asStart();
-			}
+			simobject.asStart();
 			$scope.state = 'play';
 		}
 		else if ($scope.state === 'pause'){
