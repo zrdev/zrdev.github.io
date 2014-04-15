@@ -44,8 +44,7 @@ Blockly.zr_cpp['procedures_defreturn'] = function(block) {
 	var code = type + ' ' + funcName + block.getArgString(true) + ' {\n' +
 			branch + returnValue + '}';
 	code = Blockly.zr_cpp.scrub_(block, code);
-	Blockly.zr_cpp.definitions_[funcName] = code;
-	return null;
+	return code;
 };
 
 // Defining a procedure without a return value uses the same generator as
@@ -59,8 +58,7 @@ Blockly.zr_cpp['procedures_definit'] = function(block) {
 	var code = 'void init() {\n' +
 			branch + '}';
 	code = Blockly.zr_cpp.scrub_(block, code);
-	Blockly.zr_cpp.definitions_['init'] = code;
-	return null;
+	return code;
 };
 
 Blockly.zr_cpp['procedures_defloop'] = function(block) {
@@ -69,8 +67,7 @@ Blockly.zr_cpp['procedures_defloop'] = function(block) {
 	var code = 'void loop() {\n' +
 			branch + '}';
 	code = Blockly.zr_cpp.scrub_(block, code);
-	Blockly.zr_cpp.definitions_['loop'] = code;
-	return null;
+	return code;
 };
 
 Blockly.zr_cpp['procedures_callreturn'] = function(block) {

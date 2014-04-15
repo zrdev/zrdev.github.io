@@ -37,7 +37,7 @@ Blockly.Blocks['variables_get'] = {
 		this.setColour(330);
 		this.appendDummyInput()
 				.appendField(Blockly.Msg.VARIABLES_GET_TITLE)
-				.appendField(new Blockly.FieldVariable(' ', null, false), 'VAR')
+				.appendField(new Blockly.FieldVariable('--Select--', null, false, this), 'VAR')
 				.appendField(Blockly.Msg.VARIABLES_GET_TAIL);
 		this.setOutput(true, 'number');
 		this.setTooltip(Blockly.Msg.VARIABLES_GET_TOOLTIP);
@@ -70,7 +70,7 @@ Blockly.Blocks['variables_array_get_pointer'] = {
 		this.setColour(260);
 		this.appendDummyInput()
 				.appendField(Blockly.Msg.VARIABLES_GET_TITLE)
-				.appendField(new Blockly.FieldVariable(' ', null, true), 'VAR')
+				.appendField(new Blockly.FieldVariable('--Select--', null, true, this), 'VAR')
 				.appendField(Blockly.Msg.VARIABLES_GET_TAIL);
 		this.setOutput(true, 'array');
 		this.setTooltip(Blockly.Msg.VARIABLES_GET_TOOLTIP);
@@ -104,7 +104,7 @@ Blockly.Blocks['variables_set'] = {
 		this.interpolateMsg(
 				// TODO: Combine these messages instead of using concatenation.
 				'%1 = %2',
-				['VAR', new Blockly.FieldVariable(' ', null, false)],
+				['VAR', new Blockly.FieldVariable('--Select--', null, false, this)],
 				['VALUE', null, Blockly.ALIGN_RIGHT],
 				Blockly.ALIGN_RIGHT);
 		this.setPreviousStatement(true, 'statement');
@@ -172,7 +172,7 @@ Blockly.Blocks['variables_array_get'] = {
 		this.setHelpUrl(Blockly.Msg.LISTS_GET_INDEX_HELPURL);
 		this.setColour(260);
 		this.appendDummyInput()
-				.appendField(new Blockly.FieldVariable(' ', null, true),'ARRAY')
+				.appendField(new Blockly.FieldVariable('--Select--', null, true, this),'ARRAY')
 				.appendField('[');
 		this.appendValueInput('INDEX');
 		this.appendDummyInput()
@@ -190,7 +190,7 @@ Blockly.Blocks['variables_array_set'] = {
 		this.setHelpUrl('');
 		this.setColour(260);
 		this.appendDummyInput()
-				.appendField(new Blockly.FieldVariable(' ', null, true),'ARRAY')
+				.appendField(new Blockly.FieldVariable('--Select--', null, true, this),'ARRAY')
 				.appendField('[');
 		this.appendValueInput('INDEX')
 				.setCheck('number');
@@ -209,6 +209,33 @@ Blockly.Blocks['variables_array_set'] = {
 Blockly.Blocks['variables_array_declare'] = {
 	// Global array declaration
 	init: function() {
+		var adjustInputs = function(text, block) {
+			var len = parseInt(text);
+			if(isNaN(len) || len < 1) {
+				len = 1;
+			}
+			if(block.inputList !== void 0) { //inputList will not yet be initialized on the first call
+				var oldlen = block.getFieldValue('LENGTH');
+				var input = block.getInput('INPUTS');
+				if(len < oldlen) {
+					for (var i = len; i < oldlen; i++) {
+						input.removeField('VALUE' + i);
+						input.removeField('SPACE' + i);
+					}
+					block.render();
+				}
+				else if(len > oldlen) {
+					for(var j = oldlen; j < len; j++) {
+						input.appendField(',', 'SPACE' + j)
+								.appendField(new Blockly.FieldTextInput('0', Blockly.FieldTextInput.numberValidator), 'VALUE' + j);
+					}
+				}
+			}
+			return '' + len; //Cast to string
+		}
+		//Closure to ensure the adjuster is always called on the block
+		var this_ = this;
+		
 		this.setColour(260);
 		this.appendDummyInput('INPUTS')
 				.appendField('type:')
@@ -216,7 +243,9 @@ Blockly.Blocks['variables_array_declare'] = {
 				.appendField('name:')
 				.appendField(new Blockly.FieldTextInput('myArray', Blockly.Blocks.CNameValidator), 'NAME')
 				.appendField('length:')
-				.appendField(new Blockly.FieldTextInput('1', this.adjustInputs), 'LENGTH')
+				.appendField(new Blockly.FieldTextInput('1', function(text) {
+					adjustInputs(text,this_);
+				}), 'LENGTH')
 				.appendField('initial value:')
 				.appendField(new Blockly.FieldTextInput('0', Blockly.FieldTextInput.numberValidator), 'VALUE0');
 		this.setInputsInline(true);
@@ -232,31 +261,6 @@ Blockly.Blocks['variables_array_declare'] = {
 			length: this.getFieldValue('LENGTH'),
 			isArray: 'TRUE',
 		}
-	},
-	adjustInputs: function(text) {
-		var len = parseInt(text);
-		if(isNaN(len) || len < 1) {
-			len = 1;
-		}
-		var block = this.sourceBlock_;
-		if(block.inputList !== void 0) { //inputList will not yet be initialized on the first call
-			var oldlen = block.getFieldValue('LENGTH');
-			var input = block.getInput('INPUTS');
-			if(len < oldlen) {
-				for (var i = len; i < oldlen; i++) {
-					input.removeField('VALUE' + i);
-					input.removeField('SPACE' + i);
-				}
-				block.render();
-			}
-			else if(len > oldlen) {
-				for(var j = oldlen; j < len; j++) {
-					input.appendField(',', 'SPACE' + j)
-							.appendField(new Blockly.FieldTextInput('0', Blockly.FieldTextInput.numberValidator), 'VALUE' + j);
-				}
-			}
-		}
-		return '' + len; //Cast to string
 	},
 	onchange: function() {
 		if (!this.workspace) {

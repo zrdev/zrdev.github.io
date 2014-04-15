@@ -21,7 +21,7 @@
  */
 
 body {
-	padding-top: 70px;
+	padding-top: 65px;
 	padding-bottom: 15px;
 	background: url("../images/BG.png") repeat-x fixed 0px 0px rgb(12, 68, 126);
 }
@@ -34,8 +34,8 @@ body {
 
 .page-content {
 	background: white;
-	margin-left: 20px;
-	margin-right: 20px;
+	margin-left: 15px;
+	margin-right: 15px;
 	padding: 15px;
 	overflow: auto;
 	border-radius: 4px;
@@ -227,4 +227,16 @@ div.picker-dialog-bg {
 
 .label-left {
 	text-align: center !important;
+}
+
+.navbar-brand
+{
+  background: url(/images/logo.png) no-repeat left center;
+  background-size: contain;
+  -moz-background-size: contain;
+  -webkit-background-size: contain;
+  padding: 0px;
+  margin: 0px !important;
+  height: 50px;
+  width: 129px;
 }

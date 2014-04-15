@@ -1,6 +1,6 @@
 //Initial module setup and URL routing
 
-var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute', 'ngSanitize',/*'builder', 'builder.components', 'validator.rules'*/])
+var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute', 'ngSanitize', 'uiSlider',/*'builder', 'builder.components', 'validator.rules'*/])
 .config(function($routeProvider, $locationProvider) {
 	$locationProvider.html5Mode(true);
 	
@@ -24,6 +24,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 			return null;
 		});
 	}
+
 	getSimData.$inject = ['$route', 'config', '$http'];
 
 	$routeProvider.when('/', {
@@ -34,12 +35,6 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	}).when('/announcements/:announcementId/', {
 		templateUrl: '/partials/announcements-detail.html',
 		controller: 'AnnouncementsController'
-	}).when('/ide/new-project/', {
-		template: '',
-		controller: 'NewProjectController'
-	}).when('/ide/open-project/', {
-		template: '',
-		controller: 'OpenProjectController'
 	}).when('/ide/simulation/:simId/', {
 		templateUrl: '/partials/visualization.html',
 		controller: 'VisualizationController',

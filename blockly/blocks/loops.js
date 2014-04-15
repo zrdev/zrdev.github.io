@@ -83,7 +83,7 @@ Blockly.Blocks['controls_for'] = {
 		this.setColour(120);
 		this.appendDummyInput()
 				.appendField('for')
-				.appendField(new Blockly.FieldVariable(null), 'VAR');
+				.appendField('index1', 'VAR');
 		this.interpolateMsg('from %1 to %2',
 												['FROM', 'number', Blockly.ALIGN_RIGHT],
 												['TO', 'number', Blockly.ALIGN_RIGHT],
@@ -99,17 +99,17 @@ Blockly.Blocks['controls_for'] = {
 			return Blockly.Msg.CONTROLS_FOR_TOOLTIP.replace('%1',
 					thisBlock.getFieldValue('VAR'));
 		});
+		//Fire onchange handler when parent changes
+		this.previousConnection.connect = function(otherConnection) {
+			Blockly.Connection.prototype.connect.call(thisBlock.previousConnection, otherConnection);
+			thisBlock.onchange();
+		}
 	},
 	getVars: function() {
 		return {
 			type: 'int',
 			name: this.getFieldValue('VAR'),
 			isArray: 'FALSE',
-		}
-	},
-	renameVar: function(oldName, newName) {
-		if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-			this.setFieldValue(newName, 'VAR');
 		}
 	},
 	customContextMenu: function(options) {
@@ -123,49 +123,27 @@ Blockly.Blocks['controls_for'] = {
 		option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
 		options.push(option);
 	},
-	onchange: Blockly.Blocks.requireInFunction,
-};
+	onchange: function() {
+		if (!this.workspace) {
+			// Block has been deleted.
+			return;
+		}
+		var depth = 0;
+		// How many loops am I nested in?
+		var block = this;
+		do {
+			if (block.type == 'controls_repeat_ext' ||
+					block.type == 'controls_for' ||
+					block.type == 'controls_whileUntil') {
+				depth++;
+			}
+			block = block.getSurroundParent();
+		} while (block);
+		var newName = 'index' + depth;
+		this.setFieldValue(newName, 'VAR');
 
-Blockly.Blocks['controls_forEach'] = {
-	// For each loop.
-	init: function() {
-		this.setHelpUrl(Blockly.Msg.CONTROLS_FOREACH_HELPURL);
-		this.setColour(120);
-		this.appendValueInput('LIST')
-				.setCheck('array')
-				.appendField('for each variable')
-				.appendField(new Blockly.FieldVariable(null), 'VAR')
-				.appendField('in array');
-		if (Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL) {
-			this.appendDummyInput()
-					.appendField(Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL);
-			this.setInputsInline(true);
-		}
-		this.appendStatementInput('DO')
-				.setCheck('statement');
-		this.setPreviousStatement(true, 'statement');
-		this.setNextStatement(true, 'statement');
-		// Assign 'this' to a variable for use in the tooltip closure below.
-		var thisBlock = this;
-		this.setTooltip(function() {
-			return Blockly.Msg.CONTROLS_FOREACH_TOOLTIP.replace('%1',
-					thisBlock.getFieldValue('VAR'));
-		});
-	},
-	getVars: function() {
-		return {
-			type: 'int',
-			name: this.getFieldValue('VAR'),
-			isArray: 'FALSE',
-		}
-	},
-	renameVar: function(oldName, newName) {
-		if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-			this.setFieldValue(newName, 'VAR');
-		}
-	},
-	customContextMenu: Blockly.Blocks['controls_for'].customContextMenu,
-	onchange: Blockly.Blocks.requireInFunction,
+		Blockly.Blocks.requireInFunction.call(this);
+	}
 };
 
 Blockly.Blocks['controls_flow_statements'] = {

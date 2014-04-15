@@ -193,6 +193,10 @@ Blockly.Blocks.CNameValidator = function(newVar) {
 	if(!new RegExp('^[a-zA-Z_][a-zA-Z0-9_]*$').test(newVar)) {
 		return null;
 	}
+  //Don't allow names that could be used as loop counters
+  if(new RegExp('^index[0-9]+$').test(newVar)) {
+    return null;
+  }
 	//Avoid clobbering global names
 	if(Blockly.zr_cpp.RESERVED_WORDS_.indexOf(',' + newVar + ',') !== -1) {
 		return null;

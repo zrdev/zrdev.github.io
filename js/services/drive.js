@@ -62,7 +62,17 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime',
 					templateUrl: '/partials/new-project-modal.html',
 					controller: 'NewProjectModalController',
 					resolve: {
-						folder: function() { return folder; }
+						folder: function() { return folder; },
+						gameResources: function($http) {
+							return $http.get(config.serviceDomain + '/gameresource/all/')
+							.success(function(data) {
+								return data;
+							})
+							.error(function() {
+								alert('Could not retrieve game data.');
+								return null;
+							});
+						}
 					}
 				});
 			});

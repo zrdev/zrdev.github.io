@@ -43,13 +43,41 @@ zr.controller('VisualizationController', function($scope, simResource) {
 	
 	$scope.speed = 1;
 	$scope.state = 'stop';
+	$scope.time = 0;
 	
-	var userSliding = false;
+	var userSliding = true;
 	var simLoaded = false;
 	var simobject = document.getElementById('cubesphere_embed');
-				
-	$scope.setTime = function() {
-			simobject.asSetTime(value/100);
+
+	$scope.consoleOn = true;
+	$scope.$watch('consoleOn', function() {
+		simobject.asEnableConsole($scope.consoleOn);
+	});
+
+	$scope.bgOn = true;
+	$scope.$watch('bgOn', function() {
+		simobject.asBgImageOn($scope.bgOn);
+	});
+
+	//these must be global because they are called by Flash
+	window.setTimeSlider = function(pos) {
+		$scope.$apply(function(){
+			if(pos >= 100 && $scope.state === 'play') {
+				$scope.playPause();
+			}
+			else {
+				$scope.time = pos;
+			}
+		});
+	};
+	window.timelineComplete = function() {
+		if($scope.state === 'play') {
+			$scope.playPause();
+		}
+	};
+
+	$scope.setTime = function(time) {
+		simobject.asSetTime(time/100);
 	};
 					
 	$scope.playPause = function() {
@@ -76,6 +104,8 @@ zr.controller('VisualizationController', function($scope, simResource) {
 	$scope.stop = function() {
 		simobject.asPause();
 		$scope.state = 'stop';
+		$scope.time = 0;
+		$scope.setTime(0);
 	};
 				
 	$scope.zoomIn = function(){
@@ -84,14 +114,6 @@ zr.controller('VisualizationController', function($scope, simResource) {
 	
 	$scope.zoomOut = function(){
 		simobject.asZoomOut(10);
-	};
-				
-	$scope.toggleConsole = function(val){
-		simobject.asEnableConsole(val);
-	};
-					
-	$scope.toggleBg = function(val){
-		simobject.asBgImageOn(val);
 	};
 					
 	$scope.resetCam = function(){
@@ -102,4 +124,6 @@ zr.controller('VisualizationController', function($scope, simResource) {
 	$scope.setSpeed = function(speed){
 		simobject.asSpeed(speed);
 	};
+
+
 });

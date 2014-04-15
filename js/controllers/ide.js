@@ -8,6 +8,7 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 	$scope.currentPage = {
 		text: ''
 	};
+	$scope.simRunning = false;
 	
 	var collabLog = $scope.model.getRoot().get('log');
 	$scope.log = null;
@@ -196,28 +197,36 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 	};
 	
 	var getDocAsString = function() {
+		var str = '';
+		var keys = $scope.pages.keys().sort();
+		var len = keys.length;
 		if(!graphical) {
-			var str = "";
-			var keys = $scope.pages.keys().sort();
-			var len = keys.length;
 			for(var i = 0; i < len; i++) {
 				str = str + '//Begin page ' + keys[i] + '\n' + $scope.pages.get(keys[i]).getText() + '\n//End page ' + keys[i] + '\n';
 			}
-			return str;
 		}
 		else {
-			Blockly.Realtime.enabled_ = false;
-			var tempSpace = 
-			Blockly.Realtime.enabled_ = true;
+			for(var i = 0; i < len; i++) {
+				var domText = $scope.pages.get(keys[i]).get('topBlocks').asArray()[0].xmlDom;
+				var domObj = Blockly.Xml.textToDom(domText);
+				var block = Blockly.Xml.domToSoloBlock(domObj);
+				var code = Blockly.zr_cpp.blockToCode(block);
+				str = str + '//Begin page ' + keys[i] + '\n' + code + '\n//End page ' + keys[i] + '\n\n';
+			}
+			str = Blockly.zr_cpp.finishFull(str);
 		}
+		return str;
 	};
+	$scope.testGen = function() {
+		alert(getDocAsString());
+	}
 	
 	var CONNECTION_ERROR = 'The server did not respond. Please check your Internet connection and try again.'
 			+ 'If this problem persists for more than a few minutes, please contact us at zerorobotics@mit.edu.'
 	
 	$scope.compile = function(codesize) {
 		var data = {
-			gameId: 24,
+			gameId: $scope.model.getRoot().get('gameId'),
 			code: getDocAsString(),
 			codesize: codesize
 		};
@@ -234,30 +243,41 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 								+ (typeof data.codesizePct === 'number' ? data.codesizePct + '% codesize usage.' : ''),
 								data.message);
 						$scope.logOpen = true;
+						$scope.simRunning = false;
 					}
 					else if(data.status === 'FAILED') {
 						$scope.logInsert('Compilation failed.\n', data.message);
 						$scope.logOpen = true;
+						$scope.simRunning = false;
 					}
 				})
 				.error(function(data,status,headers,config) {
 					alert(CONNECTION_ERROR);
+					$scope.simRunning = false;
 				});
 			}, 1000);
 		};
 		
 		$http.post(config.serviceDomain + '/compilationresource/compile', data)
 		.success(function(data,status,headers,config) {
+			if(data.status === 'FAILED') {
+				$scope.logInsert('Compilation failed.\n', data.message);
+				$scope.logOpen = true;
+				$scope.simRunning = false;
+				return;
+			}
 			getCompilationStatus(data.id);
 		})
 		.error(function(data,status,headers,config) {
 			alert(CONNECTION_ERROR);
+			$scope.simRunning = false;
 		});
+		$scope.simRunning = true;
 	}
 	
 	var simulate = function(dataIn) {
 		var data = {
-			"gameId": 24,
+			"gameId": $scope.model.getRoot().get('gameId'),
 			"snapshot1": 94857,
 			"snapshot2": 203458,
 			"simConfig": {
@@ -290,24 +310,35 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 						$scope.logInsert('Simulation succeeded',
 								data.message, id);
 						$scope.logOpen = true;
+						$scope.simRunning = false;
 					}
 					else if(data.status === 'FAILED') {
 						$scope.logInsert('Simulation failed.\n', data.message);
 						$scope.logOpen = true;
+						$scope.simRunning = false;
 					}
 				})
 				.error(function(data,status,headers,config) {
 					alert(CONNECTION_ERROR);
+					$scope.simRunning = false;
 				});
 			}, 1000);
 		};
 		$http.post(config.serviceDomain + '/simulationresource/simulate', data)
 		.success(function(data,status,headers,config) {
+			if(data.status === 'FAILED') {
+				$scope.logInsert('Simulation failed.\n', data.message);
+				$scope.logOpen = true;
+				$scope.simRunning = false;
+				return;
+			}
 			getSimStatus(data.id);
 		})
 		.error(function(data,status,headers,config) {
 			alert(CONNECTION_ERROR);
+			$scope.simRunning = false;
 		});
+		$scope.simRunning = true;
 	}
 	
 	$scope.download = function() {
@@ -363,6 +394,26 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 		shareClient.setItemIds(realtime.id);
 		shareClient.showSettingsDialog();
 	};
+
+	//Blockly cut/copy/paste callbacks
+	$scope.cut = function() {
+		if(graphical) {
+	        Blockly.copy_(Blockly.selected);
+	        Blockly.selected.dispose(true, true);
+		}
+	}
+
+	$scope.copy = function() {
+		if(graphical) {
+	        Blockly.copy_(Blockly.selected);
+		}
+	}
+
+	$scope.paste = function() {
+		if(graphical && Blockly.clipboard_) {
+	        Blockly.mainWorkspace.paste(Blockly.clipboard_);
+		}
+	}
 	
 	//Callback to load Blockly when everything is rendered
 	if(graphical) {

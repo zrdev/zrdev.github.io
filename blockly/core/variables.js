@@ -47,35 +47,22 @@ Blockly.Variables.NAME_TYPE = 'VARIABLE';
  * @return {!Array.<string>} Array of variable names.
  */
 Blockly.Variables.allVariables = function(opt_block) {
-	var blocks;
-	if (opt_block) {
-		blocks = opt_block.getDescendants();
-	} else {
-		blocks = Blockly.mainWorkspace.getAllBlocks();
-	}
-	var variableHash = Object.create(null);
-	// Iterate through every block and add each variable to the hash.
-	for (var x = 0; x < blocks.length; x++) {
-		var func = blocks[x].getVars;
-		if (func) {
-			var blockVariables = func.call(blocks[x]);
-			for (var y = 0; y < blockVariables.length; y++) {
-				var variable = blockVariables[y];
-				// Variable name may be null if the block is only half-built.
-				if (variable.name) {
-					variableHash[variable.name.toLowerCase()] = variable;
-				}
-			}
-		}
-	}
-	// Flatten the hash into a list.
-	var variableList = [];
-	for (var name in variableHash) {
-		variableList.push(variableHash[name]);
-	}
-	//To the variables from this workspace, add the list of global variables
+	//In the ZR IDE, this is just a getter for global variables. Menus that use locals get them themselves. 
+	var variableList;
 	if(Blockly.Realtime.enabled_) {
-		variableList = variableList.concat(Blockly.zr_cpp.C_GLOBAL_VARS.values()); 
+		variableList = Blockly.zr_cpp.C_GLOBAL_VARS.values(); 
+	}
+	else {
+		variableList = [];
+	}
+	if(opt_block) {
+		var block = opt_block;
+		do {
+			if (typeof block.getVars === 'function') {
+				variableList.push(block.getVars.call(block));
+			}
+			block = block.getSurroundParent();
+		} while (block);
 	}
 	return variableList;
 };

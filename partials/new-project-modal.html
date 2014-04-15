@@ -22,9 +22,7 @@
 		</div>
 		<div class="form-group">
 			<label for="new-project-game" class="control-label">Game</label>
-			<select id="new-project-game" class="form-control">
-				<option>Free Mode</option>
-				<option>CosmoSPHERES MS</option>
+			<select id="new-project-game" class="form-control" ng-model="data.game" ng-options="g.name for g in games">
 			</select>
 		</div>
 	</form>

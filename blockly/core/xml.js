@@ -399,9 +399,13 @@ Blockly.Xml.deleteNext = function(xmlBlock) {
 };
 
 //This makes it stop complaining about blocks on different workspaces
-Blockly.Xml.blankWorkspace = {};
+Blockly.Xml.blankWorkspace = null;
 //Gets a block attached to no workspace for code generation
 Blockly.Xml.domToSoloBlock = function(xmlBlock) {
+	Blockly.zr_cpp.init();
+	if(!Blockly.Xml.blankWorkspace) {
+		Blockly.Xml.blankWorkspace = new Blockly.Workspace(function(){},function(){});
+	}
 	if(xmlBlock.nodeName.toLowerCase() === 'xml') {
 		//If the block is enclosed in an xml tag, strip it.
 		xmlBlock = xmlBlock.childNodes[0]; //This assumes no whitespace

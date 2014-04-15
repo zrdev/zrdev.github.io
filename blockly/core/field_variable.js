@@ -43,9 +43,9 @@ goog.require('Blockly.Variables');
  * @extends {Blockly.FieldDropdown}
  * @constructor
  */
-Blockly.FieldVariable = function(varname, opt_changeHandler, showArrays) {
+Blockly.FieldVariable = function(varname, opt_changeHandler, showArrays, block) {
 	this.showArrays_ = showArrays;
-
+	this.block_ = block;
 	Blockly.FieldVariable.superClass_.constructor.call(this,
 			Blockly.FieldVariable.dropdownCreate, opt_changeHandler);
 			
@@ -82,17 +82,19 @@ Blockly.FieldVariable.prototype.getValue = function() {
 Blockly.FieldVariable.prototype.setValue = function(text) {
 	if(Blockly.Realtime.initializing) {
 		//Check that the variable actually exists (has not been renamed.)
-		var opts = Blockly.Variables.allVariables();
-		var len = opts.length;
-		var okay = false;
-		for(var i = 0; i < len; i++) {
-			if(opts[i].name === text) {
-				okay = true;
-				break;
+		if(!(new RegExp('^index[0-9]+$').test(text))) {
+			var opts = Blockly.Variables.allVariables(this.block_);
+			var len = opts.length;
+			var okay = false;
+			for(var i = 0; i < len; i++) {
+				if(opts[i].name === text) {
+					okay = true;
+					break;
+				}
 			}
-		}
-		if(!okay) {
-			text = ' ';
+			if(!okay) {
+				text = '--Select--';
+			}
 		}
 	}
 	this.value_ = text;
@@ -106,7 +108,9 @@ Blockly.FieldVariable.prototype.setValue = function(text) {
  * @this {!Blockly.FieldVariable}
  */
 Blockly.FieldVariable.dropdownCreate = function() {
-	var variableList = Blockly.Variables.allVariables();
+	var variableList = Blockly.Variables.allVariables(this.block_);
+
+	//Parse into list of strings
 	var len = variableList.length;
 	if(len) {
 		for (var i = len; i--; ) {
@@ -120,7 +124,7 @@ Blockly.FieldVariable.dropdownCreate = function() {
 		}
 	}
 	// Ensure that there is a blank option.
-	variableList.push(' ');
+	variableList.push('--Select--');
 	variableList.sort(goog.string.caseInsensitiveCompare);
 	// Variables are not language-specific, use the name as both the user-facing
 	// text and the internal representation.

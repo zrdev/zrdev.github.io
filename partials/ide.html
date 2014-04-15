@@ -17,7 +17,7 @@
 						<li> <a ng-click="newProject()">New Project</a> </li>
 						<li> <a ng-click="openProject()">Open Project</a> </li>
 						<li> <a>Open Simulation</a> </li>
-						<li> <a>Save As</a> </li>
+						<li> <a ng-click="testGen()">Save As</a> </li>
 						<li> <a>Revision History</a> </li>
 						<li> <a ng-click="download()">Download</a> </li>
 						<li> <a ng-click="share()">Share</a> </li>
@@ -37,8 +37,16 @@
 						<li> <a ng-click="aceEditor.toggleBlockComment()">Toggle Comment&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tip-right">Ctrl+/</span></a> </li>
 					</ul>
 				</li>
+				<li class="dropdown" ng-if="graphical">
+					<a class="dropdown-toggle">Edit<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li> <a ng-click="cut()">Cut<span class="tip-right">Ctrl+X</span></a> </li>
+						<li> <a ng-click="copy()">Copy<span class="tip-right">Ctrl+C</span></a> </li>
+						<li> <a ng-click="paste()">Paste<span class="tip-right">Ctrl+V</span></a> </li>
+					</ul>
+				</li>
 				<li class="dropdown">
-					<a class="dropdown-toggle">Simulate<b class="caret"></b></a>
+					<a class="dropdown-toggle"><img src="/images/loading.gif" style="width: 20px; height: 20px; margin-right: 3px;" ng-show="simRunning"/>Simulate<b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li> <a ng-click="compile(false)">Compile</a> </li>
 						<li> <a ng-click="compile(true)">Codesize Estimate</a> </li>
@@ -213,24 +221,25 @@
 		<block type="controls_for">
 			<value name="FROM">
 				<block type="math_number">
-					<field name="NUM">1</field>
+					<field name="NUM">0</field>
 				</block>
 			</value>
 			<value name="TO">
 				<block type="math_number">
-					<field name="NUM">10</field>
-				</block>
-			</value>
-		</block>
-		<block type="controls_forEach">
-			<value name="LIST">
-				<block type="variables_array_get_pointer">
+					<field name="NUM">9</field>
 				</block>
 			</value>
 		</block>
 		<block type="controls_flow_statements"></block>
 	</category>
 	<category name="Functions" custom="PROCEDURE">
+	</category>
+	<category name="CosmoSPHERES MS">
+		<block type="zrms14_getDebrisLocation"></block>
+		<block type="zrms14_haveDebris"></block>
+		<block type="zrms14_startLasso"></block>
+		<block type="zrms14_haveItem"></block>
+		<block type="zrms14_getCometState"></block>
 	</category>
 </xml>
 

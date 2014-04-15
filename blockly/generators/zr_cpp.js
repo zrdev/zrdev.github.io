@@ -53,7 +53,7 @@ Blockly.zr_cpp.C_GLOBAL_VARS = [];
 Blockly.zr_cpp.addReservedWords(
 	',alignas,alignof,and,and_eq,asm,auto,bitand,bitor,bool,break,case,catch,char,char16_t,char32_t,class,compl,const,constexpr,const_cast,continue,decltype,default,delete,do,double,dynamic_cast,else,enum,explicit,export,extern,false,float,for,friend,goto,if,inline,int,long,mutable,namespace,new,noexcept,not,not_eq,nullptr,operator,or,or_eq,private,protected,public,register,reinterpret_cast,return,short,signed,sizeof,static,static_assert,static_cast,struct,switch,template,this,thread_local,throw,true,try,typedef,typeid,typename,union,unsigned,using,virtual,void,volatile,wchar_t,while,xor,xor_eq,posix,'
 	// http://en.cppreference.com/w/cpp/keyword
-	+ 'game,api,PI,PI2,PI3,PI4,DEG2RAD,RAD2DEG' //TODO: add ZR #defines to list
+	+ 'game,api,PI,PI2,PI3,PI4,DEG2RAD,RAD2DEG,ZRMS,ZR2D,ZR3D,ALLIANCE' //TODO: add ZR #defines to list
 );
 
 /**
@@ -131,12 +131,17 @@ Blockly.zr_cpp.init = function() {
  * @return {string} Completed code.
  */
 Blockly.zr_cpp.finish = function(code) {
+	//Suppress global variables on single-page displays
+	return code;
+}
+
+Blockly.zr_cpp.finishFull = function(code) {
 	// Convert the definitions dictionary into a list.
 	var definitions = [];
 	for (var name in Blockly.zr_cpp.definitions_) {
 		definitions.push(Blockly.zr_cpp.definitions_[name]);
 	}
-	return definitions.join('\n\n') + '\n\n\n' + code;
+	return definitions.join('\n\n') + '\n\n' + code;
 };
 
 /**

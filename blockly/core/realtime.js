@@ -300,6 +300,7 @@ Blockly.Realtime.loadBlocks_ = function() {
 	for (var j = 0; j < topBlocks.length; j++) {
 		var topBlock = topBlocks.get(j);
 		Blockly.Realtime.placeBlockOnWorkspace_(topBlock, true);
+
 	}
 };
 
@@ -370,6 +371,14 @@ Blockly.Realtime.loadPage = function(pageName) {
 	Blockly.Realtime.initializing = true; //Flag to suppress block adjusters
 	Blockly.Realtime.loadBlocks_();
 	Blockly.Realtime.initializing = false;
+
+	//Fire onchange handlers
+	var blocks = Blockly. Realtime.blocksMap_.values();
+	for(var i = blocks.length; i--; ) {
+		if(typeof blocks[i].onchange === 'function') {
+			blocks[i].onchange();
+		}
+	}
 	
 	//Add procedure block if the page is empty
 	if(Blockly.Realtime.blocksMap_.isEmpty()) {

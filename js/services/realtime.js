@@ -26,7 +26,10 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 	 * @param config
 	 */
 	function ($q, $rootScope, $routeParams, config) {
+		//Parameters for new project
 		this.ideGraphical = false;
+		this.gameId = null;
+
 		this.id = null;
 		this.document = null;
 		var PROJ_INIT_TEXT = 'void init() {\n\t\n}\n\nvoid loop() {\n\t\n}\n';
@@ -135,15 +138,16 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 		this.load = function (id) {
 			var deferred = $q.defer();
 			var initialize = function (model) {
+				var root = model.getRoot();
 				var pages = model.createMap();
-				model.getRoot().set('pages', pages);
+				root.set('pages', pages);
+				root.set('gameId', this_.gameId);
 				//Initialize the main pages
 				if(!this_.ideGraphical) {
-					model.getRoot().set('graphical', false);
+					root.set('graphical', false);
 					pages.set('main', model.createString(PROJ_INIT_TEXT));
 				}
 				else {
-					var root = model.getRoot();
 					root.set('graphical', true);
 					root.set('cglobals', model.createMap());
 					root.set('procedures', model.createMap());
@@ -160,7 +164,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 					pageRoot2.set('topBlocks', model.createList());
 				}
 				var log = model.createMap();
-				model.getRoot().set('log', log);
+				root.set('log', log);
 				//Log entries are identified by timestamp, plus some random digits to avoid collisions
 				var key = String(new Date().getTime() + Math.random());
 				log.set(key, {

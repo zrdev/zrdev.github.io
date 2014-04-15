@@ -1,35 +1,47 @@
 <div class="page-content">
     <object class="animation" id="cubesphere_obj" name="cubesphere_obj" title="Click and drag picture to change view" type="application/x-shockwave-flash" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">
       <param id="cubesphere_param" name="movie"
-	     value="/visualizer/ZRVis.swf?config=/visualizer/ZRHS2013_vis.xml&staticbase=/visualizer/static/swf/"/>
+	     value="/visualizer/ZRVis.swf?config=/visualizer/ZRMS2014_vis.xml&staticbase=/visualizer/"/>
       <param name="allowScriptAccess" value="sameDomain"/>
       <param name="wmode" value="direct"/>
-      <embed src="/visualizer/ZRVis.swf?config=/visualizer/ZRHS2013_vis.xml&staticbase=/visualizer/static/swf/"
+      <embed src="/visualizer/ZRVis.swf?config=/visualizer/ZRMS2014_vis.xml&staticbase=/visualizer/"
 	     class="animation" id="cubesphere_embed" name="cubesphere_embed"
 	     allowScriptAccess="sameDomain" wmode="direct"
 	     pluginspage="http://www.macromedia.com/go/getflashplayer"
              type="application/x-shockwave-flash" adjustheight="{{ isFullScreen() ? 100 : 200 }}"/>
     </object>
-	<progressbar max="100" value="50"><button class="btn btn-default slider-handle"></button></progressbar>
-	<div class="btn-group">
-		<button class="btn" ng-class="{'btn-success':!playing, 'btn-warning':playing}" ng-click="playPause()">
-			<span class="glyphicon" ng-class="{'glyphicon-play': state !== 'play', 'glyphicon-pause': state === 'play'}"></span>
-		</button>
-		<button class="btn btn-danger" ng-class="{'disabled': state === 'stop'}" ng-click="stop()"><span class="glyphicon glyphicon-stop"></span></button>
+    <div style="height:57px;">
+		<slider floor="0" ceiling="100" step="0.1" ng-model="time" precision="1" ng-click="setTime()" ng-hide="state === 'stop'"></slider>
 	</div>
-	<div class="btn-group" title="Set the playback speed">
-		<button class="btn btn-default" ng-model="speed" btn-radio="1" ng-click="setSpeed(1)">1&times;</button>
-		<button class="btn btn-default" ng-model="speed" btn-radio="2" ng-click="setSpeed(2)">2&times;</button>
-		<button class="btn btn-default" ng-model="speed" btn-radio="4" ng-click="setSpeed(4)">4&times;</button>
-		<button class="btn btn-default" ng-model="speed" btn-radio="10" ng-click="setSpeed(10)">10&times;</button>
-	</div>
-	<div class="btn-group">
-		<button class="btn btn-default" title="Zoom in" ng-click="zoomIn()"><span class="glyphicon glyphicon-zoom-in"></span></button>
-		<button class="btn btn-default" title="Zoom out" ng-click="zoomOut()"><span class="glyphicon glyphicon-zoom-out"></span></button>
-		<button class="btn btn-default" title="Reset the camera view" ng-click="resetCam()"><span class="glyphicon glyphicon-repeat"></span></button>
-		<button class="btn btn-default" title="Change the background image" ng-click="toggleBg()"><span class="glyphicon glyphicon-globe"></span></button>
-		<button class="btn btn-default" title="Show/hide the console" ng-click="toggleConsole()"><span class="glyphicon glyphicon-list-alt"></span></button>
-		<button class="btn btn-default" title="View full screen" ng-click="enterFullScreen()" ng-show="!isFullScreen()"><span class="glyphicon glyphicon-resize-full"></span></button>
-		<button class="btn btn-default" title="Exit full screen" ng-click="exitFullScreen()" ng-show="isFullScreen()"><span class="glyphicon glyphicon-resize-small"></span></button>
+	<div class="button-toolbar" role="toolbar">
+		<div class="btn-group">
+			<button class="btn" ng-class="{'btn-success':!playing, 'btn-warning':playing}" ng-click="playPause()">
+				<span class="glyphicon" ng-class="{'glyphicon-play': state !== 'play', 'glyphicon-pause': state === 'play'}"></span>
+			</button>
+			<button class="btn btn-danger" ng-class="{'disabled': state === 'stop'}" ng-click="stop()"><span class="glyphicon glyphicon-stop"></span></button>
+		</div>
+		<div class="btn-group" title="Set the playback speed">
+			<button class="btn btn-default" ng-model="speed" btn-radio="1" ng-click="setSpeed(1)">1&times;</button>
+			<button class="btn btn-default" ng-model="speed" btn-radio="2" ng-click="setSpeed(2)">2&times;</button>
+			<button class="btn btn-default" ng-model="speed" btn-radio="4" ng-click="setSpeed(4)">4&times;</button>
+			<button class="btn btn-default" ng-model="speed" btn-radio="10" ng-click="setSpeed(10)">10&times;</button>
+		</div>
+		<div class="btn-group">
+			<button class="btn btn-default" title="Zoom in" ng-click="zoomIn()"><span class="glyphicon glyphicon-zoom-in"></span></button>
+			<button class="btn btn-default" title="Zoom out" ng-click="zoomOut()"><span class="glyphicon glyphicon-zoom-out"></span></button>
+			<button class="btn btn-default" title="Reset the camera view" ng-click="resetCam()"><span class="glyphicon glyphicon-repeat"></span></button>
+			<button class="btn btn-default" title="Change the background image" ng-model="bgOn" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
+				<span class="glyphicon glyphicon-globe"></span>
+			</button>
+			<button class="btn btn-default" title="Show/hide the console" ng-model="consoleOn" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
+				<span class="glyphicon glyphicon-list-alt"></span>
+			</button>
+			<button class="btn btn-default" title="View full screen" ng-click="enterFullScreen()" ng-if="!isFullScreen()">
+				<span class="glyphicon glyphicon-resize-full"></span>
+			</button>
+			<button class="btn btn-default" title="Exit full screen" ng-click="exitFullScreen()" ng-if="isFullScreen()">
+				<span class="glyphicon glyphicon-resize-small"></span>
+			</button>
+		</div>
 	</div>
 </div>
