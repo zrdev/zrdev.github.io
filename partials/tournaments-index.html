@@ -13,13 +13,13 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="t in data.activeTournaments | orderBy:'tournamentEndDate'">
+		<tr ng-repeat="t in activeTournaments | orderBy:'tournamentEndDate'">
 			<td>
-				<img class="img-thumbnail" src="{{ t.logo }}">
+				<img class="img-thumbnail" ng-src="{{ t.logo }}">
 			</td>
 			<td>
 				<p><a href="/tournaments/{{ t.id }}/">{{ t.name }}</a></p>
-				<p>{{ t.description }}</p>
+				<div ng-bind-html="t.description"></div>
 			</td>
 			<td>{{ t.registrationStartDate | date:'longDate'}}</td>
 			<td>{{ t.registrationEndDate | date:'longDate'}}</td>
@@ -42,13 +42,13 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="t in data.pastTournaments | orderBy:'-tournamentEndDate'">
+		<tr ng-repeat="t in pastTournaments | orderBy:'-tournamentEndDate'">
 			<td>
-				<img class="img-thumbnail" src="{{ t.logo }}">
+				<img class="img-thumbnail" ng-src="{{ t.logo }}">
 			</td>
 			<td>
 				<p><a href="/tournaments/{{ t.id }}/">{{ t.name }}</a></p>
-				<p>{{ t.description }}</p>
+				<div ng-bind-html="t.description"></div>
 			</td>
 			<td>{{ t.registrationStartDate | date:'longDate'}}</td>
 			<td>{{ t.registrationEndDate | date:'longDate'}}</td>

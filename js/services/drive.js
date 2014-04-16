@@ -15,9 +15,9 @@
 'use strict';
 
 //Handles Drive files and APIs. 
-zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 
+zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 'zrdb',
 
-	function (config, $modal, $timeout, $location, realtime) {
+	function (config, $modal, $timeout, $location, realtime, zrdb) {
 		
 		//Renames the current file in Drive. 
 		this.renameFile = function(title, id, callback) {
@@ -63,15 +63,8 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime',
 					controller: 'NewProjectModalController',
 					resolve: {
 						folder: function() { return folder; },
-						gameResources: function($http) {
-							return $http.get(config.serviceDomain + '/gameresource/all/')
-							.success(function(data) {
-								return data;
-							})
-							.error(function() {
-								alert('Could not retrieve game data.');
-								return null;
-							});
+						gameResources: function() {
+							return zrdb.getAllResources('game');
 						}
 					}
 				});

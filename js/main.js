@@ -12,21 +12,8 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		});
 	};
 	loadFile.$inject = ['$route', 'realtime'];
-	
-	var getSimData = function($route, config, $http) {
-		var id = $route.current.params['simId'];
-		return $http.get(config.serviceDomain + '/simulationresource/single/' + id)
-		.success(function(data) {
-			return data;
-		})
-		.error(function() {
-			alert('Could not retrieve simulation data.')
-			return null;
-		});
-	}
 
-	getSimData.$inject = ['$route', 'config', '$http'];
-
+	//URL routing
 	$routeProvider.when('/', {
 		templateUrl: '/partials/frontpage.html'
 	}).when('/announcements/', {
@@ -35,11 +22,20 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	}).when('/announcements/:announcementId/', {
 		templateUrl: '/partials/announcements-detail.html',
 		controller: 'AnnouncementsController'
-	}).when('/ide/simulation/:simId/', {
+	}).when('/ide/simulation/:id/', {
 		templateUrl: '/partials/visualization.html',
 		controller: 'VisualizationController',
 		resolve: {
-			simResource: getSimData
+			resources: function(zrdb) {
+				//Chained dependent resources: first load the sim, then get the game based on the ID in the sim
+				var sim = zrdb.getSingleResource('simulation');
+					.then(function(sim) {
+						return zrdb.getSingleResource('game', sim.data.gameId)
+							.then(function(game) {
+								return [sim, game];
+							});
+					});
+			}
 		}
 	}).when('/ide/open/', {
 		redirectTo: function(routeParams, path, search) {
@@ -73,10 +69,20 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		}
 	}).when('/tournaments/', {
 		templateUrl: '/partials/tournaments-index.html',
-		controller: 'TournamentsListController'
-	}).when('/tournaments/:tournamentId/', {
+		controller: 'TournamentsListController',
+		resolve: {
+			tournamentResources: function(zrdb) {
+				return zrdb.getAllResources('tournament');
+			}
+		}
+	}).when('/tournaments/:id/', {
 		templateUrl: '/partials/tournaments-info.html',
-		controller: 'TournamentsInfoController'
+		controller: 'TournamentsInfoController',
+		resolve: {
+			tournamentResource: function(zrdb) {
+				return zrdb.getSingleResource('tournament');
+			}
+		}
 	}).when('/tournaments/:tournamentId/:mode/:resourceId/', {
 		templateUrl: '/partials/tournaments-info.html',
 		controller: 'TournamentsInfoController'
@@ -104,6 +110,8 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		redirectTo: '/'
 	});
 })
+//End URL routing
+
 .config(function ($httpProvider) {
 	$httpProvider.defaults.useXDomain = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];

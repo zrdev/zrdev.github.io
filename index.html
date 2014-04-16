@@ -49,6 +49,7 @@
 	<script src="/js/main.js"></script>
 	<script type="text/javascript" src="/js/services/realtime.js"></script>
 	<script type="text/javascript" src="/js/services/drive.js"></script>
+	<script type="text/javascript" src="/js/services/zrdb.js"></script>
 	<script type="text/javascript" src="/js/controllers/tournaments-list.js"></script>
 	<script type="text/javascript" src="/js/controllers/tournaments-info.js"></script>
 	<script type="text/javascript" src="/js/controllers/rename-project.js"></script>
@@ -63,6 +64,7 @@
 	<script type="text/javascript" src="/js/controllers/team-management.js"></script>
 	<script type="text/javascript" src="/js/controllers/visualization.js"></script>
 	<script type="text/javascript" src="/js/directives/fieldfocus.js"></script>
+	<script type="text/javascript" src="/js/directives/embed-src.js"></script>
 	<script type="text/javascript" src="/js/directives/adjustheight.js"></script>
 	<script type="text/javascript" src="/js/filters/striptags.js"></script>
 	
@@ -97,7 +99,7 @@
 						</li>
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown"><img src="/images/competitionIcon.png" class="nav-icon" />Tournaments<b class="caret"></b></a>
-							<ul class="dropdown-menu" ng-controller="TournamentsListController">
+							<ul class="dropdown-menu">
 								<li><a href="/tournaments/">All Tournaments</a></li>
 								<li><a href="/manage-teams/">Manage Teams</a></li>
 								<li class="divider"></li>

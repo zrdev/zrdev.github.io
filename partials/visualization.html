@@ -1,16 +1,16 @@
 <div class="page-content">
-    <object class="animation" id="cubesphere_obj" name="cubesphere_obj" title="Click and drag picture to change view" type="application/x-shockwave-flash" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">
-      <param id="cubesphere_param" name="movie"
-	     value="/visualizer/ZRVis.swf?config=/visualizer/ZRMS2014_vis.xml&staticbase=/visualizer/"/>
-      <param name="allowScriptAccess" value="sameDomain"/>
-      <param name="wmode" value="direct"/>
-      <embed src="/visualizer/ZRVis.swf?config=/visualizer/ZRMS2014_vis.xml&staticbase=/visualizer/"
-	     class="animation" id="cubesphere_embed" name="cubesphere_embed"
-	     allowScriptAccess="sameDomain" wmode="direct"
-	     pluginspage="http://www.macromedia.com/go/getflashplayer"
-             type="application/x-shockwave-flash" adjustheight="{{ isFullScreen() ? 100 : 200 }}"/>
-    </object>
-    <div style="height:57px;">
+	<object class="animation" id="cubesphere_obj" name="cubesphere_obj" title="Click and drag picture to change view" type="application/x-shockwave-flash" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">
+	  <param id="cubesphere_param" name="movie"
+		 value="{{ swfUrl }}"/>
+	  <param name="allowScriptAccess" value="sameDomain"/>
+	  <param name="wmode" value="direct"/>
+	  <embed embed-src="{{ swfUrl }}"
+		 class="animation" id="cubesphere_embed" name="cubesphere_embed"
+		 allowScriptAccess="sameDomain" wmode="direct"
+		 pluginspage="http://www.macromedia.com/go/getflashplayer"
+			 type="application/x-shockwave-flash" adjustheight="{{ isFullScreen() ? 100 : 200 }}"/>
+	</object>
+	<div style="height:57px;">
 		<slider floor="0" ceiling="100" step="0.1" ng-model="time" precision="1" ng-click="setTime()" ng-hide="state === 'stop'"></slider>
 	</div>
 	<div class="button-toolbar" role="toolbar">

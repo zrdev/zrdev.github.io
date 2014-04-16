@@ -1,21 +1,21 @@
-zr.controller('SimulationController', function($scope, $modalInstance) {
+zr.controller('SimulationController', function($scope, $modalInstance, gameResource) {
+	var game = gameResource.data;
 	$scope.data = {
 		sph: 1,
 		opponentId: null,
-		timeout: 210,
-		sph1init: [0.2, -0.65, 0.0, 0, 1, 0],
-		sph2init: [-0.2, -0.65, 0.0, 0, 1, 0],
-		gameVars: [
-			{
-				name: 'cometConfig',
-				value: 0
-			},
-			{
-				name: 'debrisConfig',
-				value: 1
-			}
-		]
+		timeout: game.defaultTimeout,
+		sph1init: JSON.parse(game.initState1),
+		sph2init: JSON.parse(game.initState2),
+		gameVars: []
 	};
+	var varsConfig = JSON.parse(game.gameVariables);
+	for(var i = varsConfig.length; i--; ) {
+		$scope.data.gameVars.push({
+			name: varsConfig[i].name,
+			value: varsConfig[i].min
+		});
+	}
+
 	$scope.opponentTitle = 'No Opponent';
 	
 	$modalInstance.opened.then(function() {

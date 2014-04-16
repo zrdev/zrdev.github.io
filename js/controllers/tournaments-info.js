@@ -1,14 +1,6 @@
-zr.controller('TournamentsInfoController', function($scope, $route) {
+zr.controller('TournamentsInfoController', function($scope, $route, tournamentResource) {
 	$scope.data = {};
-	$scope.tournament = {
-		id: 1,
-		name: 'Some Tournament',
-		logo: 'images/logo.png',
-		description: 'Awesome tournament yayAwesome tournament yayAwesome tournament yayAwesome tournament yayAwesome tournament yayAwesome tournament yayAwesome tournament yayAwesome tournament yayAwesome tournament yayAwesome tournament yayAwesome tournament yayAwesome tourna',
-		registrationStartDate: 1391067721757,
-		registrationEndDate: 1391067721757,
-		tournamentEndDate: 1391067721758
-	}
+	$scope.tournament = tournamentResource.data;
 	$scope.data.divisions = [
 		{
 			id: 1,

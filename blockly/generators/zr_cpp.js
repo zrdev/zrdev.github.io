@@ -141,7 +141,9 @@ Blockly.zr_cpp.finishFull = function(code) {
 	for (var name in Blockly.zr_cpp.definitions_) {
 		definitions.push(Blockly.zr_cpp.definitions_[name]);
 	}
-	return definitions.join('\n\n') + '\n\n' + code;
+	return definitions.join('\n\n') + '\n\n' + 
+	'void setPos(float x, float y, float z) {\n\tfloat pos[3];\n\tpos[0] = x; pos[1] = y; pos[2] = z;\n\tapi.setPositionTarget(pos);\n}'
+	+ '\n\n' + code;
 };
 
 /**

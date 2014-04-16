@@ -1,4 +1,4 @@
-zr.controller('VisualizationController', function($scope, simResource) {
+zr.controller('VisualizationController', function($scope, $sce, $timeout, resources) {
 	$scope.isFullScreen = function() {
 		return !!(document.fullscreenElement ||
 				document.mozFullScreenElement || 
@@ -44,10 +44,15 @@ zr.controller('VisualizationController', function($scope, simResource) {
 	$scope.speed = 1;
 	$scope.state = 'stop';
 	$scope.time = 0;
+	//resources[1] is the game resource. Needs to be trusted because this is interpolated into a src attribute.
+	$scope.swfUrl = $sce.trustAsResourceUrl('/visualizer/ZRVis.swf?config=/visualizer/' + resources[1].data.visCfgFile + '&staticbase=/visualizer/');
 	
 	var userSliding = true;
 	var simLoaded = false;
-	var simobject = document.getElementById('cubesphere_embed');
+	var simobject;
+	$timeout(function() {
+		simobject = document.getElementById('cubesphere_embed');
+	});
 
 	$scope.consoleOn = true;
 	$scope.$watch('consoleOn', function() {
@@ -80,7 +85,8 @@ zr.controller('VisualizationController', function($scope, simResource) {
 		}
 	};
 	window.asLoadComplete = function() {
-		simobject.asLoadDirect(simResource.data.simData);
+		//resources[0] is the simulation
+		simobject.asLoadDirect(resources[0].data.simData);
 		simLoaded = true;
 	}
 

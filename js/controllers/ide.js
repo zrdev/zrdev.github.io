@@ -1,4 +1,4 @@
-zr.controller('IdeController', function($scope, $modal, $http, $timeout, $location, config, realtime, drive, realtimeDocument) {
+zr.controller('IdeController', function($scope, $modal, $http, $timeout, $location, config, realtime, drive, realtimeDocument, zrdb) {
 	$scope.model = realtimeDocument.getModel();
 	var graphical = $scope.model.getRoot().get('graphical');
 	$scope.graphical = graphical;
@@ -19,7 +19,6 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 	};
 	updateLog();
 	
-	$scope.logFocus = '';
 	$scope.logOpen = false;
 	$scope.chat = {
 		message: ''
@@ -54,12 +53,14 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 		drive.openProject();
 	}
 	
-	$scope.focusLog = function(title) {
-		if($scope.logFocus === title) {
-			$scope.logFocus = '';
-		}
-		else {
-			$scope.logFocus = title;
+	$scope.focusLog = function(item) {
+		if(item.content) {
+			var template = '<div class="modal-header"><button type="button" class="close" aria-hidden="true" ng-click="$dismiss()">&times;</button><h4 class="modal-title">'
+				+ item.title + '</h4></div><div class="modal-body log-body">'
+				+ item.content + '</div>';
+			$modal.open({
+				template: template
+			});
 		}
 	};
 	
@@ -129,7 +130,9 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 			templateUrl: '/partials/simulation-modal.html',
 			controller: 'SimulationController',
 			resolve: {
-				
+				gameResource: function() {
+					return zrdb.getSingleResource('game', $scope.model.getRoot().get('gameId'));
+				}
 			},
 			windowClass: {
 				'width': '1000px'

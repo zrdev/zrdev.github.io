@@ -215,7 +215,7 @@ Blockly.Blocks['variables_array_declare'] = {
 				len = 1;
 			}
 			if(block.inputList !== void 0) { //inputList will not yet be initialized on the first call
-				var oldlen = block.getFieldValue('LENGTH');
+				var oldlen = parseInt(block.getFieldValue('LENGTH'));
 				var input = block.getInput('INPUTS');
 				if(len < oldlen) {
 					for (var i = len; i < oldlen; i++) {
@@ -244,7 +244,7 @@ Blockly.Blocks['variables_array_declare'] = {
 				.appendField(new Blockly.FieldTextInput('myArray', Blockly.Blocks.CNameValidator), 'NAME')
 				.appendField('length:')
 				.appendField(new Blockly.FieldTextInput('1', function(text) {
-					adjustInputs(text,this_);
+					return adjustInputs(text,this_);
 				}), 'LENGTH')
 				.appendField('initial value:')
 				.appendField(new Blockly.FieldTextInput('0', Blockly.FieldTextInput.numberValidator), 'VALUE0');
