@@ -1,0 +1,7 @@
+<category name="CosmoSPHERES MS">
+	<block type="zrms14_getDebrisLocation"></block>
+	<block type="zrms14_haveDebris"></block>
+	<block type="zrms14_startLasso"></block>
+	<block type="zrms14_haveItem"></block>
+	<block type="zrms14_getCometState"></block>
+</category>

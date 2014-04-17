@@ -1,4 +1,5 @@
-zr.controller('IdeController', function($scope, $modal, $http, $timeout, $location, config, realtime, drive, realtimeDocument, zrdb) {
+zr.controller('IdeController', function($scope, $modal, $http, $timeout, $location, config, realtime, drive, resources, zrdb) {
+	var realtimeDocument = resources[0];
 	$scope.model = realtimeDocument.getModel();
 	var graphical = $scope.model.getRoot().get('graphical');
 	$scope.graphical = graphical;
@@ -9,6 +10,12 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 		text: ''
 	};
 	$scope.simRunning = false;
+	if(graphical && resources[1].data.hllBlockSet) {
+		$scope.blocklyTreeUrl = '/blockly/games/' + resources[1].data.hllBlockSet + 'tree.xml';
+	}
+	else {
+		$scope.blocklyTreeUrl = null;
+	}
 	
 	var collabLog = $scope.model.getRoot().get('log');
 	$scope.log = null;
@@ -131,7 +138,7 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 			controller: 'SimulationController',
 			resolve: {
 				gameResource: function() {
-					return zrdb.getSingleResource('game', $scope.model.getRoot().get('gameId'));
+					return resources[1];
 				}
 			},
 			windowClass: {
@@ -224,8 +231,7 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 		alert(getDocAsString());
 	}
 	
-	var CONNECTION_ERROR = 'The server did not respond. Please check your Internet connection and try again.'
-			+ 'If this problem persists for more than a few minutes, please contact us at zerorobotics@mit.edu.'
+
 	
 	$scope.compile = function(codesize) {
 		var data = {
@@ -234,47 +240,17 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 			codesize: codesize
 		};
 		
-		var getCompilationStatus = function(id) {
-			$timeout(function() {
-				$http.get(config.serviceDomain + '/compilationresource/single/' + id)
-				.success(function(data,status,headers,config) {
-					if(data.status === 'COMPILING') {
-							getCompilationStatus(id);
-					}
-					else if(data.status === 'SUCCEEDED') {
-						$scope.logInsert('Compilation succeeded. '
-								+ (typeof data.codesizePct === 'number' ? data.codesizePct + '% codesize usage.' : ''),
-								data.message);
-						$scope.logOpen = true;
-						$scope.simRunning = false;
-					}
-					else if(data.status === 'FAILED') {
-						$scope.logInsert('Compilation failed.\n', data.message);
-						$scope.logOpen = true;
-						$scope.simRunning = false;
-					}
-				})
-				.error(function(data,status,headers,config) {
-					alert(CONNECTION_ERROR);
-					$scope.simRunning = false;
-				});
-			}, 1000);
-		};
-		
-		$http.post(config.serviceDomain + '/compilationresource/compile', data)
-		.success(function(data,status,headers,config) {
-			if(data.status === 'FAILED') {
-				$scope.logInsert('Compilation failed.\n', data.message);
-				$scope.logOpen = true;
-				$scope.simRunning = false;
-				return;
-			}
-			getCompilationStatus(data.id);
-		})
-		.error(function(data,status,headers,config) {
-			alert(CONNECTION_ERROR);
+		zrdb.compile(data).then(function(response) { //Success callback
+			$scope.logInsert('Compilation succeeded. '
+					+ (typeof response.codesizePct === 'number' ? response.codesizePct + '% codesize usage.\n' : '\n'),
+					response.message);
+		}, function(response) { //Error callback
+			$scope.logInsert('Compilation failed.\n', response.message);
+		}).finally(function() {
+			$scope.logOpen = true;
 			$scope.simRunning = false;
 		});
+
 		$scope.simRunning = true;
 	}
 	
@@ -301,46 +277,16 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 			data['code2'] = getDocAsString();
 			data['code1'] = emptyCode;
 		}
-		
-		var getSimStatus = function(id) {
-			$timeout(function() {
-				$http.get(config.serviceDomain + '/simulationresource/single/' + id)
-				.success(function(data,status,headers,config) {
-					if(data.status === 'COMPILING' || data.status === 'SIMULATING') {
-							getSimStatus(id);
-					}
-					else if(data.status === 'SUCCEEDED') {
-						$scope.logInsert('Simulation succeeded',
-								data.message, id);
-						$scope.logOpen = true;
-						$scope.simRunning = false;
-					}
-					else if(data.status === 'FAILED') {
-						$scope.logInsert('Simulation failed.\n', data.message);
-						$scope.logOpen = true;
-						$scope.simRunning = false;
-					}
-				})
-				.error(function(data,status,headers,config) {
-					alert(CONNECTION_ERROR);
-					$scope.simRunning = false;
-				});
-			}, 1000);
-		};
-		$http.post(config.serviceDomain + '/simulationresource/simulate', data)
-		.success(function(data,status,headers,config) {
-			if(data.status === 'FAILED') {
-				$scope.logInsert('Simulation failed.\n', data.message);
-				$scope.logOpen = true;
-				$scope.simRunning = false;
-				return;
-			}
-			getSimStatus(data.id);
-		})
-		.error(function(data,status,headers,config) {
-			alert(CONNECTION_ERROR);
+
+		zrdb.compile(data, true).then(function(response) { //Success callback
+			$scope.logInsert('Simulation succeeded.\n', response.message, response.id);
+		}, function(response) { //Error callback
+			$scope.logInsert('Simulation failed.\n', response.message);
+		}).finally(function() {
+			$scope.logOpen = true;
 			$scope.simRunning = false;
 		});
+		
 		$scope.simRunning = true;
 	}
 	
@@ -417,18 +363,23 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 	        Blockly.mainWorkspace.paste(Blockly.clipboard_);
 		}
 	}
+
+
 	
 	//Callback to load Blockly when everything is rendered
 	if(graphical) {
-		//This triggers after the DOM is all compiled/rendered
-		$timeout(function() {
+		$scope.loadBlockly = function() {
 			Blockly.inject(document.getElementById('blockly-frame'),{path:'/blockly/',toolbox: document.getElementById('blockly-toolbox')});
 			//Scroll over to keep procedure in center
 			var dims = Blockly.mainWorkspace.getMetrics();
 			Blockly.mainWorkspace.scrollX += dims.viewWidth / 3;
 			Blockly.mainWorkspace.scrollY += dims.viewHeight / 4;
 			Blockly.Realtime.loadPage($scope.currentPageName);
-		});
+		};
+		//This triggers after the DOM is all compiled/rendered
+		if(!$scope.blocklyTreeUrl) {
+			$timeout($scope.loadBlockly);
+		}
 	}
 	
 	

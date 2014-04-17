@@ -15,12 +15,14 @@
 'use strict';
 
 //Handles Drive files and APIs. 
-zr.service('zrdb', ['config', '$http', '$timeout', '$route',
+zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 
-	function (config, $http, $timeout, $route) {
+	function (config, $http, $timeout, $route, $q) {
 
 		var cache = {};
 		var completeTables = {};
+		var CONNECTION_ERROR = 'The server did not respond. Please check your Internet connection and try again.'
+				+ 'If this problem persists for more than a few minutes, please contact us at zerorobotics@mit.edu.'
 		
 		this.getSingleResource = function(name, id) {
 			id = id || $route.current.params['id'];
@@ -29,33 +31,35 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route',
 				var all = cache[name];
 				for(var i = all.length; i--; ) {
 					if(all[i].id === id) {
-						return {
+						//Return a promise and resolve it right away so the cache is transparent to the router
+						return $q.when({
 							data: all[i]
-						};
+						});
 					}
 				}
 			}
-			return $http.get(config.serviceDomain + '/' + name + 'resource/single/' + id)
+			return $http.get(config.serviceDomain + '/' + name + 'resource/single/' + id + '/')
 			.success(function(data) {
 				if(!(name in cache)) {
 					cache[name] = [];
 				}
-				cache[name][id] = data;
+				cache[name].push(data);
 				return data;
 			})
 			.error(function() {
-				alert('Could not retrieve data from ZR server.')
+				alert(CONNECTION_ERROR);
 				return null;
 			});
 		};
 
 		this.getAllResources = function(name) {
 			if(name in completeTables) {
-				return {
+				//Return a promise and resolve it right away
+				return $q.when({
 					data: {
 						rows: cache[name]
 					}
-				}
+				});
 			}
 			return $http.get(config.serviceDomain + '/' + name + 'resource/all/')
 			.success(function(data) {
@@ -64,9 +68,60 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route',
 				return data.rows;
 			})
 			.error(function() {
-				alert('Could not retrieve game data.');
+				alert(CONNECTION_ERROR);
 				return null;
 			});
+		};
+
+		this.compile = function(data, simulate) {
+			var deferred = $q.defer();
+
+			var errorCallback = function() {
+				alert(CONNECTION_ERROR);
+				deferred.reject({
+					message: CONNECTION_ERROR
+				});
+			};
+
+			var getStatus = function(id) {
+				$timeout(function() {
+					$http.get(config.serviceDomain + (simulate ? '/simulation' : '/compilation') 
+						+ 'resource/single/' + id)
+					.success(function(data,status,headers,config) {
+						if(data.status === 'COMPILING' || data.status === 'SIMULATING') {
+							getStatus(id);
+						}
+						else if(data.status === 'SUCCEEDED') {
+							//Cache the sim data
+							if(simulate) {
+								if(!('simulation' in cache)) {
+									cache['simulation'] = [];
+								}
+								cache['simulation'].push(data);
+							}
+							deferred.resolve(data);
+						}
+						else if(data.status === 'FAILED') {
+							deferred.reject(data);
+						}
+					})
+					.error(errorCallback);
+				}, 1000);
+			};
+			
+			$http.post(config.serviceDomain + 
+				(simulate ? '/simulationresource/simulate' : '/compilationresource/compile'), data)
+			.success(function(data) {
+				if(data.status === 'FAILED') {
+					deferred.reject(data);
+				}
+				else {
+					getStatus(data.id);
+				}
+			})
+			.error(errorCallback);
+
+			return deferred.promise;
 		};
 
 	}]

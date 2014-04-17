@@ -14,7 +14,7 @@ zr.controller('NewProjectModalController', function($scope, $modalInstance, $loc
 	
 	$scope.createProject = function() {
 		realtime.requireAuth().then(function () {
-			realtime.createDocument($scope.data.name + ' - ' + $scope.data.game.name, folder).then(function (file) {
+			realtime.createDocument($scope.data.name + ' - ' + $scope.data.game.displayName, folder).then(function (file) {
 				realtime.ideGraphical = $scope.data.editorMode === 'graphical';
 				realtime.gameId = $scope.data.game.id;
 				$location.url('/ide/' + file.id + '/');

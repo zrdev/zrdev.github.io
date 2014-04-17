@@ -5,13 +5,19 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	$locationProvider.html5Mode(true);
 	
 	//Function to inject the Realtime doc into the editor controller
-	var loadFile = function ($route, realtime) {
+	var loadFile = function ($route, realtime, zrdb) {
 		var id = $route.current.params['fileId'];
 		return realtime.requireAuth(true).then(function () {
-			return realtime.getDocument(id);
+			return realtime.getDocument(id)
+			.then(function(doc) {
+				var id = doc.getModel().getRoot().get('gameId');
+				return zrdb.getSingleResource('game', id)
+				.then(function(game) {
+					return [doc, game];
+				});
+			});
 		});
 	};
-	loadFile.$inject = ['$route', 'realtime'];
 
 	//URL routing
 	$routeProvider.when('/', {
@@ -28,13 +34,13 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		resolve: {
 			resources: function(zrdb) {
 				//Chained dependent resources: first load the sim, then get the game based on the ID in the sim
-				var sim = zrdb.getSingleResource('simulation');
-					.then(function(sim) {
-						return zrdb.getSingleResource('game', sim.data.gameId)
-							.then(function(game) {
-								return [sim, game];
-							});
+				return zrdb.getSingleResource('simulation')
+				.then(function(sim) {
+					return zrdb.getSingleResource('game', sim.data.gameId)
+					.then(function(game) {
+						return [sim, game];
 					});
+				});
 			}
 		}
 	}).when('/ide/open/', {
@@ -65,7 +71,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		templateUrl: '/partials/ide.html',
 		controller: 'IdeController',
 		resolve: {
-			realtimeDocument: loadFile
+			resources: loadFile
 		}
 	}).when('/tournaments/', {
 		templateUrl: '/partials/tournaments-index.html',
