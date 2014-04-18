@@ -109,6 +109,9 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	}).when('/manage-teams/', {
 		templateUrl: '/partials/team-management.html',
 		controller: 'TeamManagementController'
+	}).when('/forum/', {
+		templateUrl: '/partials/forum.html',
+		controller: 'ForumController'
 	}).when('/form/', {
 		templateUrl: '/partials/form.html',
 		controller: 'FormBuilderController'
