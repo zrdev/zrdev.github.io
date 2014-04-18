@@ -30,7 +30,8 @@
 						<li> <a ng-click="aceEditor.undo()">Undo<span class="tip-right">Ctrl+Z</span></a> </li>
 						<li> <a ng-click="aceEditor.redo()">Redo<span class="tip-right">Ctrl+Y</span></a> </li>
 						<li class="divider"></li>
-						<li> <a id="menu-find-replace">Find/Replace</a> </li>
+						<li> <a ng-click="aceEditor.execCommand('find')">Find<span class="tip-right">Ctrl+F</span></a> </li>
+						<li> <a ng-click="aceEditor.execCommand('replace')">Replace<span class="tip-right">Ctrl+F &times;2</span></a> </li>
 						<li class="divider"></li>
 						<li> <a ng-click="aceEditor.blockIndent()">Indent<span class="tip-right">Tab</span></a></li>
 						<li> <a ng-click="aceEditor.blockOutdent()">Unindent<span class="tip-right">Shift+Tab</span></a> </li>
@@ -46,7 +47,7 @@
 					</ul>
 				</li>
 				<li class="dropdown">
-					<a class="dropdown-toggle"><img src="/images/loading.gif" style="width: 20px; height: 20px; margin-right: 3px;" ng-show="simRunning"/>Simulate<b class="caret"></b></a>
+					<a class="dropdown-toggle">Simulate<b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li> <a ng-click="compile(false)">Compile</a> </li>
 						<li> <a ng-click="compile(true)">Codesize Estimate</a> </li>
@@ -105,6 +106,9 @@
 		<div class="col-sm-9" readonly="true" ui-ace="aceOptions" ng-model="blocklyText" style="font-size: 18px;" heightoffset="160" ng-switch-when="graphical-c"></div>
 	</div>
 	<div id="blockly-frame" class="col-sm-9" adjustheight="160" ng-show="editorMode === 'graphical'"></div>
+</div>
+<div style="position: fixed; left: 50%; top: 80px; float: left;">
+	<div class="alert alert-info" style="position: relative; left: -50%; float: left;" ng-show="simRunning">Running...</div>
 </div>
 
 <!-- Blockly toolbox -->

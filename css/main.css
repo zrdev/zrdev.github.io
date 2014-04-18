@@ -312,3 +312,7 @@ div.picker-dialog-bg {
 .navbar-fixed-top {
 	padding-bottom: 7px;
 }
+
+.css-form input.ng-invalid.ng-dirty {
+	background-color: #FA787E !important;
+}

@@ -51,7 +51,7 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 			$scope.aceEditor = ace;
 		}
 	};
-	
+
 	$scope.newProject = function() {
 		drive.newProject();
 	}

@@ -1,5 +1,6 @@
 zr.controller('SimulationController', function($scope, $modalInstance, gameResource) {
 	var game = gameResource.data;
+
 	$scope.resetAll = function() {
 		$scope.data = {
 			sph: 1,
@@ -21,6 +22,12 @@ zr.controller('SimulationController', function($scope, $modalInstance, gameResou
 	});
 	
 	$scope.simulate = function() {
+		for(var i = $scope.data.gameVars.length; i--; ) {
+			var v = $scope.data.gameVars[i];
+			delete v.min;
+			delete v.max;
+			delete v.type;
+		}
 		$modalInstance.close($scope.data);
 	};
 	
