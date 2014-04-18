@@ -217,7 +217,12 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 		}
 		else {
 			for(var i = 0; i < len; i++) {
-				var domText = $scope.pages.get(keys[i]).get('topBlocks').asArray()[0].xmlDom;
+				var topBlocks = $scope.pages.get(keys[i]).get('topBlocks').asArray();
+				if(topBlocks.length === 0) {
+					//This will happen when the init page has not been initialized; it will be dealt with in finishFull
+					continue;
+				}
+				var domText = topBlocks[0].xmlDom;
 				var domObj = Blockly.Xml.textToDom(domText);
 				var block = Blockly.Xml.domToSoloBlock(domObj);
 				var code = Blockly.zr_cpp.blockToCode(block);
