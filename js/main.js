@@ -102,6 +102,8 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		templateUrl: '/partials/history.html'
 	}).when('/vision-mission/', {
 		templateUrl: '/partials/vision-mission.html'
+	}).when('/what-is-zr/', {
+		templateUrl: '/partials/what-is-zr.html'
 	}).when('/in-the-news/', {
 		templateUrl: '/partials/in-the-news.html'
 	}).when('/zr-team/', {
@@ -112,9 +114,6 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	}).when('/forum/', {
 		templateUrl: '/partials/forum.html',
 		controller: 'ForumController'
-	}).when('/form/', {
-		templateUrl: '/partials/form.html',
-		controller: 'FormBuilderController'
 	}).otherwise({
 		redirectTo: '/'
 	});

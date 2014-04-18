@@ -2,13 +2,92 @@
 	<div class="container">
 		<div class="col-md-6">
 			<div class="page-header"><h1>Welcome to Zero Robotics</h1></div>
-			<a href="/ide/simulation/">Vis</a>
+			<carousel interval="3000">
+				<slide>
+					<img src="/images/frontpage/1.jpg" style="margin:auto;">
+					<div class="carousel-caption">
+						<h4>Meet SPHERES</h4>
+						<p>An autonomous, self-propelled robot satellite aboard the International Space Station</p>
+					</div>
+				</slide>
+				<slide>
+					<img src="/images/frontpage/2.jpg" style="margin:auto;">
+					<div class="carousel-caption">
+						<h4></h4>
+						<p>Astronauts on the ISS and researchers around the world use SPHERES to test ideas for future satellite missions</p>
+					</div>
+				</slide>
+				<slide>
+					<img src="/images/frontpage/3.png" style="margin:auto;">
+					<div class="carousel-caption">
+						<h4>Create</h4>
+						<p>Write your own programs for SPHERES using our development environment and tutorials</p>
+					</div>
+				</slide>
+				<slide>
+					<img src="/images/frontpage/4.jpg" style="margin:auto;">
+					<div class="carousel-caption">
+						<h4>Test</h4>
+						<p>See your code in action in our 3D online simulation and visualization</p>
+					</div>
+				</slide>
+				<slide>
+					<img src="/images/frontpage/5.jpg" style="margin:auto;">
+					<div class="carousel-caption">
+						<h4>Collaborate</h4>
+						<p>Find a mentor, form a team, and register for a tournament</p>
+					</div>
+				</slide>
+				<slide>
+					<img src="/images/frontpage/6.jpg" style="margin:auto;">
+					<div class="carousel-caption">
+						<h4>Compete</h4>
+						<p>Go head-to-head with other teams around the world to solve an annual challenge</p>
+					</div>
+				</slide>
+				<slide>
+					<img src="/images/frontpage/7.jpg" style="margin:auto;">
+					<div class="carousel-caption">
+						<h4>Fly</h4>
+						<p>Finalists get to see their code run on the real SPHERES aboard the International Space Station</p>
+					</div>
+				</slide>
+			</carousel>
+			<div class="container flex" style="margin-top: 15px; padding: 0px;">
+				<div class="col-sm-6 flex alternate">
+					<div class="panel panel-primary full-width">
+						<div class="panel-heading">
+							<h3 class="panel-title"><a href="/tournaments/56/">High School Tournament 2014</a></h3>
+						</div>
+						<div class="panel-body">
+							<div>
+								<img src="/images/frontpage/hs14logo.gif" class="fp-tournament-logo" />
+								<a href="http://www.zerorobotics.org/web/zero-robotics/registration/form?tournamentId=16"><button class="btn btn-primary">Register</button></a>
+							</div>
+							<p style="margin-bottom: 0;">Registration Open</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 flex alternate">
+					<div class="panel panel-primary full-width">
+						<div class="panel-heading">
+							<h4 class="panel-title"><a href="/tournaments/57/">Middle School Summer Program 2014</a></h4>
+						</div>
+						<div class="panel-body">
+							<div>
+								<img src="/images/frontpage/ms14logo.gif" class="fp-tournament-logo" />
+							</div>
+							<p style="margin-bottom: 0;">By Invitation</p>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="col-md-6" ng-controller="AnnouncementsController">
 			<div class="page-header"><h1>Announcements</h1></div>
 			<div class="panel panel-primary" ng-repeat="a in data.announcements | orderBy:'-date' | limitTo:5">
 				<div class="panel-heading">
-					{{ a.title }}
+					<h4 class="panel-title"><a href="/announcements/{{ a.id }}">{{ a.title }}</a></h4>
 				</div>
 				<div class="panel-body">
 					<p><i>Posted by {{ a.user }}<br>{{ a.date | date:'longDate' }}</i></p>

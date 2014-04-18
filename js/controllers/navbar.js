@@ -1,11 +1,23 @@
 'use strict';
 
-zr.controller('NavbarController', ['$scope', 'realtime', 'drive',
-	function ($scope, realtime, drive) {
+zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb',
+	function ($scope, realtime, drive, zrdb) {
 		/**
 		 * Requests authorization from the user. Redirects to the previous target
 		 * or to create a new doc if no other action once complete.
 		 */
+
+		 $scope.activeTournaments = [];
+		 zrdb.getAllResources('tournament').then(function(data) {
+			var allTournaments = data.data.rows;
+			var now = Date.now();
+			for(var i = allTournaments.length; i--; ) {
+				var t = allTournaments[i];
+				if(t.tournamentEndDate > now) {
+					$scope.activeTournaments.push(t);
+				}
+			}
+		 })
 		
 		$scope.newProject = function() {
 			drive.newProject();
