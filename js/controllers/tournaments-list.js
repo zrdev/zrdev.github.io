@@ -1,4 +1,4 @@
-zr.controller('TournamentsListController', function($scope, tournamentResources) {
+zr.controller('TournamentsListController', ['$scope', 'tournamentResources', function($scope, tournamentResources) {
 	$scope.pastTournaments = [];
 	$scope.activeTournaments = [];
 	var allTournaments = tournamentResources.data.rows;
@@ -12,4 +12,4 @@ zr.controller('TournamentsListController', function($scope, tournamentResources)
 			$scope.activeTournaments.push(t);
 		}
 	}
-});
+}]);

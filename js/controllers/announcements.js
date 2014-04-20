@@ -1,4 +1,4 @@
-zr.controller('AnnouncementsController', function($scope, $routeParams) {
+zr.controller('AnnouncementsController', ['$scope', '$routeParams', function($scope, $routeParams) {
 	$scope.data = {};
 	$scope.data.announcements = [
 		{
@@ -19,4 +19,4 @@ zr.controller('AnnouncementsController', function($scope, $routeParams) {
 		}
 	}
 	$scope.data.currentPage = 1;
-});
+}]);

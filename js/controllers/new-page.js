@@ -1,4 +1,4 @@
-zr.controller('NewPageController', function($scope, $modalInstance, isGraphical) {
+zr.controller('NewPageController', ['$scope', '$modalInstance', 'isGraphical', function($scope, $modalInstance, isGraphical) {
 	$scope.data = {
 		name: '',
 		returnValue: false
@@ -23,4 +23,4 @@ zr.controller('NewPageController', function($scope, $modalInstance, isGraphical)
 		$scope.data.shouldBeOpen = false;
 		$modalInstance.dismiss('cancel');
 	};
-});
+}]);

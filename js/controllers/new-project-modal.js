@@ -1,4 +1,4 @@
-zr.controller('NewProjectModalController', function($scope, $modalInstance, $location, realtime, folder, gameResources) {
+zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$location', 'realtime', 'folder', 'gameResources', function($scope, $modalInstance, $location, realtime, folder, gameResources) {
 	$scope.games = gameResources.data.rows;
 	$scope.data = {
 		shouldBeOpen: true,
@@ -33,4 +33,4 @@ zr.controller('NewProjectModalController', function($scope, $modalInstance, $loc
 			$location.path('/');
 		}
 	};
-});
+}]);

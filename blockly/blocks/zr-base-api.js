@@ -23,7 +23,7 @@
  */
 'use strict';
 
-goog.provide('Blockly.Blocks.zr-base-api');
+goog.provide('Blockly.Blocks.zrbaseapi');
 
 goog.require('Blockly.Blocks');
 

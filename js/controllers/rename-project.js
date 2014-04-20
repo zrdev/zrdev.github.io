@@ -1,4 +1,4 @@
-zr.controller('RenameProjectController', function($scope, $modalInstance, realtime, drive, callback) {
+zr.controller('RenameProjectController', ['$scope', '$modalInstance', 'realtime', 'drive', 'callback', function($scope, $modalInstance, realtime, drive, callback) {
 	$scope.data = {
 		name: ''
 	};
@@ -20,4 +20,4 @@ zr.controller('RenameProjectController', function($scope, $modalInstance, realti
 		$scope.data.shouldBeOpen = false;
 		$modalInstance.dismiss('cancel');
 	};
-});
+}]);

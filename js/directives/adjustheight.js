@@ -1,6 +1,6 @@
 //Adjusts the height of components to fit in the window
 
-zr.directive('adjustheight', function($window, $timeout) {
+zr.directive('adjustheight', ['$window', '$timeout', function($window, $timeout) {
 	return {
 		link: function(scope, element, attrs) {
 			var offset = parseInt(attrs.adjustheight);
@@ -30,4 +30,4 @@ zr.directive('adjustheight', function($window, $timeout) {
 			angular.element($window).bind('resize', update);
 		}
 	};
-});
+}]);

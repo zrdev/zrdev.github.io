@@ -1,4 +1,5 @@
-zr.controller('IdeController', function($scope, $modal, $http, $timeout, $location, config, realtime, drive, resources, zrdb) {
+zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$location', 'config', 'realtime', 'drive', 'resources', 'zrdb', 
+		function($scope, $modal, $http, $timeout, $location, config, realtime, drive, resources, zrdb) {
 	var realtimeDocument = resources[0];
 	$scope.model = realtimeDocument.getModel();
 	var graphical = $scope.model.getRoot().get('graphical');
@@ -403,4 +404,4 @@ zr.controller('IdeController', function($scope, $modal, $http, $timeout, $locati
 	//Last initialization
 	$scope.logInsert('Started editing','');
 	$scope.setActivePage('main');
-});
+}]);

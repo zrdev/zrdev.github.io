@@ -1,6 +1,6 @@
 //From here: http://stackoverflow.com/questions/14833326/how-to-set-focus-in-angularjs
 
-zr.directive('fieldfocus', function($timeout, $parse) {
+zr.directive('fieldfocus', ['$timeout', '$parse', function($timeout, $parse) {
   return {
     //scope: true,   // optionally create a child scope
     link: function(scope, element, attrs) {
@@ -19,4 +19,4 @@ zr.directive('fieldfocus', function($timeout, $parse) {
       });
     }
   };
-});
+}]);

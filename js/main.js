@@ -1,7 +1,8 @@
 //Initial module setup and URL routing
 
-var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute', 'ngSanitize', 'uiSlider',/*'builder', 'builder.components', 'validator.rules'*/])
-.config(function($routeProvider, $locationProvider) {
+var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute', 'ngSanitize', 'uiSlider'])
+.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+	//Use HTML5 URL rewriting instead of hash string
 	$locationProvider.html5Mode(true);
 	
 	//Function to inject the Realtime doc into the editor controller
@@ -18,6 +19,66 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 			});
 		});
 	};
+	loadFile.$inject = ['$route', 'realtime', 'zrdb'];
+
+	var visualizationResources = function(zrdb) {
+		//Chained dependent resources: first load the sim, then get the game based on the ID in the sim
+		return zrdb.getSingleResource('simulation')
+		.then(function(sim) {
+			return zrdb.getSingleResource('game', sim.data.gameId)
+			.then(function(game) {
+				return [sim, game];
+			});
+		});
+	};
+	visualizationResources.$inject = ['zrdb'];
+
+	var folderResource = function($route) {
+		//Parse state parameter from Drive UI
+		var state = $route.current.params['state'];
+		state = JSON.parse(state);
+		if(state.action === 'create') {
+			return [{ id: state.folderId }];
+		}
+		return [];
+	};
+	folderResource.$inject = ['$route'];
+
+	var teamResources = function($q) {
+		var d = $q.defer();
+		gapi.client.request({
+			'path': '/admin/directory/v1/groups',
+			'method': 'GET',
+			'params': {
+				'domain': 'zerorobotics.mit.edu'
+			}
+		})
+		.execute(function(response){
+			d.resolve(response);
+		});
+		return d.promise;
+	};
+	teamResources.$inject = ['$q'];
+
+	var openRedirect = function(routeParams, path, search) {
+		//Parse state parameter from Drive UI
+		var state = search['state'];
+		state = JSON.parse(state);
+		if(state.action === 'open') {
+			return '/ide/' + state.ids[0] + '/';
+		}
+		return '/';
+	};
+
+	var tournamentResource = function(zrdb) {
+		return zrdb.getSingleResource('tournament');
+	};
+	tournamentResource.$inject = ['zrdb'];
+
+	var tournamentResources = function(zrdb) {
+		return zrdb.getAllResources('tournament');
+	};
+	tournamentResources.$inject = ['zrdb'];
 
 	//URL routing
 	$routeProvider.when('/', {
@@ -32,40 +93,15 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		templateUrl: '/partials/visualization.html',
 		controller: 'VisualizationController',
 		resolve: {
-			resources: function(zrdb) {
-				//Chained dependent resources: first load the sim, then get the game based on the ID in the sim
-				return zrdb.getSingleResource('simulation')
-				.then(function(sim) {
-					return zrdb.getSingleResource('game', sim.data.gameId)
-					.then(function(game) {
-						return [sim, game];
-					});
-				});
-			}
+			resources: visualizationResources
 		}
 	}).when('/ide/open/', {
-		redirectTo: function(routeParams, path, search) {
-			//Parse state parameter from Drive UI
-			var state = search['state'];
-			state = JSON.parse(state);
-			if(state.action === 'open') {
-				return '/ide/' + state.ids[0] + '/';
-			}
-			return '/';
-		}
+		redirectTo: openRedirect
 	}).when('/ide/new/', {
 		template: '',
 		controller: 'NewProjectController',
 		resolve: {
-			folder: function($route) {
-				//Parse state parameter from Drive UI
-				var state = $route.current.params['state'];
-				state = JSON.parse(state);
-				if(state.action === 'create') {
-					return [{ id: state.folderId }];
-				}
-				return [];
-			}
+			folder: folderResource
 		}
 	}).when('/ide/:fileId/', {
 		templateUrl: '/partials/ide.html',
@@ -77,17 +113,13 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		templateUrl: '/partials/tournaments-index.html',
 		controller: 'TournamentsListController',
 		resolve: {
-			tournamentResources: function(zrdb) {
-				return zrdb.getAllResources('tournament');
-			}
+			tournamentResources: tournamentResources
 		}
 	}).when('/tournaments/:id/', {
 		templateUrl: '/partials/tournaments-info.html',
 		controller: 'TournamentsInfoController',
 		resolve: {
-			tournamentResource: function(zrdb) {
-				return zrdb.getSingleResource('tournament');
-			}
+			tournamentResource: tournamentResource
 		}
 	}).when('/tournaments/:tournamentId/:mode/:resourceId/', {
 		templateUrl: '/partials/tournaments-info.html',
@@ -110,22 +142,25 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		templateUrl: '/partials/zr-team.html'
 	}).when('/manage-teams/', {
 		templateUrl: '/partials/team-management.html',
-		controller: 'TeamManagementController'
+		controller: 'TeamManagementController', 
+		resolve: {
+			teamResources: teamResources
+		}
 	}).when('/forum/', {
 		templateUrl: '/partials/forum.html',
 		controller: 'ForumController'
 	}).otherwise({
 		redirectTo: '/'
 	});
-})
+}])
 //End URL routing
 
-.config(function ($httpProvider) {
+.config(['$httpProvider', function ($httpProvider) {
 	$httpProvider.defaults.useXDomain = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
-});
+}])
 
-zr.value('config', {
+.value('config', {
 	clientId: '2809468685-i7or9cfoaaeg7vb9apsn068h690bdlkr.apps.googleusercontent.com',
 	appId: 2809468685,
 	apiKey: 'i7or9cfoaaeg7vb9apsn068h690bdlkr',

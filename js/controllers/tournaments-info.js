@@ -1,4 +1,4 @@
-zr.controller('TournamentsInfoController', function($scope, $route, tournamentResource) {
+zr.controller('TournamentsInfoController', ['$scope', '$route', 'tournamentResource', function($scope, $route, tournamentResource) {
 	$scope.data = {};
 	$scope.tournament = tournamentResource.data;
 	$scope.data.divisions = [
@@ -73,4 +73,4 @@ zr.controller('TournamentsInfoController', function($scope, $route, tournamentRe
 		}
 		return '';
 	}
-});
+}]);

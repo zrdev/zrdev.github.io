@@ -1,4 +1,4 @@
-zr.controller('FormBuilderController', function($scope, $builder) {
+zr.controller('FormBuilderController', ['$scope', '$builder', function($scope, $builder) {
 	$builder.addFormObject('base', {
 		component: 'textInput',
 		label: 'School/District Name',
@@ -57,4 +57,4 @@ zr.controller('FormBuilderController', function($scope, $builder) {
 		editable: false
 	});
 	return $scope.form = $builder.forms['base'];
-});
+}]);

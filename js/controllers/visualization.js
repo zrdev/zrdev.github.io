@@ -1,4 +1,4 @@
-zr.controller('VisualizationController', function($scope, $sce, $timeout, resources) {
+zr.controller('VisualizationController', ['$scope', '$sce', '$timeout', 'resources', function($scope, $sce, $timeout, resources) {
 	$scope.isFullScreen = function() {
 		return !!(document.fullscreenElement ||
 				document.mozFullScreenElement || 
@@ -134,4 +134,4 @@ zr.controller('VisualizationController', function($scope, $sce, $timeout, resour
 	};
 
 
-});
+}]);

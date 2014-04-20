@@ -1,4 +1,4 @@
-zr.controller('SimulationController', function($scope, $modalInstance, gameResource) {
+zr.controller('SimulationController', ['$scope', '$modalInstance', 'gameResource', function($scope, $modalInstance, gameResource) {
 	var game = gameResource.data;
 
 	$scope.resetAll = function() {
@@ -46,4 +46,4 @@ zr.controller('SimulationController', function($scope, $modalInstance, gameResou
 			}
 		}
 	};
-});
+}]);

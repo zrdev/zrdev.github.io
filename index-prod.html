@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Zero Robotics</title>
+	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+	
+	<script type="text/javascript" src="/blockly/blockly.min.js"></script>
+	
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" />
+	<link type="text/css" href="/css/main.css" rel="stylesheet" />
+	<link type="text/css" rel="stylesheet" href="/css/angular-slider.min.css"/>
+	
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-route.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-sanitize.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="text/javascript" src="//apis.google.com/js/api.js"></script>
+	<script type="text/javascript" src="//apis.google.com/js/client:plusone.js"></script>
+	<script src="/js/zr.min.js"></script>
+	
+</head>
+
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" ng-controller="NavbarController" style="border-bottom: 1px solid #888888;">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/"><img src="/images/logo.png" class="nav-icon" />Zero Robotics</a>
+			</div>
+			<div id="main-collapse" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class="dropdown">
+						<a class="dropdown-toggle">About ZR<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="/announcements/">Announcements</a></li>
+							<li><a href="/what-is-zr/">What is ZR?</a></li>
+							<li><a href="/vision-mission/">Vision and Mission</a></li>
+							<li><a href="/in-the-news/">ZR in the News</a></li>
+							<li><a href="/history/">History</a></li>
+							<li><a href="/zr-team/">Meet the ZR Team</a></li>
+							<li><a href="/multimedia/">Multimedia Gallery</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown">Tournaments<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="/tournaments/">All Tournaments</a></li>
+							<li><a href="/manage-teams/">Manage Teams</a></li>
+							<li class="divider"></li>
+							<li class="dropdown-header">Current tournaments</li>
+							<li ng-repeat="t in activeTournaments"><a href="/tournaments/{{ t.id }}/">{{ t.name }}</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a class="dropdown-toggle">IDE<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a ng-click="newProject()">New Project</a></li>
+							<li><a ng-click="openProject()">Open Project</a></li>
+							<li><a href="/ide/simulation/">Open Simulation</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a class="dropdown-toggle">Resources<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="/tutorials/">Tutorials</a></li>
+							<li><a href="http://www.zerorobotics.org/web/zero-robotics/curriculum/-/wiki/Main/FrontPage?p_r_p_564233524_categoryId=0">Middle School Curriculum</a></li>
+							<li><a href="/forum/">Forum</a></li>
+							<li><a href="/contact-us/">Contact Us</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div><!--/.navbar-collapse -->
+		</div>
+	</div>
+	<div id="wrap">
+		<div style="padding-top: 65px; margin-bottom: 15px;">
+			<ng-view></ng-view>
+		</div>
+		<div id="push"></div>
+	</div>
+	<div id="footer">
+		<div style="text-align: center; text-wrap: none;">
+			<p>
+				<a href="http://web.mit.edu/" target="_blank"><img src="/images/sponsors/mit.png" alt="MIT Logo" class="img-thumbnail" style="margin-right: 20px;" /></a>
+				<a href="http://www.nasa.gov/" target="_blank"><img src="/images/sponsors/nasa.png" alt="NASA Logo" class="img-thumbnail" style="margin-right: 20px;" /></a>
+				<a href="http://www.darpa.mil/" target="_blank"><img src="/images/sponsors/darpa.png" alt="DARPA Logo" class="img-thumbnail" style="margin-right: 20px;" /></a>
+				<a href="http://ssl.mit.edu/newsite/" target="_blank"><img src="/images/sponsors/ssl.png" alt="MIT SSL Logo" class="img-thumbnail" style="margin-right: 20px;" /></a>
+				<a href="http://www.aurora.aero/" target="_blank"><img src="/images/sponsors/aurora.png" alt="AFS Logo" class="img-thumbnail" style="margin-right: 20px;" /></a>
+				<a href="http://www.topcoder.com/" target="_blank"><img src="/images/sponsors/topcoder.png" alt="TopCoder Logo" class="img-thumbnail" /></a>
+			</p>
+			<p style="margin-bottom: 5px;">Copyright &copy; 2014 Massachusetts Institute of Technology. All rights reserved.</p>
+		</div>
+	</div>
+</body>
+</html>

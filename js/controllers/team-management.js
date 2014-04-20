@@ -1,3 +1,3 @@
-zr.controller('TeamManagementController', function($scope) {
-	
-});
+zr.controller('TeamManagementController', ['$scope', 'teamResources', function($scope, teamResources) {
+	alert(teamResources);
+}]);
