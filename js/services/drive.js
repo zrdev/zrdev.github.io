@@ -19,6 +19,32 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 'z
 
 	function (config, $modal, $timeout, $location, realtime, zrdb) {
 		
+		this.requireAuth = function (immediateMode, userId) {
+			/* jshint camelCase: false */
+			var token = gapi.auth.getToken();
+			var now = Date.now() / 1000;
+			if (token && ((token.expires_at - now) > (60))) {
+				return $q.when(token);
+			} else {
+				var params = {
+					'client_id': config.clientId,
+					'scope': config.scopes,
+					'immediate': immediateMode,
+					'user_id': userId
+				};
+				var deferred = $q.defer();
+				gapi.auth.authorize(params, function (result) {
+					if (result && !result.error) {
+						deferred.resolve(result);
+					} else {
+						deferred.reject(result);
+					}
+					$rootScope.$digest();
+				});
+				return deferred.promise;
+			}
+		};
+
 		//Renames the current file in Drive. 
 		this.renameFile = function(title, id, callback) {
 			gapi.client.request({
