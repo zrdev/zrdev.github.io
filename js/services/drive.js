@@ -54,6 +54,7 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 'z
 				});
 			}
 		};
+
 		
 		//Opens new project modal. 
 		this.newProject = function(folder) {
@@ -82,7 +83,7 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 'z
 						});
 					}
 				};
-				gapi.load('picker', {"callback" : function() {
+				var showPicker = function() {
 					var picker = new google.picker.PickerBuilder().
 						enableFeature(google.picker.Feature.NAV_HIDDEN).
 						hideTitleBar().
@@ -96,7 +97,13 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 'z
 						setCallback(pickerCallback).
 						build();
 					picker.setVisible(true);
-				}});
+				}
+				if(!google || !google.picker) {
+					gapi.load('picker', {"callback" : showPicker});
+				}
+				else {
+					showPicker();
+				}
 			});
 		};
 	}]
