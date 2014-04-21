@@ -102,8 +102,7 @@ height: 130px;
 .img-thumbnail {
 	max-height: 140px;
 	max-width: 200px;
-	position: absolute;
-	right: 0;
+	float: right;
 }
 
 .accordion-container {
