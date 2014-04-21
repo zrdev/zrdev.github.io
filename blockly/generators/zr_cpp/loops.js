@@ -79,7 +79,7 @@ Blockly.zr_cpp['controls_for'] = function(block) {
 			Blockly.isNumber(increment)) {
 		// All arguments are simple numbers.
 		var up = parseInt(argument0) <= parseInt(argument1);
-		code = 'for (' + variable0 + ' = ' + argument0 + '; ' +
+		code = 'for (int ' + variable0 + ' = ' + argument0 + '; ' +
 				variable0 + (up ? ' <= ' : ' >= ') + argument1 + '; ' +
 				variable0;
 		var step = Math.abs(parseInt(increment));
