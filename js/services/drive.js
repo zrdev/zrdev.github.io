@@ -98,7 +98,7 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 'z
 						build();
 					picker.setVisible(true);
 				}
-				if(!google || !google.picker) {
+				if(!window.google || !window.google.picker) {
 					gapi.load('picker', {"callback" : showPicker});
 				}
 				else {
