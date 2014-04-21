@@ -172,7 +172,8 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	apiKey: 'i7or9cfoaaeg7vb9apsn068h690bdlkr',
 	scopes: [
 		'https://www.googleapis.com/auth/drive.file',
-		'https://www.googleapis.com/auth/drive.install'
+		'https://www.googleapis.com/auth/drive.install',
+		'profile'
 	],
 	//NO TRAILING SLASH on serviceDomain
 	serviceDomain: 'http://zrwebsite-env.elasticbeanstalk.com'
