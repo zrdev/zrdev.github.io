@@ -80,6 +80,11 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	};
 	tournamentResources.$inject = ['zrdb'];
 
+	var previousProject = function($routeParams) {
+		return $routeParams['fileId'];
+	}
+	previousProject.$inject = ['$routeParams'];
+
 	//URL routing
 	$routeProvider.when('/', {
 		templateUrl: '/partials/frontpage.html'
@@ -93,7 +98,8 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		templateUrl: '/partials/visualization.html',
 		controller: 'VisualizationController',
 		resolve: {
-			resources: visualizationResources
+			resources: visualizationResources,
+			previousProject: previousProject
 		}
 	}).when('/ide/open/', {
 		redirectTo: openRedirect

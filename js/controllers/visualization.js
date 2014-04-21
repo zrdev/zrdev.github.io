@@ -1,4 +1,4 @@
-zr.controller('VisualizationController', ['$scope', '$sce', '$timeout', 'resources', function($scope, $sce, $timeout, resources) {
+zr.controller('VisualizationController', ['$scope', '$sce', '$timeout', 'resources', 'previousProject', function($scope, $sce, $timeout, resources, previousProject) {
 	$scope.isFullScreen = function() {
 		return !!(document.fullscreenElement ||
 				document.mozFullScreenElement || 
@@ -35,6 +35,10 @@ zr.controller('VisualizationController', ['$scope', '$sce', '$timeout', 'resourc
 			document.webkitExitFullscreen();
 		}
 	};
+
+	if(previousProject) {
+		$scope.backUrl = $sce.trustAsUrl('/ide/' + previousProject + '/');
+	}
 	
 	//Run a digest on entering/exiting full screen
 	angular.element(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange msfullscreenchange', function() {
