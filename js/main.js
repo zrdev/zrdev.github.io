@@ -96,7 +96,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		controller: 'AnnouncementsController'
 	}).when('/ide/simulation/', {
 		templateUrl: '/partials/simulations-list.html',
-		//controller: 'SimulationListController'
+		controller: 'SimulationListController'
 	}).when('/ide/simulation/:id/', {
 		templateUrl: '/partials/visualization.html',
 		controller: 'VisualizationController',
