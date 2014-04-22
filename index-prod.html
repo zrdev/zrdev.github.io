@@ -8,6 +8,7 @@
 	<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" />
 	<link type="text/css" href="/css/main.css" rel="stylesheet" />
 	<link type="text/css" rel="stylesheet" href="/css/angular-slider.min.css"/>
+	<link type="text/css" href="/css/social-buttons/zocial.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -64,6 +65,8 @@
 						</ul>
 					</li>
 				</ul>
+				<p class="navbar-right navbar-text" ng-if="displayName && showLogin" ng-cloak>Signed in as {{ displayName }} <a class="navbar-link" ng-click="signOut()"><b>Sign out</b></a></p>
+				<button class='zocial google navbar-right navbar-btn' ng-if="!displayName && showLogin" ng-cloak ng-click="signIn()">Sign in with Google</button>
 			</div><!--/.navbar-collapse -->
 		</div>
 	</div>
