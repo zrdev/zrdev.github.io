@@ -20,17 +20,19 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb',
 		 });
 
 		 var getUser = function() {
-			 drive.getUser(function(data) {
-			 	$scope.$apply(function() {
-			 		if(data && data.displayName) {
-			 			$scope.displayName = data.displayName;
-			 		}
-			 		else {
-			 			$scope.displayName = null;
-			 		}
-			 		$scope.showLogin = true;
-			 	})
-			 });
+		 	realtime.requireAuth(true).then(function() {
+				drive.getUser(function(data) {
+				 	$scope.$apply(function() {
+				 		if(data && data.displayName) {
+				 			$scope.displayName = data.displayName;
+				 		}
+				 		else {
+				 			$scope.displayName = null;
+				 		}
+				 		$scope.showLogin = true;
+				 	})
+				 });
+		 	});
 		 };
 		 getUser();
 		
