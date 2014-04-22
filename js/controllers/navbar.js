@@ -22,7 +22,7 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb',
 		 var getUser = function() {
 			 drive.getUser(function(data) {
 			 	$scope.$apply(function() {
-			 		if(data) {
+			 		if(data && data.displayName) {
 			 			$scope.displayName = data.displayName;
 			 		}
 			 		else {

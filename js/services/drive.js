@@ -73,14 +73,12 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 'z
 					return;
 				}
 				else {
-					realtime.requireAuth(true).then(function() {
-						gapi.client.request({
-							'path': '/plus/v1/people/me',
-							'method': 'GET'
-						}).execute(function(data){
-							me = data;
-							callback(data);
-						});
+					gapi.client.request({
+						'path': '/plus/v1/people/me',
+						'method': 'GET'
+					}).execute(function(data){
+						me = data;
+						callback(data);
 					});
 				}
 			});
