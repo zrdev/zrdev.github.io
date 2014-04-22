@@ -112,7 +112,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 					'client_id': config.clientId,
 					'scope': config.scopes,
 					'immediate': true,
-					'user_id': id
+					'user_id': this.id
 				};
 				var deferred = $q.defer();
 				gapi.auth.authorize(params, function (result) {
