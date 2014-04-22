@@ -313,3 +313,7 @@ div.picker-dialog-bg {
 .css-form input.ng-invalid.ng-dirty {
 	background-color: #FA787E !important;
 }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
