@@ -19,17 +19,20 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb',
 			}
 		 });
 
-		 drive.getUser(function(data) {
-		 	$scope.$apply(function() {
-		 		if(data) {
-		 			$scope.displayName = data.displayName;
-		 		}
-		 		else {
-		 			$scope.displayName = null;
-		 		}
-		 		$scope.showLogin = true;
-		 	})
-		 });
+		 var getUser = function() {
+			 drive.getUser(function(data) {
+			 	$scope.$apply(function() {
+			 		if(data) {
+			 			$scope.displayName = data.displayName;
+			 		}
+			 		else {
+			 			$scope.displayName = null;
+			 		}
+			 		$scope.showLogin = true;
+			 	})
+			 });
+		 };
+		 getUser();
 		
 		$scope.newProject = function() {
 			drive.newProject();
@@ -40,6 +43,6 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb',
 		};
 
 		$scope.signIn = function() {
-			realtime.requireAuth();
+			realtime.requireAuth().then(getUser);
 		}
 }]);
