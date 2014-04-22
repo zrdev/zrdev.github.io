@@ -130,9 +130,12 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		resolve: {
 			tournamentResource: tournamentResource
 		}
-	}).when('/tournaments/:tournamentId/:mode/:resourceId/', {
+	}).when('/tournaments/:id/:mode/:resourceId/', {
 		templateUrl: '/partials/tournaments-info.html',
-		controller: 'TournamentsInfoController'
+		controller: 'TournamentsInfoController',
+		resolve: {
+			tournamentResource: tournamentResource
+		}
 	}).when('/tutorials/', {
 		templateUrl: '/partials/tutorials.html'
 	}).when('/contact-us/', {
