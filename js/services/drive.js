@@ -73,7 +73,7 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 'z
 					return;
 				}
 				else {
-					realtime.requireAuth().then(function() {
+					realtime.requireAuth(true).then(function() {
 						gapi.client.request({
 							'path': '/plus/v1/people/me',
 							'method': 'GET'
