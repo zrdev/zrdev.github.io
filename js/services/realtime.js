@@ -183,7 +183,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 					});
 				};
 				var onLoad = function (document) {
-					this.setDocument(id, document);
+					this_.setDocument(id, document);
 					var model = document.getModel()
 					Blockly.Realtime.model_ = model;
 					Blockly.zr_cpp.C_GLOBAL_VARS = model.getRoot().get('cglobals');
