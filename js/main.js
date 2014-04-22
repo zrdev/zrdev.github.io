@@ -44,21 +44,26 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	};
 	folderResource.$inject = ['$route'];
 
-	var teamResources = function($q) {
+	var teamResources = function($q, realtime, drive) {
 		var d = $q.defer();
-		gapi.client.request({
-			'path': '/admin/directory/v1/groups',
-			'method': 'GET',
-			'params': {
-				'domain': 'zerorobotics.mit.edu'
-			}
+		realtime.requireAuth().then(function() {
+			drive.getUser(function(me) {
+				gapi.client.request({
+					'path': '/admin/directory/v1/groups',
+					'method': 'GET',
+					'params': {
+						'userKey': me.id,
+						'domain': 'zerorobotics.mit.edu'
+					}
+				})
+				.execute(function(response){
+					d.resolve(response);
+				});
+			});
 		})
-		.execute(function(response){
-			d.resolve(response);
-		});
 		return d.promise;
 	};
-	teamResources.$inject = ['$q'];
+	teamResources.$inject = ['$q', 'realtime', 'drive'];
 
 	var openRedirect = function(routeParams, path, search) {
 		//Parse state parameter from Drive UI
