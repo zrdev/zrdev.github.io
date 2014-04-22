@@ -120,7 +120,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 						$rootScope.$digest();
 					} 
 					else if(skipPopup) {
-						deferred.reject(result);
+						deferred.resolve(result);
 					}
 					else {
 						//Try again w/popup
@@ -130,7 +130,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 								deferred.resolve(result);
 							}
 							else {
-								deferred.reject(result);
+								deferred.resolve(result);
 							}
 							$rootScope.$digest();
 						});
