@@ -24,6 +24,9 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb',
 		 		if(data) {
 		 			$scope.displayName = data.displayName;
 		 		}
+		 		else {
+		 			$scope.displayName = null;
+		 		}
 		 		$scope.showLogin = true;
 		 	})
 		 });
