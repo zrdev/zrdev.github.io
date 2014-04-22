@@ -111,7 +111,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 				var params = {
 					'client_id': config.clientId,
 					'scope': config.scopes,
-					'immediate': immediateMode,
+					'immediate': true,
 					'user_id': id
 				};
 				var deferred = $q.defer();
