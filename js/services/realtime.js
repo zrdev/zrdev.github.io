@@ -126,12 +126,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 						//Try again w/popup
 						params['immediate'] = false;
 						gapi.auth.authorize(params, function() {
-							if (result && !result.error) {
-								deferred.resolve(result);
-							}
-							else {
-								deferred.resolve(result);
-							}
+							deferred.resolve(result);
 							$rootScope.$digest();
 						});
 					}
