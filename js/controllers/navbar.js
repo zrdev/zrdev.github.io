@@ -45,7 +45,7 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb',
 		};
 
 		$scope.signIn = function() {
-			realtime.requireAuth().then(getUser);
+			realtime.requireAuth(false).then(getUser);
 		}
 
 		$scope.signOut = function() {

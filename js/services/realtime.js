@@ -101,7 +101,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 		 * @param userId
 		 * @returns {angular.$q.promise}
 		 */
-		this.requireAuth = function(skipPopup) {
+		this.requireAuth = function(immediate) {
 			/* jshint camelCase: false */
 			var token = gapi.auth.getToken();
 			var now = Date.now() / 1000;
@@ -111,7 +111,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 				var params = {
 					'client_id': config.clientId,
 					'scope': config.scopes,
-					'immediate': true
+					'immediate': immediate !== false
 				};
 				var deferred = $q.defer();
 				gapi.auth.authorize(params, function (result) {
@@ -119,7 +119,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 						deferred.resolve(result);
 						$rootScope.$digest();
 					} 
-					else if(skipPopup) {
+					else if(typeof immediate === 'boolean') {
 						deferred.resolve(result);
 					}
 					else {

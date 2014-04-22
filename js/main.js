@@ -186,7 +186,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
  */
 gapi.load('auth:client:drive-share:drive-realtime', function () {
 	//Prevent some browsers blocking auth popups
-	gapi.auth.init()
+	gapi.auth.init();
 	// Monkey patch collaborative string for ng-model compatibility
 	Object.defineProperty(gapi.drive.realtime.CollaborativeString.prototype, 'text', {
 		set: gapi.drive.realtime.CollaborativeString.prototype.setText,
