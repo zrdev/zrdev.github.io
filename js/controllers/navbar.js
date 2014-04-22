@@ -20,7 +20,7 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb',
 		 });
 
 		 drive.getUser(function(data) {
-		 	console.log(data);
+		 	$scope.displayName = data.displayName;
 		 });
 		
 		$scope.newProject = function() {
