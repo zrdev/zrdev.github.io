@@ -17,7 +17,11 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb',
 					$scope.activeTournaments.push(t);
 				}
 			}
-		 })
+		 });
+
+		 drive.getUser(function(data) {
+		 	console.log(data);
+		 });
 		
 		$scope.newProject = function() {
 			drive.newProject();

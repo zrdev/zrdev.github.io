@@ -179,15 +179,11 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	serviceDomain: 'http://zrwebsite-env.elasticbeanstalk.com'
 });
 
-	angular.element(document).ready(function () {
-		angular.bootstrap(document, ['zr']);
-	});
-
 
 /**
  * Bootstrap the app
  */
-/*gapi.load('auth:client:drive-share:drive-realtime', function () {
+gapi.load('auth:client:drive-share:drive-realtime', function () {
 	gapi.auth.init();
 
 	// Monkey patch collaborative string for ng-model compatibility
@@ -208,4 +204,4 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	angular.element(document).ready(function () {
 		angular.bootstrap(document, ['zr']);
 	});
-});*/
+});

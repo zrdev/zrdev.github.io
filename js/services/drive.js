@@ -18,32 +18,6 @@
 zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 'zrdb',
 
 	function (config, $modal, $timeout, $location, realtime, zrdb) {
-		
-		this.requireAuth = function (immediateMode, userId) {
-			/* jshint camelCase: false */
-			var token = gapi.auth.getToken();
-			var now = Date.now() / 1000;
-			if (token && ((token.expires_at - now) > (60))) {
-				return $q.when(token);
-			} else {
-				var params = {
-					'client_id': config.clientId,
-					'scope': config.scopes,
-					'immediate': immediateMode,
-					'user_id': userId
-				};
-				var deferred = $q.defer();
-				gapi.auth.authorize(params, function (result) {
-					if (result && !result.error) {
-						deferred.resolve(result);
-					} else {
-						deferred.reject(result);
-					}
-					$rootScope.$digest();
-				});
-				return deferred.promise;
-			}
-		};
 
 		//Renames the current file in Drive. 
 		this.renameFile = function(title, id, callback) {
@@ -58,16 +32,16 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 'z
 					title: title
 				})
 			}).execute(function(){
-				fileMetadata.title = title;
+				fileMetadata[id] = null;
 				callback();
 			});
 		};
 		
-		var fileMetadata = null;
+		var fileMetadata = {};
 		//Gets the metadata of a file in Drive. 
 		this.getFileMetadata = function(id, callback) {
-			if(fileMetadata && fileMetadata.id === id) {
-				callback(fileMetadata);
+			if(fileMetadata[id]) {
+				callback(fileMetadata[id]);
 				return;
 			}
 			else {
@@ -75,12 +49,29 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 'z
 					'path': '/drive/v2/files/' + id,
 					'method': 'GET'
 				}).execute(function(data) {
-					fileMetadata = data;
+					fileMetadata[id] = data;
 					callback(data);
 				});
 			}
 		};
 
+		var me = null;
+		this.getUser = function(callback) {
+			if(me) {
+				callback(me);
+			}
+			else {
+				realtime.requireAuth().then(function() {
+					gapi.client.request({
+						'path': '/plus/v1/people/me',
+						'method': 'GET'
+					}).execute(function(data){
+						me = data;
+						callback(data);
+					});
+				});
+			}
+		};
 		
 		//Opens new project modal. 
 		this.newProject = function(folder) {
