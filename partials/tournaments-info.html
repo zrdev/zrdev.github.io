@@ -12,11 +12,11 @@
 			</div>
 			<h3>Scores</h3>
 			<div class="list-group">
-				<a class="list-group-item {{ mode === 'scores' && resourceId === c.id ? 'active' : '' }}" ng-repeat="c in tournament.tournamentsCompetitionCollection" href="/tournaments/{{ tournament.id }}/scores/{{ c.id }}">{{ c.name }}</a>
+				<a class="list-group-item {{ mode === 'scores' && resourceId === c.id ? 'active' : '' }}" ng-repeat="c in tournament.tournamentsCompetitionCollection | orderBy:'displayOrder'" href="/tournaments/{{ tournament.id }}/scores/{{ c.id }}">{{ c.name }}</a>
 			</div>
 		</div>
 		<div class="col-md-10" style="padding-right:0;" ng-switch="mode">
-			<div ng-switch-when="info" ng-bind-html="getInfoPage()"></div>
+			<div ng-switch-when="info" ng-bind-html="resource.content"></div>
 			<div ng-switch-when="teams"></div>
 			<div ng-switch-when="scores"></div>
 		</div>
