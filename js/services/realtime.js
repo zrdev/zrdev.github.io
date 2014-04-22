@@ -150,63 +150,66 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 		 */
 		this.load = function (id) {
 			var deferred = $q.defer();
-			var initialize = function (model) {
-				var root = model.getRoot();
-				var pages = model.createMap();
-				root.set('pages', pages);
-				root.set('gameId', this_.gameId);
-				//Initialize the main pages
-				if(!this_.ideGraphical) {
-					root.set('graphical', false);
-					pages.set('main', model.createString(PROJ_INIT_TEXT));
-				}
-				else {
-					root.set('graphical', true);
-					root.set('cglobals', model.createMap());
-					root.set('procedures', model.createMap());
-					var pageRoot = model.createMap();
-					pages.set('main', pageRoot);
-					//This code copied from blockly/core/realtime.js
-					pageRoot.set('blocks', model.createMap());
-					pageRoot.set('topBlocks', model.createList());
-					pageRoot.set('type','loop');
-					var pageRoot2 = model.createMap();
-					pages.set('init', pageRoot2);
-					pageRoot2.set('type','init');
-					pageRoot2.set('blocks', model.createMap());
-					pageRoot2.set('topBlocks', model.createList());
-				}
-				var log = model.createMap();
-				root.set('log', log);
-				//Log entries are identified by timestamp, plus some random digits to avoid collisions
-				var key = String(new Date().getTime() + Math.random());
-				log.set(key, {
-					user: 'Ethan DiNinno',
-					title: 'Project created',
-					content: ''
-				});
-			};
-			var onLoad = function (document) {
-				this.setDocument(id, document);
-				var model = document.getModel()
-				Blockly.Realtime.model_ = model;
-				Blockly.zr_cpp.C_GLOBAL_VARS = model.getRoot().get('cglobals');
-				Blockly.zr_cpp.procedures = model.getRoot().get('procedures');
-				deferred.resolve(document);
-				$rootScope.$digest();
-			}.bind(this);
-			var onError = function (error) {
-				if (error.type === gapi.drive.realtime.ErrorType.TOKEN_REFRESH_REQUIRED) {
-					$rootScope.$emit('todos.token_refresh_required');
-				} else if (error.type === gapi.drive.realtime.ErrorType.CLIENT_ERROR) {
-					$rootScope.$emit('todos.client_error');
-				} else if (error.type === gapi.drive.realtime.ErrorType.NOT_FOUND) {
-					deferred.reject(error);
-					$rootScope.$emit('todos.not_found', id);
-				}
-				$rootScope.$digest();
-			};
-			gapi.drive.realtime.load(id, onLoad, initialize, onError);
+			this.requireAuth().then(function() {
+				var initialize = function (model) {
+					var root = model.getRoot();
+					var pages = model.createMap();
+					root.set('pages', pages);
+					root.set('gameId', this_.gameId);
+					//Initialize the main pages
+					if(!this_.ideGraphical) {
+						root.set('graphical', false);
+						pages.set('main', model.createString(PROJ_INIT_TEXT));
+					}
+					else {
+						root.set('graphical', true);
+						root.set('cglobals', model.createMap());
+						root.set('procedures', model.createMap());
+						var pageRoot = model.createMap();
+						pages.set('main', pageRoot);
+						//This code copied from blockly/core/realtime.js
+						pageRoot.set('blocks', model.createMap());
+						pageRoot.set('topBlocks', model.createList());
+						pageRoot.set('type','loop');
+						var pageRoot2 = model.createMap();
+						pages.set('init', pageRoot2);
+						pageRoot2.set('type','init');
+						pageRoot2.set('blocks', model.createMap());
+						pageRoot2.set('topBlocks', model.createList());
+					}
+					var log = model.createMap();
+					root.set('log', log);
+					//Log entries are identified by timestamp, plus some random digits to avoid collisions
+					var key = String(new Date().getTime() + Math.random());
+					log.set(key, {
+						user: 'Ethan DiNinno',
+						title: 'Project created',
+						content: ''
+					});
+				};
+				var onLoad = function (document) {
+					this.setDocument(id, document);
+					var model = document.getModel()
+					Blockly.Realtime.model_ = model;
+					Blockly.zr_cpp.C_GLOBAL_VARS = model.getRoot().get('cglobals');
+					Blockly.zr_cpp.procedures = model.getRoot().get('procedures');
+					deferred.resolve(document);
+					$rootScope.$digest();
+				}.bind(this);
+				var onError = function (error) {
+					if (error.type === gapi.drive.realtime.ErrorType.TOKEN_REFRESH_REQUIRED) {
+						$rootScope.$emit('todos.token_refresh_required');
+					} else if (error.type === gapi.drive.realtime.ErrorType.CLIENT_ERROR) {
+						$rootScope.$emit('todos.client_error');
+					} else if (error.type === gapi.drive.realtime.ErrorType.NOT_FOUND) {
+						deferred.reject(error);
+						$rootScope.$emit('todos.not_found', id);
+					}
+					$rootScope.$digest();
+				};
+				gapi.drive.realtime.load(id, onLoad, initialize, onError);
+			});
+	
 			return deferred.promise;
 		};
 
