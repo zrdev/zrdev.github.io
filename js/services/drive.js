@@ -20,7 +20,7 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 'z
 	function (config, $modal, $timeout, $location, realtime, zrdb) {
 
 		gapi.client.setApiKey(config.simpleApiKey);
-		
+
 		//Renames the current file in Drive. 
 		this.renameFile = function(title, id, callback) {
 			gapi.client.request({
@@ -59,20 +59,31 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 'z
 
 		var me = null;
 		this.getUser = function(callback) {
-			if(me) {
-				callback(me);
-			}
-			else {
-				realtime.requireAuth().then(function() {
-					gapi.client.request({
-						'path': '/plus/v1/people/me',
-						'method': 'GET'
-					}).execute(function(data){
-						me = data;
-						callback(data);
+			gapi.auth.checkSessionState({
+				'client_id': config.clientId, 
+				'session_state': null
+			}, function(loggedOut) {
+				if(loggedOut) {
+					me = null;
+					callback(null);
+					return;
+				}
+				else if(me) {
+					callback(me);
+					return;
+				}
+				else {
+					realtime.requireAuth().then(function() {
+						gapi.client.request({
+							'path': '/plus/v1/people/me',
+							'method': 'GET'
+						}).execute(function(data){
+							me = data;
+							callback(data);
+						});
 					});
-				});
-			}
+				}
+			});
 		};
 		
 		//Opens new project modal. 
