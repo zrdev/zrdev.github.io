@@ -120,8 +120,8 @@
 						</ul>
 					</li>
 				</ul>
-				<p class="navbar-right navbar-text" ng-if="typeof displayName === 'string'" ng-cloak>Signed in as <b>{{ displayName }}</b></p>
-				<button class='zocial google navbar-right navbar-btn' ng-if="typeof displayName === 'null'" ng-cloak>Sign in with Google</button>
+				<p class="navbar-right navbar-text" ng-if="displayName && showLogin" ng-cloak>Signed in as <b>{{ displayName }}</b></p>
+				<button class='zocial google navbar-right navbar-btn' ng-if="!displayName && showLogin" ng-cloak>Sign in with Google</button>
 			</div><!--/.navbar-collapse -->
 		</div>
 	</div>

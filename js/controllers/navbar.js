@@ -22,6 +22,7 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb',
 		 drive.getUser(function(data) {
 		 	$scope.$apply(function() {
 		 		$scope.displayName = data.displayName;
+		 		$scope.showLogin = true;
 		 	})
 		 });
 		
