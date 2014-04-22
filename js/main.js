@@ -170,6 +170,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	clientId: '2809468685-i7or9cfoaaeg7vb9apsn068h690bdlkr.apps.googleusercontent.com',
 	appId: 2809468685,
 	apiKey: 'i7or9cfoaaeg7vb9apsn068h690bdlkr',
+	simpleApiKey: 'AIzaSyCXIUmc4SlS1uW0SL5jDy9JjbIT6jqLIQk',
 	scopes: [
 		'https://www.googleapis.com/auth/drive.file',
 		'https://www.googleapis.com/auth/drive.install',
