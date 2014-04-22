@@ -4,15 +4,15 @@
 		<div class="col-md-2" style="padding-left:0;">
 			<h3 style="margin-top: 0;">Info</h3>
 			<div class="list-group">
-				<a class="list-group-item {{ mode === 'info' && resourceId === p.id ? 'active' : '' }}" ng-repeat="p in data.infoPages" href="/tournaments/{{ tournament.id }}/info/{{ p.id }}">{{ p.name }}</a>
+				<a class="list-group-item {{ mode === 'info' && resourceId === p.id ? 'active' : '' }}" ng-repeat="p in tournament.tournamentsInfopageCollection" href="/tournaments/{{ tournament.id }}/info/{{ p.id }}">{{ p.name }}</a>
 			</div>
 			<h3>Teams</h3>
 			<div class="list-group">
-				<a class="list-group-item {{ mode === 'teams' && resourceId === d.id ? 'active' : '' }}" ng-repeat="d in data.divisions" href="/tournaments/{{ tournament.id }}/teams/{{ d.id }}">{{ d.name }}</a>
+				<a class="list-group-item {{ mode === 'teams' && resourceId === d.id ? 'active' : '' }}" ng-repeat="d in tournament.tournamentsDivisionCollection" href="/tournaments/{{ tournament.id }}/teams/{{ d.id }}">{{ d.name }}</a>
 			</div>
 			<h3>Scores</h3>
 			<div class="list-group">
-				<a class="list-group-item {{ mode === 'scores' && resourceId === c.id ? 'active' : '' }}" ng-repeat="c in data.competitions" href="/tournaments/{{ tournament.id }}/scores/{{ c.id }}">{{ c.name }}</a>
+				<a class="list-group-item {{ mode === 'scores' && resourceId === c.id ? 'active' : '' }}" ng-repeat="c in tournament.tournamentsCompetitionCollection" href="/tournaments/{{ tournament.id }}/scores/{{ c.id }}">{{ c.name }}</a>
 			</div>
 		</div>
 		<div class="col-md-10" style="padding-right:0;" ng-switch="mode">
