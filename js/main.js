@@ -52,8 +52,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 					'path': '/admin/directory/v1/groups',
 					'method': 'GET',
 					'params': {
-						'userKey': me.id,
-						'domain': 'zerorobotics.mit.edu'
+						'userKey': me.id
 					}
 				})
 				.execute(function(response){
