@@ -45,4 +45,8 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb',
 		$scope.signIn = function() {
 			realtime.requireAuth().then(getUser);
 		}
+
+		$scope.signOut = function() {
+			window.location.href = 'https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=' + window.location.href;
+		}
 }]);
