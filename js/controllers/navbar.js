@@ -38,4 +38,8 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb',
 		$scope.openProject = function() {
 			drive.openProject();
 		};
+
+		$scope.signIn = function() {
+			realtime.requireAuth();
+		}
 }]);
