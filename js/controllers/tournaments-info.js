@@ -25,6 +25,9 @@ zr.controller('TournamentsInfoController', ['$scope', '$route', 'tournamentResou
 		}
 		for(var i = list.length; i--; ) {
 			if(list[i].id === $scope.resourceId) {
+				if($scope.mode === 'info' && typeof list[i].content === 'string') {
+					list[i].content = $sce.trustAsHtml(list[i].content);
+				}
 				$scope.resource = list[i];
 				break;
 			}
