@@ -56,7 +56,7 @@
 				<thead>
 					<tr>
 						<th>Name</th>
-						<th>Username</th>
+						<th>Email</th>
 						<th>Role</th>
 						<th></th>
 					</tr>
@@ -67,8 +67,8 @@
 						<td>{{ m.email.replace('@zerorobotics.mit.edu', '') }}</td>
 						<td>
 							<select class="form-control" ng-model="m.role">
-								<option value="OWNER">Member</option>
-								<option value="MEMBER">Team Lead</option>
+								<option value="MEMBER">Member</option>
+								<option value="OWNER">Team Lead</option>
 							</select>
 						</td>
 						<td>
