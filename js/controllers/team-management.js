@@ -20,5 +20,19 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'realtime'
 				});
 			});
 		});
-	}
+	};
+
+	$scope.setData = function() {
+		gapi.client.request({
+			'path': '/admin/directory/v1/groups/' + $scope.currentTeam.id,
+			'method': 'PUT',
+			'params': {
+				'fields': ''
+			},
+			'body': JSON.stringify({
+				'description': JSON.stringify($scope.currentTeam.description)
+			})
+		})
+		.execute();
+	};
 }]);
