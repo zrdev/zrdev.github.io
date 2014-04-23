@@ -280,11 +280,11 @@ height: 130px;
 }
 
 div.picker-dialog-bg {
-	z-index:1031;
+	z-index:1052;
 }
 
 .picker-dialog {
-	z-index: 1032 !important;
+	z-index: 1053 !important;
 }
 
 .navbar-default {
