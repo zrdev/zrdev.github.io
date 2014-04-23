@@ -17,7 +17,7 @@
 //Handles Drive files and APIs. 
 zr.service('drive', ['config', '$modal', 'realtime', 'zrdb',
 
-	function (config, $modal, $timeout, realtime, zrdb) {
+	function (config, $modal, realtime, zrdb) {
 
 		gapi.client.setApiKey(config.simpleApiKey);
 
