@@ -6,13 +6,17 @@
 			<div class="list-group">
 				<a class="list-group-item {{ mode === 'info' && resourceId === p.id ? 'active' : '' }}" ng-repeat="p in tournament.tournamentsInfopageCollection | orderBy:'displayOrder'" href="/tournaments/{{ tournament.id }}/info/{{ p.id }}">{{ p.name }}</a>
 			</div>
-			<h3>Teams</h3>
-			<div class="list-group">
-				<a class="list-group-item {{ mode === 'teams' && resourceId === d.id ? 'active' : '' }}" ng-repeat="d in tournament.tournamentsDivisionCollection | orderBy:'name'" href="/tournaments/{{ tournament.id }}/teams/{{ d.id }}">{{ d.name }}</a>
+			<div ng-if="tournament.tournamentsDivisionCollection.length">
+				<h3>Teams</h3>
+				<div class="list-group">
+					<a class="list-group-item {{ mode === 'teams' && resourceId === d.id ? 'active' : '' }}" ng-repeat="d in tournament.tournamentsDivisionCollection | orderBy:'name'" href="/tournaments/{{ tournament.id }}/teams/{{ d.id }}">{{ d.name }}</a>
+				</div>
 			</div>
-			<h3>Scores</h3>
-			<div class="list-group">
-				<a class="list-group-item {{ mode === 'scores' && resourceId === c.id ? 'active' : '' }}" ng-repeat="c in tournament.tournamentsCompetitionCollection | orderBy:'displayOrder'" href="/tournaments/{{ tournament.id }}/scores/{{ c.id }}">{{ c.name }}</a>
+			<div ng-if="tournament.tournamentsCompetitionCollection.length">
+				<h3>Scores</h3>
+				<div class="list-group">
+					<a class="list-group-item {{ mode === 'scores' && resourceId === c.id ? 'active' : '' }}" ng-repeat="c in tournament.tournamentsCompetitionCollection | orderBy:'displayOrder'" href="/tournaments/{{ tournament.id }}/scores/{{ c.id }}">{{ c.name }}</a>
+				</div>
 			</div>
 		</div>
 		<div class="col-md-10" style="padding-right:0;" ng-switch="mode">
