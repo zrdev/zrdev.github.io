@@ -31,15 +31,13 @@
 					<div class="form-group">
 						<label for="state-name" class="col-sm-2 control-label">State</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" ng-model="currentTeam.description.state">
+							<input type="text" class="form-control" ng-options="states" ng-model="currentTeam.description.state">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="country-name" class="col-sm-2 control-label">Country</label>
 						<div class="col-sm-10">
-							<select ng-model="currentTeam.description.country" class="form-control">
-								<option>United States</option>
-								<option>Italy</option>
+							<select ng-model="currentTeam.description.country" ng-options="countries" class="form-control">
 							</select>
 						</div>
 					</div>
