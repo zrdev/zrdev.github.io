@@ -1,4 +1,4 @@
-zr.controller('TeamManagementController', ['$scope', 'teamResources', function($scope, teamResources) {
+zr.controller('TeamManagementController', ['$scope', 'teamResources', 'realtime', function($scope, teamResources, realtime) {
 	$scope.teams = teamResources.groups;
 	$scope.currentTeam = null;
 
