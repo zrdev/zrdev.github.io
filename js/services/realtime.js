@@ -244,6 +244,10 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 				}
 			}
 			else {
+				//Save the globals
+				var oldGlobals = Blockly.zr_cpp.C_GLOBAL_VARS;
+				//Load the target doc's globals
+				Blockly.zr_cpp.C_GLOBAL_VARS = modelRoot.get('cglobals');
 				for(var i = 0; i < len; i++) {
 					var topBlocks = pages.get(keys[i]).get('topBlocks').asArray();
 					if(topBlocks.length === 0) {
@@ -258,6 +262,8 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 				}
 				str = Blockly.zr_cpp.finishFull(str);
 			}
+			//Restore globals
+			Blockly.zr_cpp.C_GLOBAL_VARS = oldGlobals;
 			return str;
 		};
 	}]
