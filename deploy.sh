@@ -11,6 +11,8 @@ cat blockly_compressed.js blocks_compressed.js zr_cpp_compressed.js blockly/msg/
 mv zr_compressed.js build/js/zr.min.js
 rm *_compressed.js
 
+./chdates.py
+
 cp -Rp css/ build/css/
 cp -Rp docs/ build/docs/
 cp -Rp images/ build/images/
