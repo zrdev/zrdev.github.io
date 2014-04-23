@@ -158,6 +158,18 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		templateUrl: '/partials/zr-team.html'
 	}).when('/ms-curriculum/', {
 		templateUrl: '/partials/ms-curriculum.html'
+	}).when('/ms-curriculum/week1/', {
+		templateUrl: '/partials/week1.html'
+	}).when('/ms-curriculum/week2/', {
+		templateUrl: '/partials/week2.html'
+	}).when('/ms-curriculum/week3/', {
+		templateUrl: '/partials/week3.html'
+	}).when('/ms-curriculum/week4/', {
+		templateUrl: '/partials/week4.html'
+	}).when('/ms-curriculum/week5/', {
+		templateUrl: '/partials/week5.html'
+	}).when('/ms-curriculum/tutorials/', {
+		templateUrl: '/partials/tutorials-ms.html'
 	}).when('/manage-teams/', {
 		templateUrl: '/partials/team-management.html',
 		controller: 'TeamManagementController', 
