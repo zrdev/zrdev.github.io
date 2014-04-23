@@ -15,7 +15,9 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'realtime'
 				'method': 'GET'
 			})
 			.execute(function(response){
-				$scope.currentTeam.members = response.members;
+				$scope.$apply(function() {
+					$scope.currentTeam.members = response.members;
+				});
 			});
 		});
 	}

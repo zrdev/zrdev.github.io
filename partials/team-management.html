@@ -67,8 +67,8 @@
 						<td>{{ m.email.replace('@zerorobotics.mit.edu', '') }}</td>
 						<td>
 							<select class="form-control" ng-model="m.role">
-								<option>Member</option>
-								<option>Team Lead</option>
+								<option value="OWNER">Member</option>
+								<option value="MEMBER">Team Lead</option>
 							</select>
 						</td>
 						<td>
