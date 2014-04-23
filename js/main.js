@@ -156,6 +156,8 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		templateUrl: '/partials/in-the-news.html'
 	}).when('/zr-team/', {
 		templateUrl: '/partials/zr-team.html'
+	}).when('/ms-curriculum/', {
+		templateUrl: '/partials/ms-curriculum.html'
 	}).when('/manage-teams/', {
 		templateUrl: '/partials/team-management.html',
 		controller: 'TeamManagementController', 
