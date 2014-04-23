@@ -15,9 +15,9 @@
 'use strict';
 
 //Handles Drive files and APIs. 
-zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 'zrdb',
+zr.service('drive', ['config', '$modal', 'realtime', 'zrdb',
 
-	function (config, $modal, $timeout, $location, realtime, zrdb) {
+	function (config, $modal, $timeout, realtime, zrdb) {
 
 		gapi.client.setApiKey(config.simpleApiKey);
 
@@ -100,15 +100,14 @@ zr.service('drive', ['config', '$modal', '$timeout', '$location', 'realtime', 'z
 			});
 		};
 		
-		this.openProject = function() {
+		this.openProject = function(callback) {
 			realtime.requireAuth().then(function () {
 				var pickerCallback = function(data) {
 					if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
 						var doc = data[google.picker.Response.DOCUMENTS][0];
 						var id = doc[google.picker.Document.ID];
-						$timeout(function() {
-							$location.url('/ide/' + id + '/');
-						});
+						var name = doc[google.picker.Document.NAME];
+						callback(id, name);
 					}
 				};
 				var showPicker = function() {

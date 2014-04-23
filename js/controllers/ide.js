@@ -207,34 +207,9 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		$scope.editorMode = graphical ? 'graphical' : 'text';
 	};
 	
-	var getDocAsString = function() {
-		var str = '';
-		var keys = $scope.pages.keys().sort();
-		var len = keys.length;
-		if(!graphical) {
-			for(var i = 0; i < len; i++) {
-				str = str + '//Begin page ' + keys[i] + '\n' + $scope.pages.get(keys[i]).getText() + '\n//End page ' + keys[i] + '\n';
-			}
-		}
-		else {
-			for(var i = 0; i < len; i++) {
-				var topBlocks = $scope.pages.get(keys[i]).get('topBlocks').asArray();
-				if(topBlocks.length === 0) {
-					//This will happen when the init page has not been initialized; it will be dealt with in finishFull
-					continue;
-				}
-				var domText = topBlocks[0].xmlDom;
-				var domObj = Blockly.Xml.textToDom(domText);
-				var block = Blockly.Xml.domToSoloBlock(domObj);
-				var code = Blockly.zr_cpp.blockToCode(block);
-				str = str + '//Begin page ' + keys[i] + '\n' + code + '\n//End page ' + keys[i] + '\n\n';
-			}
-			str = Blockly.zr_cpp.finishFull(str);
-		}
-		return str;
-	};
+
 	$scope.testGen = function() {
-		alert(getDocAsString());
+		alert(realtime.getDocAsString($scope.model.getRoot()));
 	}
 	
 
@@ -242,7 +217,7 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 	$scope.compile = function(codesize) {
 		var data = {
 			gameId: $scope.model.getRoot().get('gameId'),
-			code: getDocAsString(),
+			code: realtime.getDocAsString($scope.model.getRoot()),
 			codesize: codesize
 		};
 		
@@ -273,15 +248,13 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 			}
 		};
 
-		var emptyCode = "void init() {} void loop() {}";
-
 		if(dataIn.sph === 1) {
-			data['code1'] = getDocAsString();
-			data['code2'] = emptyCode;
+			data['code1'] = realtime.getDocAsString($scope.model.getRoot());
+			data['code2'] = dataIn.opponentCode;
 		}
 		else {
-			data['code2'] = getDocAsString();
-			data['code1'] = emptyCode;
+			data['code2'] = realtime.getDocAsString($scope.model.getRoot());
+			data['code1'] = dataIn.opponentCode;
 		}
 
 		zrdb.compile(data, true).then(function(response) { //Success callback
@@ -300,7 +273,7 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		//Create phantom link with data URI to download content. Needed to specify the name of the file with 
 		//download attribute (window.open gives the file a random name in Firefox.)
 		var link = document.createElement('a');
-		link.setAttribute('href', 'data:text/x-c,' + encodeURIComponent(getDocAsString()));
+		link.setAttribute('href', 'data:text/x-c,' + encodeURIComponent(realtime.getDocAsString($scope.model.getRoot())));
 		link.setAttribute('download', 'project.cpp');
 		link.setAttribute('target', '_blank');
 		var randomDiv = document.getElementById('main-collapse');

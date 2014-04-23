@@ -1,4 +1,4 @@
-zr.controller('SimulationController', ['$scope', '$modalInstance', 'gameResource', function($scope, $modalInstance, gameResource) {
+zr.controller('SimulationController', ['$scope', '$modalInstance', 'gameResource', 'drive', 'realtime', function($scope, $modalInstance, gameResource, drive, realtime) {
 	var game = gameResource.data;
 
 	$scope.resetAll = function() {
@@ -8,7 +8,8 @@ zr.controller('SimulationController', ['$scope', '$modalInstance', 'gameResource
 			timeout: game.defaultTimeout,
 			sph1init: JSON.parse(game.initState1),
 			sph2init: JSON.parse(game.initState2),
-			gameVars: JSON.parse(game.gameVariables)
+			gameVars: JSON.parse(game.gameVariables),
+			opponentCode: 'void init() {} void loop() {}'
 		};
 		for(var i = $scope.data.gameVars.length; i--; ) {
 			$scope.data.gameVars[i].value = $scope.data.gameVars[i].min;
@@ -17,9 +18,6 @@ zr.controller('SimulationController', ['$scope', '$modalInstance', 'gameResource
 	$scope.resetAll();
 
 	$scope.opponentTitle = 'No Opponent';
-	
-	$modalInstance.opened.then(function() {
-	});
 	
 	$scope.simulate = function() {
 		for(var i = $scope.data.gameVars.length; i--; ) {
@@ -46,4 +44,15 @@ zr.controller('SimulationController', ['$scope', '$modalInstance', 'gameResource
 			}
 		}
 	};
+
+	$scope.pickOpponent = function() {
+		drive.openProject(function(id, name) {
+			realtime.requireAuth(true).then(function () {
+				realtime.getDocument(id).then(function(doc) {
+					$scope.opponentTitle = name;
+					$scope.data.opponentCode = realtime.getDocAsString(doc.getModel().getRoot());
+				});
+			});
+		});
+	}
 }]);

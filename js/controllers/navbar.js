@@ -1,7 +1,7 @@
 'use strict';
 
-zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb',
-	function ($scope, realtime, drive, zrdb) {
+zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb', '$location', '$timeout',
+	function ($scope, realtime, drive, zrdb, $location, $timeout) {
 		/**
 		 * Requests authorization from the user. Redirects to the previous target
 		 * or to create a new doc if no other action once complete.
@@ -41,7 +41,11 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb',
 		};
 		
 		$scope.openProject = function() {
-			drive.openProject();
+			drive.openProject(function(id, name) {
+				$timeout(function() {
+					$location.url('/ide/' + id + '/');
+				});
+			});
 		};
 
 		$scope.signIn = function() {

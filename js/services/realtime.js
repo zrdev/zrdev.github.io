@@ -52,13 +52,13 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 		 * @param id
 		 * @returns {angular.$q.promise}
 		 */
-		this.getDocument = function (id) {
+		this.getDocument = function (id, dontReplace) {
 			if (this.id === id) {
 				return $q.when(this.document);
-			} else if (this.document) {
+			} else if (this.document && !dontReplace) {
 				this.closeDocument();
 			}
-			return this.load(id);
+			return this.load(id, dontReplace);
 		};
 
 		/**
@@ -143,7 +143,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 		 * @param id
 		 * @returns {angular.$q.promise}
 		 */
-		this.load = function (id) {
+		this.load = function (id, dontReplace) {
 			var deferred = $q.defer();
 			this.requireAuth().then(function() {
 				var initialize = function (model) {
@@ -183,11 +183,14 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 					});
 				};
 				var onLoad = function (document) {
-					this_.setDocument(id, document);
-					var model = document.getModel()
-					Blockly.Realtime.model_ = model;
-					Blockly.zr_cpp.C_GLOBAL_VARS = model.getRoot().get('cglobals');
-					Blockly.zr_cpp.procedures = model.getRoot().get('procedures');
+					//dontReplace is for loading the opponent
+					if(!dontReplace) {
+						this_.setDocument(id, document);
+						var model = document.getModel();
+						Blockly.Realtime.model_ = model;
+						Blockly.zr_cpp.C_GLOBAL_VARS = model.getRoot().get('cglobals');
+						Blockly.zr_cpp.procedures = model.getRoot().get('procedures');
+					}
 					deferred.resolve(document);
 					$rootScope.$digest();
 				}.bind(this);
@@ -228,6 +231,34 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 				this.changeListener);
 			this.document = document;
 			this.id = id;
+		};
+
+		this.getDocAsString = function(modelRoot) {
+			var str = '';
+			var pages = modelRoot.get('pages');
+			var keys = pages.keys().sort();
+			var len = keys.length;
+			if(!modelRoot.get('graphical')) {
+				for(var i = 0; i < len; i++) {
+					str = str + '//Begin page ' + keys[i] + '\n' + pages.get(keys[i]).getText() + '\n//End page ' + keys[i] + '\n';
+				}
+			}
+			else {
+				for(var i = 0; i < len; i++) {
+					var topBlocks = pages.get(keys[i]).get('topBlocks').asArray();
+					if(topBlocks.length === 0) {
+						//This will happen when the init page has not been initialized; it will be dealt with in finishFull
+						continue;
+					}
+					var domText = topBlocks[0].xmlDom;
+					var domObj = Blockly.Xml.textToDom(domText);
+					var block = Blockly.Xml.domToSoloBlock(domObj);
+					var code = Blockly.zr_cpp.blockToCode(block);
+					str = str + '//Begin page ' + keys[i] + '\n' + code + '\n//End page ' + keys[i] + '\n\n';
+				}
+				str = Blockly.zr_cpp.finishFull(str);
+			}
+			return str;
 		};
 	}]
 );
