@@ -114,6 +114,7 @@ zr.service('drive', ['config', '$modal', 'realtime', 'zrdb',
 					var picker = new google.picker.PickerBuilder().
 						enableFeature(google.picker.Feature.NAV_HIDDEN).
 						hideTitleBar().
+						setOrigin(window.location.protocol + '://' + window.location.host).
 						setAppId(config.appId).
 						setOAuthToken(gapi.auth.getToken().access_token).
 						addView(new google.picker.DocsView().
