@@ -19,15 +19,6 @@
 	</RoutingRule>
 	<RoutingRule>
 		<Condition>
-			<KeyPrefixEquals>googleec26b02dc187733e.html</KeyPrefixEquals>
-		</Condition>
-		<Redirect>
-			<HostName>zerorobotics.scripts.mit.edu</HostName>
-			<HttpRedirectCode>301</HttpRedirectCode>
-		</Redirect>
-	</RoutingRule>
-	<RoutingRule>
-		<Condition>
 			<KeyPrefixEquals>2011Matches</KeyPrefixEquals>
 		</Condition>
 		<Redirect>
