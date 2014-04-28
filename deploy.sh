@@ -23,4 +23,4 @@ cp -Rp blockly/games/ build/blockly/games/
 cp -p index-prod.html build/index.html
 cp -p manifest.mf build/manifest.mf
 
-aws s3 sync build/ s3://zerorobotics.org/ --delete --exclude "*.DS_Store"
+aws s3 sync build/ s3://zerorobotics.mit.edu/ --delete --exclude "*.DS_Store"

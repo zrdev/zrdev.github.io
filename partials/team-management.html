@@ -1,11 +1,14 @@
 <div class="page-content">
+	<div class="jumbotron">
+		<p style="font-weight: bold; color: red;">This page is under construction. Until this message disappears, some features may not work and some links may be broken.</p>
+	</div>
 	<div class="container">
 		<div class="col-md-3 accordion-container">
 			<div class="list-group">
 				<a ng-click="setTeam(t)" class="list-group-item active" ng-repeat="t in teams">{{ t.name }}</a>
 			</div>
 		</div>
-		<div class="col-md-9" ng-if="currentTeam">
+		<div class="col-md-9" ng-if="currentTeam && isLead">
 			<div style="margin-bottom: 15px; text-align: right;">
 				<button class="btn btn-primary" ng-click="setData()">Save</button>
 			</div>
@@ -76,5 +79,6 @@
 				</tbody>
 			</table>
 		</div>
+		<div class="col-md-9" ng-if="currentTeam && !isLead">
 	</div>
 </div>
