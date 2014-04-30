@@ -317,3 +317,13 @@ div.picker-dialog-bg {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
+
+.ng-hide {
+  /* Not to worry, this will override the AngularJS default...
+  display:block!important;
+
+  /* this is just another form of hiding an element */
+  position:absolute;
+  top:-12000px;
+  left:-9999px;
+}
