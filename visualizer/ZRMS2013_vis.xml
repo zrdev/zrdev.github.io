@@ -17,13 +17,13 @@ Camera distanced changed from 1500 to 2500 in order to view the entire game area
 Wall layout type sphere
 -->
   <walls type="sphere" radius="8000">
-	<surface color="0xffffff"/>
-	<surface1 color="0xffffff"/>
-	<surface2 color="0xffffff"/>
-	<surface3 color="0xffffff"/>
-	<surface4 color="0xffffff"/>
-	<surface5 color="0xffffff"/>
-	<surface6 color="0xffffff"/>
+	<surface image="images/p11.jpg"/>
+	<surface1 image="images/p12.jpg"/>
+	<surface2 image="images/p13.jpg"/>
+	<surface3 image="images/p11.jpg"/>
+	<surface4 image="images/p12.jpg"/>
+	<surface5 image="images/p13.jpg"/>
+	<surface6 color="0x0f0f00"/>
   </walls>
   
 <!-- Define the game -->
