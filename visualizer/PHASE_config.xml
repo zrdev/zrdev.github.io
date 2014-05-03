@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Game Mode-->
+<!--
+Scene scale changed from 800 to 2000, this increases the size of the game area
+If changed all of the position values for the fixed objects must be changed
+-->
+<scene scale="2000.0" tics="500">
+  <light x="0" y="1000" z="0"/>
+  
+  <!-- Test volume boundaries in the positive direction in meters (assumed symmetric) -->
+  <bounds x="0.84" y="1.0" z="0.85"/>
+<!--
+Camera distanced changed from 1500 to 2500 in order to view the entire game area without zooming out
+-->
+  <camera pitch="60.0" yaw="313.0" distance="4000"/>
+<!--
+Wall layout type sphere
+-->
+  <walls type="sphere" radius="8000">
+	<surface image="images/p15.jpg"/>
+	<surface1 image="images/p11.jpg"/>
+	<surface2 image="images/p12.jpg"/>
+	<surface3 image="images/p13.jpg"/>
+	<surface4 image="images/p15.jpg"/>
+	<surface5 image="images/p11.jpg"/>
+	<surface6 color="0x0f0f00"/>
+  </walls>
+  
+<!-- Define the game -->
+<game name="PHASE"/>
+<!--
+Two dynamic satellite objects
+-->
+<!--blue sphere-->
+  <visobject id="s1" type="asobject" class="SphereSat" scale="2000" basequat="0.707, 0, 0.707,0">
+    <surface name="SatTexture" image="images/bluesph.png"/>
+  </visobject>
+<!--red sphere-->
+  <visobject id="s2" type="asobject" class="SphereSat" scale="2000" basequat="0.707, 0, 0.707,0">
+    <surface name="SatTexture" image="images/redsph.png"/>
+  </visobject>
+<!--
+Game objects
+-->
+
+<visobject id="disruptor" type="cube" x="100" y="100" z="100" 
+ initial_x="0" initial_y="0" initial_z="-0.4" scale="2">
+	<top image="images/disruptor.png"/>
+	<bottom image="images/disruptor.png"/>
+	<front image="images/disruptor.png"/>
+	<back image="images/disruptor.png"/>
+	<left image="images/disruptor.png"/>
+	<right image="images/disruptor.png"/>
+</visobject>
+
+<visobject id="shield" type="cube" x="100" y="100" z="100"
+	initial_x="0" initial_y="0" initial_z="0.4" scale="2">
+	<top image="images/shield.png"/>
+	<bottom image="images/shield.png"/>
+	<front image="images/shield.png"/>
+	<back image="images/shield.png"/>
+	<left image="images/shield.png"/>
+	<right image="images/shield.png"/>
+</visobject>
+
+
+<visobject id="laser1" type="cube" x="100" y="100" z="100"
+	initial_x="0.4" initial_y="0.0" initial_z="0.0" scale="2">
+	<top image="images/laser.png"/>
+	<bottom image="images/laser.png"/>
+	<front image="images/laser.png"/>
+	<back image="images/laser.png"/>
+	<left image="images/laser.png"/>
+	<right image="images/laser.png"/>
+</visobject>
+
+<visobject id="laser2" type="cube" x="100" y="100" z="100"
+	initial_x="-0.4" initial_y="0.0" initial_z="0.0" scale="2">
+	<top image="images/laser.png"/>
+	<bottom image="images/laser.png"/>
+	<front image="images/laser.png"/>
+	<back image="images/laser.png"/>
+	<left image="images/laser.png"/>
+	<right image="images/laser.png"/>
+</visobject>
+
+<visobject id="opulens" type="sphere" radius="0.10" initial_x="0.0" initial_y="-0.35" initial_z="-0.2">
+    <surface name="solid" color="0xDBD4CE"/>
+</visobject>
+
+<visobject id="indigens" type="sphere" radius="0.10" initial_x="0.0" initial_y="0.35" initial_z="0.2">
+    <surface name="solid" color="0xFFFF00"/>
+</visobject>
+
+<visobject id= "station1" type="asobject" class="Station" scale="100"
+         initial_x="0.5"
+         initial_y="-0.31"
+         initial_z="0.7"
+		 basequat="-0.5, -0.5, -0.5, 0.5">
+    <surface name="Material_003" color="0xE0D3C8" ambient="0xE0D3C8"/>
+</visobject>
+
+<visobject id= "station2" type="asobject" class="Station" scale="100"
+         initial_x="-0.5"
+         initial_y="0.31"
+         initial_z="-0.7"
+		 basequat="0.5, -0.5, 0.5, 0.5">
+    <surface name="Material_002" color="0xE0D3C8" ambient="0xE0D3C8"/>
+</visobject>
+
+<visobject id="stationtarg1" type="sphere" radius="0.1" initial_x="0.5" initial_y="-0.31" initial_z="0.55">
+    <surface name="solid" color="0xE0D3C8" ambient="0xE0D3C8"/>
+</visobject>
+
+<visobject id="stationtarg2" type="sphere" radius="0.1" initial_x="-0.5" initial_y="0.31" initial_z="-0.55">
+    <surface name="solid" color="0xE0D3C8" ambient="0xE0D3C8"/>
+</visobject>
+
+ </scene>
+
+
