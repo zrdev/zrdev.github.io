@@ -142,7 +142,8 @@ height: 130px;
 }
 
 .modal-dialog {
-	width: 60%;
+	width: 800px;
+	max-width: 90%;
 	margin-left: auto;
 	margin-right: auto;
 }
