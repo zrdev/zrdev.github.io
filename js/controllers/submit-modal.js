@@ -1,9 +1,5 @@
 zr.controller('SubmitModalController', ['$scope', '$modalInstance', 'projectText', function($scope, $modalInstance, projectText) {
 	$scope.projectText = projectText;
-	$scope.data = {
-		team: 'Team 1',
-		competition: 'Competition 2'
-	};
 	$scope.teams = [
 		{
 			name: 'Team 1'
@@ -12,7 +8,6 @@ zr.controller('SubmitModalController', ['$scope', '$modalInstance', 'projectText
 			name: 'Team 2'
 		}
 	];
-
 	$scope.competitions = [
 		{
 			name: 'Competition 1'
@@ -21,6 +16,10 @@ zr.controller('SubmitModalController', ['$scope', '$modalInstance', 'projectText
 			name: 'Competition 2'
 		}
 	];
+	$scope.data = {
+		team: $scope.teams[0],
+		competition: $scope.competitions[0]
+	};
 	$scope.aceOptions = {
 		theme:'chrome',
 		mode: 'c_cpp',
