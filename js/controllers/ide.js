@@ -141,12 +141,24 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 				gameResource: function() {
 					return resources[1];
 				}
-			},
-			windowClass: {
-				'width': '1000px'
 			}
 		}).result.then(function(data) {
 			simulate(data);
+		});
+	};
+
+	//Opens the submission dialog
+	$scope.openSubmitDialog = function() {
+		$modal.open({
+			templateUrl: '/partials/submit-modal.html',
+			controller: 'SubmitModalController',
+			resolve: {
+				projectText: function() { return realtime.getDocAsString($scope.model.getRoot()); }
+			},
+			windowClass: {
+
+			}
+		}).result.then(function(data) {
 		});
 	};
 	
