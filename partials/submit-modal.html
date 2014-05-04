@@ -2,7 +2,7 @@
 	<button type="button" class="close" aria-hidden="true" ng-click="cancel()">&times;</button>
 	<h4 class="modal-title">Simulate</h4>
 </div>
-<div class="modal-body" ui-keypress="{'enter':'createPage()'}">
+<div class="modal-body container" ui-keypress="{'enter':'createPage()'}">
 	<div class="col-md-3">
 		<form class="css-form" novalidate ng-submit="submit()">
 			<div class="form-group">
@@ -16,7 +16,7 @@
 		</form>
 	</div>
 	<div class="col-md-9">
-		<div readonly="true" ui-ace="aceOptions" ng-model="projectText" style="font-size: 18px; width: 100%;" heightoffset="160"></div>
+		<div readonly="true" ui-ace="aceOptions" ng-model="projectText" style="font-size: 18px; width: 100%;" heightoffset="220"></div>
 	</div>
 </div>
 <div class="modal-footer">
