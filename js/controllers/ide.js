@@ -154,9 +154,6 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 			controller: 'SubmitModalController',
 			resolve: {
 				projectText: function() { return realtime.getDocAsString($scope.model.getRoot()); }
-			},
-			windowClass: {
-				'width': '90%'
 			}
 		}).result.then(function(data) {
 		});
