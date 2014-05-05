@@ -3,20 +3,18 @@
 	<h4 class="modal-title">Simulate</h4>
 </div>
 <div class="modal-body container" ui-keypress="{'enter':'createPage()'}">
-	<form class="form-horizontal css-form" novalidate ng-submit="submit()">
-		<div style="margin-bottom: 10px;">
-			<div class="col-md-1">
-				<label for="submit-team" class="control-label">Team</label>
-			</div>
-			<div class="col-md-4">
-				<select id="submit-team" class="form-control" ng-model="data.team" ng-options="t.name for t in teams | orderBy:'name'"></select>
-			</div>
-			<div class="col-md-2">
-				<label for="submit-competition" class="control-label">Competition</label>
-			</div>
-			<div class="col-md-5">
-				<select id="submit-competition" class="form-control" ng-model="data.competition" ng-options="c.name for c in competitions | orderBy:'name'"></select>
-			</div>
+	<form class="form-horizontal css-form container" style="padding: 0px; margin-bottom: 10px;" novalidate ng-submit="submit()">
+		<div class="col-md-1">
+			<label for="submit-team" class="control-label">Team</label>
+		</div>
+		<div class="col-md-4">
+			<select id="submit-team" class="form-control" ng-model="data.team" ng-options="t.name for t in teams | orderBy:'name'"></select>
+		</div>
+		<div class="col-md-2">
+			<label for="submit-competition" class="control-label">Competition</label>
+		</div>
+		<div class="col-md-5">
+			<select id="submit-competition" class="form-control" ng-model="data.competition" ng-options="c.name for c in competitions | orderBy:'name'"></select>
 		</div>
 	</form>
 	<div readonly="true" ui-ace="aceOptions" ng-model="projectText" style="font-size: 18px; width: 100%;" heightoffset="300"></div>
