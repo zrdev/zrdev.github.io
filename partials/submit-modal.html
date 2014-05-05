@@ -4,13 +4,13 @@
 </div>
 <div class="modal-body container" ui-keypress="{'enter':'createPage()'}">
 	<form class="form-horizontal css-form container" style="padding: 0px; margin-bottom: 10px;" novalidate ng-submit="submit()">
-		<div class="col-md-1">
+		<div class="col-md-1 align-right">
 			<label for="submit-team" class="control-label">Team</label>
 		</div>
 		<div class="col-md-4">
 			<select id="submit-team" class="form-control" ng-model="data.team" ng-options="t.name for t in teams | orderBy:'name'"></select>
 		</div>
-		<div class="col-md-2">
+		<div class="col-md-2 align-right">
 			<label for="submit-competition" class="control-label">Competition</label>
 		</div>
 		<div class="col-md-5">
