@@ -18,7 +18,8 @@ zr.controller('SubmitModalController', ['$scope', '$modalInstance', 'projectText
 	];
 	$scope.data = {
 		team: $scope.teams[0],
-		competition: $scope.competitions[0]
+		competition: $scope.competitions[0],
+		agree: false
 	};
 	$scope.aceOptions = {
 		theme:'chrome',
