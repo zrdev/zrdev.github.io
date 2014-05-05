@@ -156,7 +156,7 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 				projectText: function() { return realtime.getDocAsString($scope.model.getRoot()); }
 			},
 			windowClass: {
-				'width': '90% !important'
+				'width': '1200px'
 			}
 		}).result.then(function(data) {
 		});
