@@ -5,11 +5,11 @@
 <div class="modal-body container" ui-keypress="{'enter':'createPage()'}">
 	<form class="form-horizontal css-form" novalidate ng-submit="submit()">
 		<div class="container">
-			<div class="form-group col-md-6">
+			<div class="col-md-6">
 				<label for="submit-team" class="control-label">Team</label>
 				<select id="submit-team" class="form-control" ng-model="data.team" ng-options="t.name for t in teams | orderBy:'name'"></select>
 			</div>
-			<div class="form-group col-md-6">
+			<div class="col-md-6">
 				<label for="submit-competition" class="control-label">Competition</label>
 				<select id="submit-competition" class="form-control" ng-model="data.competition" ng-options="c.name for c in competitions | orderBy:'name'"></select>
 			</div>
