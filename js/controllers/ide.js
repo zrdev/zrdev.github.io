@@ -141,6 +141,9 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 				gameResource: function() {
 					return resources[1];
 				}
+			},
+			windowClass: {
+				'max-width': '800px'
 			}
 		}).result.then(function(data) {
 			simulate(data);
