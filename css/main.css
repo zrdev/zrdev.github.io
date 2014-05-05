@@ -141,10 +141,6 @@ height: 130px;
 	color: #ffffff;
 }
 
-.modal-dialog {
-	width: 10px !important;
-}
-
 .modal-content {
 	width: 800px;
 	max-width: 90%;
