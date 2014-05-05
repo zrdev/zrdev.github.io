@@ -23,6 +23,16 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 		var completeTables = {};
 		var CONNECTION_ERROR = 'The server did not respond. Please check your Internet connection and try again.'
 				+ 'If this problem persists for more than a few minutes, please contact us at zerorobotics@mit.edu.'
+		var reqConfig = {
+			headers: {}
+		}
+
+		//Add a header w/ the OAuth token
+		var refreshAuth = function() {
+			if(gapi && gapi.auth && typeof gapi.auth.getToken === 'function') {
+				config.headers['authorization'] = gapi.auth.getToken().access_token;
+			}
+		}
 		
 		this.getSingleResource = function(name, id) {
 			id = id || $route.current.params['id'];
@@ -38,14 +48,8 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 					}
 				}
 			}
-
-			//Include authorization header if the user is logged in
-			var headers = {};
-			if(gapi && gapi.auth && typeof gapi.auth.getToken === 'function') {
-				headers['authorization'] = gapi.auth.getToken().access_token;
-			}
-
-			return $http.get(config.serviceDomain + '/' + name + 'resource/single/' + id + '/', {headers: headers})
+			refreshAuth();
+			return $http.get(config.serviceDomain + '/' + name + 'resource/single/' + id + '/', reqConfig)
 			.success(function(data) {
 				if(!(name in cache)) {
 					cache[name] = [];
@@ -68,7 +72,10 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 					}
 				});
 			}
-			return $http.get(config.serviceDomain + '/' + name + 'resource/all/')
+
+			refreshAuth();
+
+			return $http.get(config.serviceDomain + '/' + name + 'resource/all/', reqConfig)
 			.success(function(data) {
 				cache[name] = data.rows;
 				completeTables[name] = true;
@@ -93,7 +100,7 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 			var getStatus = function(id) {
 				$timeout(function() {
 					$http.get(config.serviceDomain + (simulate ? '/simulation' : '/compilation') 
-						+ 'resource/single/' + id)
+						+ 'resource/single/' + id, reqConfig)
 					.success(function(data,status,headers,config) {
 						if(data.status === 'COMPILING' || data.status === 'SIMULATING') {
 							getStatus(id);
@@ -117,7 +124,7 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 			};
 			
 			$http.post(config.serviceDomain + 
-				(simulate ? '/simulationresource/simulate' : '/compilationresource/compile'), data)
+				(simulate ? '/simulationresource/simulate' : '/compilationresource/compile'), data, reqConfig)
 			.success(function(data) {
 				if(data.status === 'FAILED') {
 					deferred.reject(data);
