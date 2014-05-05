@@ -1,8 +1,3 @@
-//Patch to prevent dropdowns closing on right-click in Firefox
-//Courtesy of http://stackoverflow.com/questions/15931962/
-angular.element(document).on('click', function(e) {
-  e.button === 2 && e.stopImmediatePropagation();
-})
 //Initial module setup and URL routing
 
 var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute', 'ngSanitize', 'uiSlider'])
