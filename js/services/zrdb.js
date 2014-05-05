@@ -30,7 +30,7 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 		//Add a header w/ the OAuth token
 		var refreshAuth = function() {
 			if(gapi && gapi.auth && typeof gapi.auth.getToken === 'function' && gapi.auth.getToken() !== null) {
-				config.headers['authorization'] = gapi.auth.getToken().access_token;
+				reqConfig.headers['authorization'] = gapi.auth.getToken().access_token;
 			}
 		}
 		
