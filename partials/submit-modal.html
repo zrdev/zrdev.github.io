@@ -7,13 +7,13 @@
 		<div style="float: left;">
 			<label for="submit-team" class="control-label">Team</label>
 		</div>
-		<div style="float: left;">
+		<div style="float: left; width: 40%;">
 			<select id="submit-team" class="form-control" ng-model="data.team" ng-options="t.name for t in teams | orderBy:'name'"></select>
 		</div>
 		<div style="float: left;">
 			<label for="submit-competition" class="control-label">Competition</label>
 		</div>
-		<div style="float: left;">
+		<div style="float: left; width: 40%;">
 			<select id="submit-competition" class="form-control" ng-model="data.competition" ng-options="c.name for c in competitions | orderBy:'name'"></select>
 		</div>
 	</form>
