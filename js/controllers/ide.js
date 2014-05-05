@@ -234,8 +234,16 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		};
 		
 		zrdb.compile(data).then(function(response) { //Success callback
+			var size = response.codesizePct;
+			if(size > 0) {
+				//Convert from number of words to percentage
+				size = Math.ceil((size - resources[1].data.emptyProjectSize) * 100 / resources[1].data.codesizeAllocation)
+			}
+			else {
+				size = null;
+			}
 			$scope.logInsert('Compilation succeeded. '
-					+ (typeof response.codesizePct === 'number' ? response.codesizePct + '% codesize usage.\n' : '\n'),
+					+ (size !== null ? size + '% codesize usage.\n' : '\n'),
 					response.message);
 		}, function(response) { //Error callback
 			$scope.logInsert('Compilation failed.\n', response.message);
