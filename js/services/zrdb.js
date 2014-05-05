@@ -38,7 +38,14 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 					}
 				}
 			}
-			return $http.get(config.serviceDomain + '/' + name + 'resource/single/' + id + '/')
+
+			//Include authorization header if the user is logged in
+			var headers = {};
+			if(gapi && gapi.auth && typeof gapi.auth.getToken === 'function') {
+				headers['authorization'] = gapi.auth.getToken().access_token;
+			}
+
+			return $http.get(config.serviceDomain + '/' + name + 'resource/single/' + id + '/', {headers: headers})
 			.success(function(data) {
 				if(!(name in cache)) {
 					cache[name] = [];
