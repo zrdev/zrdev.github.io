@@ -32,13 +32,7 @@
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-route.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-sanitize.js"></script>
-	<script>
-		//Patch to prevent dropdowns closing on right-click in Firefox
-		//Courtesy of http://stackoverflow.com/questions/15931962/
-		document.onclick = function(e) {
-		  e.button === 2 && e.stopImmediatePropagation();
-		};
-	</script>
+
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
 	<script src="/js/directives/ui-ace.js"></script>
 	<script src="/js/directives/angular-slider.js"></script>
