@@ -224,7 +224,7 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		alert(realtime.getDocAsString($scope.model.getRoot()));
 	}
 	
-	var parseErrorMessage = function(msg) {
+	var parseErrorMessage = function(msg, startLines) {
 		var re = /^\/zr.cpp:([0-9]+):([0-9]+): (error|warning): (.*)$/gm;
 		var toIgnore = '‘game’ defined but not used [-Wunused-variable]\n'
 			+ '‘api’ defined but not used [-Wunused-variable]\n';
@@ -238,14 +238,16 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		        out = out.concat(err[3].toUpperCase() + (graphical ? '' : ' at line ' + String(parseInt(err[1]) - 25) + ', col ' + err[2]) + ': ' + err[4] + '\n');
 		    }
 		} while (err);
+		console.log(startLines);
 		return out;
 	};
 
 	
 	$scope.compile = function(codesize) {
+		var code = realtime.getDocAsString($scope.model.getRoot(), true);
 		var data = {
 			gameId: $scope.model.getRoot().get('gameId'),
-			code: realtime.getDocAsString($scope.model.getRoot()),
+			code: code[0],
 			codesize: codesize
 		};
 		
@@ -258,12 +260,11 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 			else {
 				size = null;
 			}
-			//Parse 
 			$scope.logInsert('Compilation succeeded. '
 					+ (size !== null ? size + '% codesize usage.\n' : '\n'),
 					response.message);
 		}, function(response) { //Error callback
-			$scope.logInsert(response.message.split('\n')[0] + '\n', parseErrorMessage(response.message));
+			$scope.logInsert(response.message.split('\n')[0] + '\n', parseErrorMessage(response.message, code[1]));
 		}).finally(function() {
 			$scope.logOpen = true;
 			$scope.simRunning = false;

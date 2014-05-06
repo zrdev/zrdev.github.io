@@ -233,13 +233,17 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 			this.id = id;
 		};
 
-		this.getDocAsString = function(modelRoot) {
+		this.getDocAsString = function(modelRoot, countLines) {
 			var str = '';
 			var pages = modelRoot.get('pages');
 			var keys = pages.keys().sort();
 			var len = keys.length;
+			var startLines = {};
 			if(!modelRoot.get('graphical')) {
 				for(var i = 0; i < len; i++) {
+					if(countLines) {
+						startLines[keys[i]] = str.split(/\r\n|\r|\n/).length + 2;
+					}
 					str = str + '//Begin page ' + keys[i] + '\n' + pages.get(keys[i]).getText() + '\n//End page ' + keys[i] + '\n';
 				}
 			}
@@ -258,12 +262,29 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 					var domObj = Blockly.Xml.textToDom(domText);
 					var block = Blockly.Xml.domToSoloBlock(domObj);
 					var code = Blockly.zr_cpp.blockToCode(block);
+					if(countLines) {
+						startLines[keys[i]] = str.split(/\r\n|\r|\n/).length + 2;
+					}
 					str = str + '//Begin page ' + keys[i] + '\n' + code + '\n//End page ' + keys[i] + '\n\n';
 				}
-				str = Blockly.zr_cpp.finishFull(str);
+				//Add globals and adjust line numbers
+				if(countLines) {
+					lengthbefore = str.split(/\r\n|\r|\n/).length;
+					str = Blockly.zr_cpp.finishFull(str);
+					diff = str.split(/\r\n|\r|\n/).length - lengthbefore;
+					for(i in startLines) {
+						startLines[i] += diff;
+					}
+				}
+				else {
+					str = Blockly.zr_cpp.finishFull(str);
+				}
 			}
 			//Restore globals
 			Blockly.zr_cpp.C_GLOBAL_VARS = oldGlobals;
+			if(countLines) {
+				return [str, startLines];
+			}
 			return str;
 		};
 	}]

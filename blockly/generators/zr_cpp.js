@@ -146,7 +146,7 @@ Blockly.zr_cpp.finishFull = function(code) {
 	+ '\n\n' + code;
 	//HACK: Make sure the code contains an init function in case the init page has not been properly initialized
 	if(code.indexOf('//Begin page init\nvoid init() {\n') === -1) {
-		code = code + 'void init() {}\n';
+		code = 'void init() {}\n' + code;
 	}
 	return code;
 };
