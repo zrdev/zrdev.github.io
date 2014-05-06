@@ -228,8 +228,7 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		var re = /^\/zr.cpp:([0-9]+):([0-9]+): (error|warning): (.*)$/gm;
 		var toIgnore = '‘game’ defined but not used [-Wunused-variable]\n'
 			+ '‘api’ defined but not used [-Wunused-variable]\n';
-		//Start with the first line, which will be a general message
-		var out = msg.split('\n')[0] + '\n';
+		var out = '';
 		do {
 		    var err = re.exec(msg);
 		    //The toIgnore check ignores certain useless warnings
@@ -264,7 +263,7 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 					+ (size !== null ? size + '% codesize usage.\n' : '\n'),
 					response.message);
 		}, function(response) { //Error callback
-			$scope.logInsert(parseErrorMessage(response.message));
+			$scope.logInsert(response.message.split('\n')[0] + '\n', parseErrorMessage(response.message));
 		}).finally(function() {
 			$scope.logOpen = true;
 			$scope.simRunning = false;
