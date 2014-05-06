@@ -242,10 +242,10 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 			if(!modelRoot.get('graphical')) {
 				for(var i = 0; i < len; i++) {
 					if(countLines) {
-						//Magic number: 25 is the offset needed to make line numbers match up with the zr.cpp template; needs to be changed if zr.cpp changes
+						//Magic number: 24 is the offset needed to make line numbers match up with the zr.cpp template; needs to be changed if zr.cpp changes
 						startLines.push({
 							'name': keys[i],
-							'line': str.split(/\r\n|\r|\n/).length + 25
+							'line': str.split(/\r\n|\r|\n/).length + 24
 						});
 					}
 					str = str + '//Begin page ' + keys[i] + '\n' + pages.get(keys[i]).getText() + '\n//End page ' + keys[i] + '\n';
@@ -267,10 +267,10 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 					var block = Blockly.Xml.domToSoloBlock(domObj);
 					var code = Blockly.zr_cpp.blockToCode(block);
 					if(countLines) {
-						//Magic number: 25 is the offset needed to make line numbers match up with the zr.cpp template; needs to be changed if zr.cpp changes
+						//Magic number: 24 is the offset needed to make line numbers match up with the zr.cpp template; needs to be changed if zr.cpp changes
 						startLines.push({
 							'name': keys[i],
-							'line': str.split(/\r\n|\r|\n/).length + 25
+							'line': str.split(/\r\n|\r|\n/).length + 24
 						});
 					}
 					str = str + '//Begin page ' + keys[i] + '\n' + code + '\n//End page ' + keys[i] + '\n\n';
