@@ -242,7 +242,11 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 			if(!modelRoot.get('graphical')) {
 				for(var i = 0; i < len; i++) {
 					if(countLines) {
-						startLines[keys[i]] = str.split(/\r\n|\r|\n/).length + 2;
+						//Magic number: 27 is the offset needed to make line numbers match up with the zr.cpp template; needs to be changed if zr.cpp changes
+						startLines.push({
+							'name': keys[i],
+							'line': str.split(/\r\n|\r|\n/).length + 26
+						});
 					}
 					str = str + '//Begin page ' + keys[i] + '\n' + pages.get(keys[i]).getText() + '\n//End page ' + keys[i] + '\n';
 				}
