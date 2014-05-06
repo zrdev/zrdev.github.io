@@ -1,7 +1,7 @@
 zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$location', 'config', 'realtime', 'drive', 'resources', 'zrdb', 
 		function($scope, $modal, $http, $timeout, $location, config, realtime, drive, resources, zrdb) {
 	//Hide the footer
-	angular.element('#footer').style['display'] = 'none';
+	document.getElementById('footer').style['display'] = 'none';
 	var realtimeDocument = resources[0];
 	$scope.model = realtimeDocument.getModel();
 	var graphical = $scope.model.getRoot().get('graphical');
