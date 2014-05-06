@@ -280,8 +280,8 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 					lengthbefore = str.split(/\r\n|\r|\n/).length;
 					str = Blockly.zr_cpp.finishFull(str);
 					diff = str.split(/\r\n|\r|\n/).length - lengthbefore;
-					for(i in startLines) {
-						startLines[i] += diff;
+					for(var i = startLines.length; i--;) {
+						startLines[i].line += diff;
 					}
 				}
 				else {
