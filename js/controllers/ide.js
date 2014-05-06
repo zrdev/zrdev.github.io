@@ -228,17 +228,18 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		var re = /^\/zr.cpp:([0-9]+):([0-9]+): (error|warning): (.*)$/gm;
 		var toIgnore = '‘game’ defined but not used [-Wunused-variable]\n'
 			+ '‘api’ defined but not used [-Wunused-variable]\n';
-		var errors = [];
+		//Start with the first line, which will be a general message
+		var out = msg.split('\n')[0] + '\n';
 		do {
 		    var err = re.exec(msg);
 		    //The toIgnore check ignores certain useless warnings
 		    if (err && toIgnore.indexOf(err[4]) === -1) {
 		    	//Get rid of GCC junk
-		    	err[4] = err[4].replace(' [-Wunused-variable]','');
-		        errors.push(err);
+		    	err[4] = err[4].replace('[-Wunused-variable]','');
+		        out = out.concat(err[3] + ' at line ' + err[1] + ', col ' + err[2] + ': ' + err[4] + '\n');
 		    }
 		} while (err);
-		return errors;
+		return out;
 	};
 
 	
@@ -263,8 +264,7 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 					+ (size !== null ? size + '% codesize usage.\n' : '\n'),
 					response.message);
 		}, function(response) { //Error callback
-			$scope.logInsert(response.message);
-			console.log(parseErrorMessage(response.message));
+			$scope.logInsert(parseErrorMessage(response.message));
 		}).finally(function() {
 			$scope.logOpen = true;
 			$scope.simRunning = false;
