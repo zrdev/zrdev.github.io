@@ -277,7 +277,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 				}
 				//Add globals and adjust line numbers
 				if(countLines) {
-					lengthbefore = str.split(/\r\n|\r|\n/).length;
+					var lengthbefore = str.split(/\r\n|\r|\n/).length;
 					str = Blockly.zr_cpp.finishFull(str);
 					diff = str.split(/\r\n|\r|\n/).length - lengthbefore;
 					for(var i = startLines.length; i--;) {
