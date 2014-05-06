@@ -235,7 +235,7 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		    if (err && toIgnore.indexOf(err[4]) === -1) {
 		    	//Get rid of GCC junk
 		    	err[4] = err[4].replace('[-Wunused-variable]','');
-		        out = out.concat(err[3].toUpperCase + ' at line ' + err[1] + ', col ' + err[2] + ': ' + err[4] + '\n');
+		        out = out.concat(err[3].toUpperCase() + ' at line ' + err[1] + ', col ' + err[2] + ': ' + err[4] + '\n');
 		    }
 		} while (err);
 		return out;
