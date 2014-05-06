@@ -4,7 +4,7 @@ zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$locati
 		shouldBeOpen: true,
 		name: '',
 		editorMode: 'text',
-		game: $scope.games[0]
+		game: $scope.games[2]
 	};
 	
 	$modalInstance.opened.then(function() {
