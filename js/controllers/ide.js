@@ -224,6 +224,22 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		alert(realtime.getDocAsString($scope.model.getRoot()));
 	}
 	
+	var parseErrorMessage = function(msg) {
+		var re = /^\/zr.cpp:([0-9]+):([0-9]+): (error|warning): (.*)$/gm;
+		var toIgnore = '‘game’ defined but not used [-Wunused-variable]\n'
+			+ '‘api’ defined but not used [-Wunused-variable]\n';
+		var errors = [];
+		do {
+		    err = re.exec(msg);
+		    //The toIgnore check ignores certain useless warnings
+		    if (err && toIgnore.indexOf(err[5]) !== -1) {
+		    	//Get rid of GCC junk
+		    	err[5] = err[5].replace(' [-Wunused-variable]','');
+		        errors.push(err);
+		    }
+		} while (err);
+		return errors;
+	};
 
 	
 	$scope.compile = function(codesize) {
@@ -234,19 +250,27 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		};
 		
 		zrdb.compile(data).then(function(response) { //Success callback
+			//Convert from number of words to percentage
 			var size = response.codesizePct;
 			if(size > 0) {
-				//Convert from number of words to percentage
 				size = Math.ceil((size - resources[1].data.emptyProjectSize) * 100 / resources[1].data.codesizeAllocation)
 			}
 			else {
 				size = null;
 			}
+			//Parse 
 			$scope.logInsert('Compilation succeeded. '
 					+ (size !== null ? size + '% codesize usage.\n' : '\n'),
 					response.message);
 		}, function(response) { //Error callback
-			$scope.logInsert('Compilation failed.\n', response.message);
+			//Flatten error messages into string
+			var errors = JSON.parse(response.message).errors;
+			var errorString = '';
+			for(var i = errors.length; i--;) {
+				errorString = errorString.concat(errors[i].error + '\n');
+			}
+			$scope.logInsert('Compilation failed.\n', errorString);
+			console.log(parseErrorMessage(errorString));
 		}).finally(function() {
 			$scope.logOpen = true;
 			$scope.simRunning = false;
