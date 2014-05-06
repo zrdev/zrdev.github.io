@@ -232,7 +232,7 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		do {
 		    err = re.exec(msg);
 		    //The toIgnore check ignores certain useless warnings
-		    if (err && toIgnore.indexOf(err[5]) !== -1) {
+		    if (err && toIgnore.indexOf(err[5]) === -1) {
 		    	//Get rid of GCC junk
 		    	err[5] = err[5].replace(' [-Wunused-variable]','');
 		        errors.push(err);
@@ -263,7 +263,7 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 					+ (size !== null ? size + '% codesize usage.\n' : '\n'),
 					response.message);
 		}, function(response) { //Error callback
-			$scope.logInsert('Compilation failed.\n', response.message);
+			$scope.logInsert(response.message);
 			console.log(parseErrorMessage(response.message));
 		}).finally(function() {
 			$scope.logOpen = true;
