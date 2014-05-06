@@ -238,7 +238,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 			var pages = modelRoot.get('pages');
 			var keys = pages.keys().sort();
 			var len = keys.length;
-			var startLines = []];
+			var startLines = [];
 			if(!modelRoot.get('graphical')) {
 				for(var i = 0; i < len; i++) {
 					if(countLines) {
