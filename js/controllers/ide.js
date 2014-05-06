@@ -232,9 +232,9 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		do {
 		    var err = re.exec(msg);
 		    //The toIgnore check ignores certain useless warnings
-		    if (err && toIgnore.indexOf(err[5]) === -1) {
+		    if (err && toIgnore.indexOf(err[4]) === -1) {
 		    	//Get rid of GCC junk
-		    	err[5] = err[5].replace(' [-Wunused-variable]','');
+		    	err[4] = err[4].replace(' [-Wunused-variable]','');
 		        errors.push(err);
 		    }
 		} while (err);
