@@ -263,14 +263,8 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 					+ (size !== null ? size + '% codesize usage.\n' : '\n'),
 					response.message);
 		}, function(response) { //Error callback
-			//Flatten error messages into string
-			var errors = JSON.parse(response.message).errors;
-			var errorString = '';
-			for(var i = errors.length; i--;) {
-				errorString = errorString.concat(errors[i].error + '\n');
-			}
-			$scope.logInsert('Compilation failed.\n', errorString);
-			console.log(parseErrorMessage(errorString));
+			$scope.logInsert('Compilation failed.\n', response.message);
+			console.log(parseErrorMessage(response.message));
 		}).finally(function() {
 			$scope.logOpen = true;
 			$scope.simRunning = false;
