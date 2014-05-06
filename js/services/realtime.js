@@ -238,7 +238,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 			var pages = modelRoot.get('pages');
 			var keys = pages.keys().sort();
 			var len = keys.length;
-			var startLines = {};
+			var startLines = []];
 			if(!modelRoot.get('graphical')) {
 				for(var i = 0; i < len; i++) {
 					if(countLines) {
@@ -263,7 +263,11 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 					var block = Blockly.Xml.domToSoloBlock(domObj);
 					var code = Blockly.zr_cpp.blockToCode(block);
 					if(countLines) {
-						startLines[keys[i]] = str.split(/\r\n|\r|\n/).length + 2;
+						//Magic number: 27 is the offset needed to make line numbers match up with the zr.cpp template; needs to be changed if zr.cpp changes
+						startLines.push({
+							'name': keys[i],
+							'line': str.split(/\r\n|\r|\n/).length + 26
+						});
 					}
 					str = str + '//Begin page ' + keys[i] + '\n' + code + '\n//End page ' + keys[i] + '\n\n';
 				}

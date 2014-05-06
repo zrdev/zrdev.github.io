@@ -235,7 +235,20 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		    if (err && toIgnore.indexOf(err[4]) === -1) {
 		    	//Get rid of GCC junk
 		    	err[4] = err[4].replace('[-Wunused-variable]','');
-		        out = out.concat(err[3].toUpperCase() + (graphical ? '' : ' at line ' + String(parseInt(err[1]) - 25) + ', col ' + err[2]) + ': ' + err[4] + '\n');
+		    	//Find the right page
+		    	var lineNum = parseInt(err[1]);
+		    	var page = {
+		    		name: 'NONE',
+		    		line: 26
+		    	};
+		    	for(var i = startLines.length; i--; ) {
+		    		if(startLines[i].line < lineNum) {
+		    			page = startLines[i];
+		    			break;
+		    		}
+		    	}
+		        out = out.concat(err[3].toUpperCase() + ' on page ' + page.name
+		        	+ (graphical ? '' : ' at line ' + String(lineNum - page.line) + ', col ' + err[2]) + ': ' + err[4] + '\n');
 		    }
 		} while (err);
 		console.log(startLines);
