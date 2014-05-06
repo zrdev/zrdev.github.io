@@ -230,7 +230,7 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 			+ '‘api’ defined but not used [-Wunused-variable]\n';
 		var errors = [];
 		do {
-		    err = re.exec(msg);
+		    var err = re.exec(msg);
 		    //The toIgnore check ignores certain useless warnings
 		    if (err && toIgnore.indexOf(err[5]) === -1) {
 		    	//Get rid of GCC junk
