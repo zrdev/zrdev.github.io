@@ -270,7 +270,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 						//Magic number: 29 is the offset needed to make line numbers match up with the zr.cpp template; needs to be changed if zr.cpp changes
 						startLines.push({
 							'name': keys[i],
-							'line': str.split(/\r\n|\r|\n/).length + 27
+							'line': str.split(/\r\n|\r|\n/).length + 26
 						});
 					}
 					str = str + '//Begin page ' + keys[i] + '\n' + code + '\n//End page ' + keys[i] + '\n\n';
