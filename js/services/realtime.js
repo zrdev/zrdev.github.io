@@ -242,7 +242,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 			if(!modelRoot.get('graphical')) {
 				for(var i = 0; i < len; i++) {
 					if(countLines) {
-						//Magic number: 29 is the offset needed to make line numbers match up with the zr.cpp template; needs to be changed if zr.cpp changes
+						//Magic number: 26 is the offset needed to make line numbers match up with the zr.cpp template; needs to be changed if zr.cpp changes
 						startLines.push({
 							'name': keys[i],
 							'line': str.split(/\r\n|\r|\n/).length + 26
@@ -267,7 +267,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 					var block = Blockly.Xml.domToSoloBlock(domObj);
 					var code = Blockly.zr_cpp.blockToCode(block);
 					if(countLines) {
-						//Magic number: 29 is the offset needed to make line numbers match up with the zr.cpp template; needs to be changed if zr.cpp changes
+						//Magic number: 26 is the offset needed to make line numbers match up with the zr.cpp template; needs to be changed if zr.cpp changes
 						startLines.push({
 							'name': keys[i],
 							'line': str.split(/\r\n|\r|\n/).length + 26
