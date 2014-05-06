@@ -248,7 +248,7 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		    		}
 		    	}
 		        out = out.concat(err[3].toUpperCase() + ' on page ' + page.name
-		        	+ (graphical ? '' : ' at line ' + String(lineNum - page.line) + ', col ' + err[2]) + ': ' + err[4] + '\n');
+		        	+ ' at line ' + String(lineNum - page.line) + ', col ' + err[2] + ': ' + err[4] + '\n');
 		    }
 		} while (err);
 		console.log(startLines);
