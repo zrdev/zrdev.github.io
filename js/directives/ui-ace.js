@@ -53,8 +53,11 @@ angular.module('ui.ace', []).constant('uiAceConfig', {}).directive('uiAce', [
 				if (typeof opts.showPrintMargin === 'boolean') {
 					acee.setShowPrintMargin(opts.showPrintMargin);
 				}
-				if (angular.isString(opts.mode)) {
-					
+				if(typeof opts.minLines === 'number' && typeof opts.maxLines === 'number') {
+					acee.setOptions({
+						minLines: opts.minLines,
+						maxLines: opts.maxLines
+					});
 				}
 				attrs.$observe('readonly', function (value) {
 					acee.setReadOnly(value === 'true');
