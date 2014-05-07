@@ -102,8 +102,8 @@
 		</accordion>
 	</div>
 	<div ng-switch="editorMode">
-		<div class="col-sm-9" ui-ace="aceOptions" ng-model="currentPage.text" style="font-size: 18px;" heightoffset="160" ng-switch-when="text"></div>
-		<div class="col-sm-9" readonly="true" ui-ace="aceOptions" ng-model="blocklyText" style="font-size: 18px;" heightoffset="160" ng-switch-when="graphical-c"></div>
+		<div class="col-sm-9" ui-ace="aceOptions" ng-model="currentPage.text" style="font-size: 18px; min-height: 800px;" ng-switch-when="text"></div>
+		<div class="col-sm-9" readonly="true" ui-ace="aceOptions" ng-model="blocklyText" style="font-size: 18px; min-height: 800px;" ng-switch-when="graphical-c"></div>
 	</div>
 	<div id="blockly-frame" class="col-sm-9" adjustheight="160" ng-show="editorMode === 'graphical'"></div>
 </div>

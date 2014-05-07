@@ -1,7 +1,4 @@
 zr.controller('VisualizationController', ['$scope', '$sce', '$timeout', 'resources', 'previousProject', function($scope, $sce, $timeout, resources, previousProject) {
-	//Hide the footer
-	document.getElementById('footer').style['display'] = 'none';
-	document.getElementById('push').style['display'] = 'none';
 	$scope.isFullScreen = function() {
 		return !!(document.fullscreenElement ||
 				document.mozFullScreenElement || 
