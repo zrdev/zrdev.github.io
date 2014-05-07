@@ -48,6 +48,8 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		theme:'chrome',
 		mode: 'c_cpp',
 		showPrintMargin: false,
+		minLines: 20,
+		maxLines: 400,
 		onLoad: function(ace) {
 			$scope.aceEditor = ace;
 		}
