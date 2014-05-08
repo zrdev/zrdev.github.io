@@ -77,6 +77,38 @@ x values {-0.495, -0.165, 0.165, 0.495}, y values {-0.40, -0.07, 0.26, 0.59}, z 
 	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
 </visobject>
 
+<visobject id="d8" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d9" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d10" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d11" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d12" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d13" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d14" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
+<visobject id="d15" type="sphere" radius=".03" scale="1" initial_x="0" initial_y="0" initial_z="0">
+	<surface name="solid" color="0xBBBBBB" ambient="0xBBBBBB" />
+</visobject>
+
 <!-- comets -->
 <visobject id="comet0" type="sphere" radius="0.1" scale="1" initial_x="-0.1" initial_y="0.8" initial_z="0.6">
 	<surface name="solid" color="0x0000FF" ambient="0x0000FF" />
