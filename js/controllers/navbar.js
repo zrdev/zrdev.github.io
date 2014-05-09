@@ -66,6 +66,8 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb', '$loca
 		gapi.signin.render('login-button', {
 			'width': 'wide'
 		});
+
+		//Load the Drive APIs - this should be lazy loaded in the future
 		gapi.load('client:drive-share:drive-realtime', function () {
 			// Monkey patch collaborative string for ng-model compatibility
 			Object.defineProperty(gapi.drive.realtime.CollaborativeString.prototype, 'text', {

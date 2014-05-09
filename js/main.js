@@ -206,11 +206,3 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	//NO TRAILING SLASH on serviceDomain
 	serviceDomain: 'http://zrwebsite-env.elasticbeanstalk.com'
 });
-angular.element(document).ready(function () {
-		angular.bootstrap(document, ['zr']);
-	});
-
-/**
- * Bootstrap the app
- */
-
