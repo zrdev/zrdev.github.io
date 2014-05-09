@@ -19,8 +19,6 @@ zr.service('drive', ['config', '$modal', 'realtime', 'zrdb',
 
 	function (config, $modal, realtime, zrdb) {
 
-		gapi.client.setApiKey(config.simpleApiKey);
-
 		//Renames the current file in Drive. 
 		this.renameFile = function(title, id, callback) {
 			gapi.client.request({

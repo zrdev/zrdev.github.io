@@ -81,5 +81,6 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb', '$loca
 			Blockly.Block.prototype.relativeX = custom.collaborativeField('relativeX');
 			Blockly.Block.prototype.relativeY = custom.collaborativeField('relativeY');
 			custom.setInitializer(Blockly.Block, Blockly.Block.prototype.initialize);
+			gapi.client.setApiKey(config.simpleApiKey);
 		});
 }]);
