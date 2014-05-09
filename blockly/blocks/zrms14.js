@@ -97,7 +97,7 @@ Blockly.Blocks['zrms14_startLasso'] = {
 		this.setHelpUrl('');
 		this.setColour(20);
 		this.appendDummyInput()
-			.appendField('start lasso on debris:');
+			.appendField('start lasso on debris:')
 			.appendField(new Blockly.FieldDropdown(DEBRIS), 'debrisId');
 		this.setPreviousStatement(true, 'statement');
 		this.setNextStatement(true, 'statement');
