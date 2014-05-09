@@ -7,7 +7,7 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb', '$loca
 		 * or to create a new doc if no other action once complete.
 		 */
 
-		 $scope.clientId = config.clientId;
+		 $scope.clientId = config.appId;
 		 $scope.scopes = config.scopes;
 
 		 $scope.activeTournaments = [];
