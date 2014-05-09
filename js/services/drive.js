@@ -59,27 +59,26 @@ zr.service('drive', ['config', '$modal', 'realtime', 'zrdb',
 
 		var me = null;
 		this.getUser = function(callback) {
-			gapi.auth.checkSessionState({
-				'client_id': config.clientId, 
-				'session_state': null
-			}, function(loggedOut) {
-				if(loggedOut) {
-					me = null;
-					callback(null);
-					return;
-				}
-				else if(me) {
-					callback(me);
-					return;
+			realtime.requireAuth(true).then(function() {
+				var token = gapi.auth.getToken();
+				if(token && token.status.signed_in) {
+					if(me) {
+						callback(me);
+						return;
+					}
+					else {
+						gapi.client.request({
+							'path': '/plus/v1/people/me',
+							'method': 'GET'
+						}).execute(function(data){
+							me = data;
+							callback(data);
+						});
+					}
 				}
 				else {
-					gapi.client.request({
-						'path': '/plus/v1/people/me',
-						'method': 'GET'
-					}).execute(function(data){
-						me = data;
-						callback(data);
-					});
+					me = null;
+					callback(null);
 				}
 			});
 		};

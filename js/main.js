@@ -14,7 +14,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	//Function to inject the Realtime doc into the editor controller
 	var loadFile = function ($route, realtime, zrdb) {
 		var id = $route.current.params['fileId'];
-		return realtime.requireAuth(true).then(function () {
+		return realtime.requireAuth().then(function () {
 			return realtime.getDocument(id)
 			.then(function(doc) {
 				var id = doc.getModel().getRoot().get('gameId');
