@@ -111,7 +111,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 				var params = {
 					'client_id': config.clientId,
 					'scope': config.scopes,
-					'immediate': immediate !== false
+					'immediate': !!token
 				};
 				var deferred = $q.defer();
 				gapi.auth.authorize(params, function (result) {
@@ -119,16 +119,8 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 						deferred.resolve(result);
 						$rootScope.$digest();
 					} 
-					else if(typeof immediate === 'boolean') {
-						deferred.resolve(result);
-					}
 					else {
-						//Try again w/popup
-						params['immediate'] = false;
-						gapi.auth.authorize(params, function() {
-							deferred.resolve(result);
-							$rootScope.$digest();
-						});
+						deferred.reject(result);
 					}
 				});
 				return deferred.promise;

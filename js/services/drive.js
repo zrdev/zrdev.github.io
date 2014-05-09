@@ -86,7 +86,7 @@ zr.service('drive', ['config', '$modal', 'realtime', 'zrdb',
 		
 		//Opens new project modal. 
 		this.newProject = function(folder) {
-			realtime.requireAuth().then(function () {
+			realtime.requireAuth(false).then(function () {
 				$modal.open({
 					templateUrl: '/partials/new-project-modal.html',
 					controller: 'NewProjectModalController',
