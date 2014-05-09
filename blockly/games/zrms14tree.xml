@@ -2,6 +2,19 @@
 	<block type="zrms14_getDebrisLocation"></block>
 	<block type="zrms14_haveDebris"></block>
 	<block type="zrms14_startLasso"></block>
-	<block type="zrms14_haveItem"></block>
+	<block type="zrms14_havePack"></block>
 	<block type="zrms14_getCometState"></block>
+	<block type="zrms14_predictCometState"></block>
+	<block type="zrms14_getCometState"></block>
+	<block type="zrms14_faceTarget"></block>
+	<block type="zrms14_isFacingTarget"></block>
+	<block type="zrms14_shootLaserBool"></block>
+	<block type="zrms14_shootLaserVoid"></block>
+	<block type="zrms14_laserShotsRemaining"></block>
+	<block type="zrms14_getMass"></block>
+	<block type="zrms14_getFuelRemaining"></block>
+	<block type="zrms14_getScore"></block>
+	<block type="zrms14_getOtherScore"></block>
+	<block type="zrms14_isSlowDownActive"></block>
+	<block type="zrms14_isBounceActive"></block>
 </category>

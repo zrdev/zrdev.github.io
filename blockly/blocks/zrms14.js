@@ -55,12 +55,10 @@ Blockly.Blocks['zrms14_haveDebris'] = {
 		this.setHelpUrl('');
 		this.setColour(20);
 		this.appendDummyInput()
-			.appendField('haveDebris');
-		this.appendDummyInput()
 			.appendField('player:')
 			.appendField(new Blockly.FieldDropdown(PLAYERS), 'player');
 		this.appendValueInput('debrisId')
-			.appendField('id:')
+			.appendField('has debris w/ id:')
 			.setCheck('number');
 		this.setOutput(true, 'number');
 		this.setTooltip('');
@@ -86,7 +84,7 @@ Blockly.Blocks['zrms14_startLasso'] = {
 	onchange: Blockly.Blocks.requireInFunction,
 };
 
-Blockly.Blocks['zrms14_haveItem'] = {
+Blockly.Blocks['zrms14_havePack'] = {
 	init: function() {
 		var PLAYERS =
 			[['Me', 'ME'],
@@ -97,14 +95,35 @@ Blockly.Blocks['zrms14_haveItem'] = {
 		this.setHelpUrl('');
 		this.setColour(20);
 		this.appendDummyInput()
-			.appendField('haveItem');
-		this.appendDummyInput()
 			.appendField('player:')
 			.appendField(new Blockly.FieldDropdown(PLAYERS), 'player');
 		this.appendDummyInput()
-			.appendField('item:')
+			.appendField('has item:')
 			.appendField(new Blockly.FieldDropdown(ITEMS), 'objectNum');
 		this.setOutput(true, 'number');
+		this.setTooltip('');
+		this.setInputsInline(true);
+	},
+	onchange: Blockly.Blocks.requireInFunction,
+};
+
+Blockly.Blocks['zrms14_predictCometState'] = {
+	init: function() {
+		this.setHelpUrl('');
+		this.setColour(20);
+		this.appendDummyInput()
+			.appendField('predictCometState');
+		this.appendValueInput('dtSteps')
+			.appendField('steps:')
+			.setCheck('number');
+		this.appendValueInput('initState')
+			.appendField('initial state:')
+			.setCheck('array');
+		this.appendValueInput('finalState')
+			.appendField('final state:')
+			.setCheck('array');
+		this.setPreviousStatement(true, 'statement');
+		this.setNextStatement(true, 'statement');
 		this.setTooltip('');
 		this.setInputsInline(true);
 	},
@@ -117,14 +136,159 @@ Blockly.Blocks['zrms14_getCometState'] = {
 		this.setColour(20);
 		this.appendDummyInput()
 			.appendField('getCometState');
-		this.appendValueInput('dtSteps')
-			.appendField('steps:')
-			.setCheck('number');
 		this.appendValueInput('state')
 			.appendField('array:')
 			.setCheck('array');
 		this.setPreviousStatement(true, 'statement');
 		this.setNextStatement(true, 'statement');
+		this.setTooltip('');
+		this.setInputsInline(true);
+	},
+	onchange: Blockly.Blocks.requireInFunction,
+};
+
+Blockly.Blocks['zrms14_faceTarget'] = {
+	init: function() {
+		this.setHelpUrl('');
+		this.setColour(20);
+		this.appendDummyInput()
+			.appendField('faceTarget');
+		this.appendValueInput('target')
+			.appendField('target:')
+			.setCheck('array');
+		this.setPreviousStatement(true, 'statement');
+		this.setNextStatement(true, 'statement');
+		this.setTooltip('');
+		this.setInputsInline(true);
+	},
+	onchange: Blockly.Blocks.requireInFunction,
+};
+
+Blockly.Blocks['zrms14_isFacingTarget'] = {
+	init: function() {
+		this.setHelpUrl('');
+		this.setColour(20);
+		this.appendDummyInput()
+			.appendField('I am facing my comet')
+		this.setOutput(true, 'number');
+		this.setTooltip('');
+		this.setInputsInline(true);
+	},
+	onchange: Blockly.Blocks.requireInFunction,
+};
+
+Blockly.Blocks['zrms14_shootLaserBool'] = {
+	init: function() {
+		this.setHelpUrl('');
+		this.setColour(20);
+		this.appendDummyInput()
+			.appendField('shoot laser')
+		this.setOutput(true, 'number');
+		this.setTooltip('');
+		this.setInputsInline(true);
+	},
+	onchange: Blockly.Blocks.requireInFunction,
+};
+
+Blockly.Blocks['zrms14_shootLaserVoid'] = {
+	init: function() {
+		this.setHelpUrl('');
+		this.setColour(20);
+		this.appendDummyInput()
+			.appendField('shoot laser');
+		this.setPreviousStatement(true, 'statement');
+		this.setNextStatement(true, 'statement');
+		this.setTooltip('');
+		this.setInputsInline(true);
+	},
+	onchange: Blockly.Blocks.requireInFunction,
+};
+
+Blockly.Blocks['zrms14_laserShotsRemaining'] = {
+	init: function() {
+		this.setHelpUrl('');
+		this.setColour(20);
+		this.appendDummyInput()
+			.appendField('laser shots remaining')
+		this.setOutput(true, 'number');
+		this.setTooltip('');
+		this.setInputsInline(true);
+	},
+	onchange: Blockly.Blocks.requireInFunction,
+};
+
+Blockly.Blocks['zrms14_getMass'] = {
+	init: function() {
+		this.setHelpUrl('');
+		this.setColour(20);
+		this.appendDummyInput()
+			.appendField('my mass')
+		this.setOutput(true, 'number');
+		this.setTooltip('');
+		this.setInputsInline(true);
+	},
+	onchange: Blockly.Blocks.requireInFunction,
+};
+
+Blockly.Blocks['zrms14_getFuelRemaining'] = {
+	init: function() {
+		this.setHelpUrl('');
+		this.setColour(20);
+		this.appendDummyInput()
+			.appendField('my remaining fuel')
+		this.setOutput(true, 'number');
+		this.setTooltip('');
+		this.setInputsInline(true);
+	},
+	onchange: Blockly.Blocks.requireInFunction,
+};
+
+Blockly.Blocks['zrms14_getScore'] = {
+	init: function() {
+		this.setHelpUrl('');
+		this.setColour(20);
+		this.appendDummyInput()
+			.appendField('my score')
+		this.setOutput(true, 'number');
+		this.setTooltip('');
+		this.setInputsInline(true);
+	},
+	onchange: Blockly.Blocks.requireInFunction,
+};
+
+Blockly.Blocks['zrms14_getOtherScore'] = {
+	init: function() {
+		this.setHelpUrl('');
+		this.setColour(20);
+		this.appendDummyInput()
+			.appendField('opponent\'s score')
+		this.setOutput(true, 'number');
+		this.setTooltip('');
+		this.setInputsInline(true);
+	},
+	onchange: Blockly.Blocks.requireInFunction,
+};
+
+Blockly.Blocks['zrms14_isSlowDownActive'] = {
+	init: function() {
+		this.setHelpUrl('');
+		this.setColour(20);
+		this.appendDummyInput()
+			.appendField('slowdown is active')
+		this.setOutput(true, 'number');
+		this.setTooltip('');
+		this.setInputsInline(true);
+	},
+	onchange: Blockly.Blocks.requireInFunction,
+};
+
+Blockly.Blocks['zrms14_isBounceActive'] = {
+	init: function() {
+		this.setHelpUrl('');
+		this.setColour(20);
+		this.appendDummyInput()
+			.appendField('bounce is active')
+		this.setOutput(true, 'number');
 		this.setTooltip('');
 		this.setInputsInline(true);
 	},
