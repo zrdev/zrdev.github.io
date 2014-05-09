@@ -64,7 +64,7 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb', '$loca
 			'clientid': config.clientId,
 			'cookiepolicy' : 'single_host_origin',
 			'width': 'wide',
-			'scope': 'profile',
+			'scope': config.scopes,
 			'callback': 'loginCallback'
 		})
 }]);
