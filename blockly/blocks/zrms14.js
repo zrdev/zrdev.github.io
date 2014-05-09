@@ -40,7 +40,7 @@ Blockly.Blocks['zrms14_getDebrisLocation'] = {
 			 ['8', '8']];
 		this.setHelpUrl('');
 		this.setColour(20);
-		this.appendValueInput('debrisId')
+		this.appendDummyInput()
 			.appendField('location of debris:')
 			.appendField(new Blockly.FieldDropdown(DEBRIS), 'debrisId');
 		this.appendValueInput('loc')
