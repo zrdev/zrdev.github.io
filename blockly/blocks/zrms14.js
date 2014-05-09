@@ -29,13 +29,20 @@ goog.require('Blockly.Blocks');
 
 Blockly.Blocks['zrms14_getDebrisLocation'] = {
 	init: function() {
+		var DEBRIS = 
+			[['1', '1'],
+			 ['2', '2'],
+			 ['3', '3'],
+			 ['4', '4'],
+			 ['5', '5'],
+			 ['6', '6'],
+			 ['7', '7'],
+			 ['8', '8']];
 		this.setHelpUrl('');
 		this.setColour(20);
-		this.appendDummyInput()
-			.appendField('getDebrisLocation');
 		this.appendValueInput('debrisId')
-			.appendField('id:')
-			.setCheck('number');
+			.appendField('location of debris:')
+			.appendField(new Blockly.FieldDropdown(DEBRIS), 'debrisId');
 		this.appendValueInput('loc')
 			.appendField('array:')
 			.setCheck('array');
@@ -52,14 +59,23 @@ Blockly.Blocks['zrms14_haveDebris'] = {
 		var PLAYERS =
 			[['Me', 'ME'],
 			 ['Opponent', 'OTHER']];
+		var DEBRIS = 
+			[['1', '1'],
+			 ['2', '2'],
+			 ['3', '3'],
+			 ['4', '4'],
+			 ['5', '5'],
+			 ['6', '6'],
+			 ['7', '7'],
+			 ['8', '8']];
 		this.setHelpUrl('');
 		this.setColour(20);
 		this.appendDummyInput()
 			.appendField('player:')
 			.appendField(new Blockly.FieldDropdown(PLAYERS), 'player');
-		this.appendValueInput('debrisId')
-			.appendField('has debris w/ id:')
-			.setCheck('number');
+		this.appendDummyInput()
+			.appendField('has debris:')
+			.appendField(new Blockly.FieldDropdown(DEBRIS), 'debrisId');
 		this.setOutput(true, 'number');
 		this.setTooltip('');
 		this.setInputsInline(true);
@@ -69,13 +85,20 @@ Blockly.Blocks['zrms14_haveDebris'] = {
 
 Blockly.Blocks['zrms14_startLasso'] = {
 	init: function() {
+		var DEBRIS = 
+			[['1', '1'],
+			 ['2', '2'],
+			 ['3', '3'],
+			 ['4', '4'],
+			 ['5', '5'],
+			 ['6', '6'],
+			 ['7', '7'],
+			 ['8', '8']];
 		this.setHelpUrl('');
 		this.setColour(20);
 		this.appendDummyInput()
-			.appendField('startLasso');
-		this.appendValueInput('debrisId')
-			.appendField('id:')
-			.setCheck('number');
+			.appendField('start lasso on debris:');
+			.appendField(new Blockly.FieldDropdown(DEBRIS), 'debrisId');
 		this.setPreviousStatement(true, 'statement');
 		this.setNextStatement(true, 'statement');
 		this.setTooltip('');
