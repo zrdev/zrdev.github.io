@@ -23,21 +23,18 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb', '$loca
 		 });
 
 		 var getUser = function() {
-		 	realtime.requireAuth(true).then(function() {
-				drive.getUser(function(data) {
-				 	$scope.$apply(function() {
-				 		if(data && data.displayName) {
-				 			$scope.displayName = data.displayName;
-				 		}
-				 		else {
-				 			$scope.displayName = null;
-				 		}
-				 		$scope.showLogin = true;
-				 	})
-				 });
-		 	});
+			drive.getUser(function(data) {
+			 	$scope.$apply(function() {
+			 		if(data && data.displayName) {
+			 			$scope.displayName = data.displayName;
+			 		}
+			 		else {
+			 			$scope.displayName = null;
+			 		}
+			 		$scope.showLogin = true;
+			 	})
+			 });
 		 };
-		 getUser();
 		
 		$scope.newProject = function() {
 			drive.newProject();
@@ -51,8 +48,9 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb', '$loca
 			});
 		};
 
-		$scope.signIn = function() {
-			realtime.requireAuth().then(getUser);
+		window.loginCallback = function(authResult) {
+			$scope.showLogin = true;
+			getUser();
 		}
 
 		$scope.signOut = function() {

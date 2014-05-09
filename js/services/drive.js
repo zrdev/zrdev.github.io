@@ -59,7 +59,6 @@ zr.service('drive', ['config', '$modal', 'realtime', 'zrdb',
 
 		var me = null;
 		this.getUser = function(callback) {
-			realtime.requireAuth(true).then(function() {
 				var token = gapi.auth.getToken();
 				if(token && token.status.signed_in) {
 					if(me) {
@@ -80,7 +79,6 @@ zr.service('drive', ['config', '$modal', 'realtime', 'zrdb',
 					me = null;
 					callback(null);
 				}
-			});
 		};
 		
 		//Opens new project modal. 
