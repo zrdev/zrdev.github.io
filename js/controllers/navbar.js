@@ -65,5 +65,21 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb', '$loca
 		//Render the login button
 		gapi.signin.render('login-button', {
 			'width': 'wide'
-		})
+		});
+		gapi.load('client:drive-share:drive-realtime', function () {
+			// Monkey patch collaborative string for ng-model compatibility
+			Object.defineProperty(gapi.drive.realtime.CollaborativeString.prototype, 'text', {
+				set: gapi.drive.realtime.CollaborativeString.prototype.setText,
+				get: gapi.drive.realtime.CollaborativeString.prototype.getText
+			});
+			
+			//This code copied from blockly/core/realtime.js; register Blockly custom types
+			var custom = gapi.drive.realtime.custom;
+			custom.registerType(Blockly.Block, 'Block');
+			Blockly.Block.prototype.id = custom.collaborativeField('id');
+			Blockly.Block.prototype.xmlDom = custom.collaborativeField('xmlDom');
+			Blockly.Block.prototype.relativeX = custom.collaborativeField('relativeX');
+			Blockly.Block.prototype.relativeY = custom.collaborativeField('relativeY');
+			custom.setInitializer(Blockly.Block, Blockly.Block.prototype.initialize);
+		});
 }]);
