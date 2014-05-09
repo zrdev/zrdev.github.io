@@ -53,7 +53,9 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb', '$loca
 				getUser();
 			}
 			else if(authResult['error'] && authResult['error']['user_signed_out']) {
-				$scope.displayName = null;
+				$scope.$apply(function() {
+					$scope.displayName = null;
+				});
 			}
 			$scope.showLogin = true;
 		};
