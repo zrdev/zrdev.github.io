@@ -64,10 +64,6 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb', '$loca
 
 		//Render the login button
 		gapi.signin.render('login-button', {
-			'clientid': config.clientId,
-			'cookiepolicy' : 'single_host_origin',
-			'width': 'wide',
-			'scope': config.scopes,
-			'callback': 'loginCallback'
+			'width': 'wide'
 		})
 }]);

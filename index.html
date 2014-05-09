@@ -2,6 +2,12 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+
+	<meta name="google-signin-clientid" content="2809468685-i7or9cfoaaeg7vb9apsn068h690bdlkr.apps.googleusercontent.com" />
+	<meta name="google-signin-cookiepolicy" content="single_host_origin" />
+	<meta name="google-signin-callback" content="loginCallback" />
+	<meta name="google-signin-scope" content="https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.install profile email https://www.googleapis.com/auth/admin.directory.group" />
+
 	<title>Zero Robotics</title>
 	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
 	
@@ -124,7 +130,7 @@
 					</li>
 				</ul>
 				<p class="navbar-right navbar-text" ng-if="displayName && showLogin" ng-cloak>Signed in as {{ displayName }} <a class="navbar-link" ng-click="signOut()"><b>Sign out</b></a></p>
-				<span class="navbar-right ng-cloak" style="margin: 9px 0px 0px 0px;" ng-hide="displayName || !showLogin">
+				<span class="navbar-right ng-cloak" style="margin: 10px 0px 0px 0px;" ng-hide="displayName || !showLogin">
 					<span id="login-button"></span>
 				</span>
 			</div><!--/.navbar-collapse -->
