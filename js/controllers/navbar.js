@@ -52,11 +52,12 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb', '$loca
 			if(authResult['status']['signed_in']) {
 				getUser();
 			}
+			if(authResult['error']['user_signed_out'])
 			$scope.showLogin = true;
 		};
 
 		$scope.signOut = function() {
-			window.location.href = 'https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=' + window.location.origin;
+			gapi.auth.signOut();
 		}
 
 		//Render the login button

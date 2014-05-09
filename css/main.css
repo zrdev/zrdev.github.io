@@ -315,11 +315,7 @@ div.picker-dialog-bg {
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-
-	/* this is just another form of hiding an element */
-	position: absolute;
-	top: -12000px;
-	left: -9999px;
+	display: none !important;
 }
 
 .ng-hide {
