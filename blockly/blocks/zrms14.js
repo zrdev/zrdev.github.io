@@ -56,9 +56,6 @@ Blockly.Blocks['zrms14_getDebrisLocation'] = {
 
 Blockly.Blocks['zrms14_haveDebris'] = {
 	init: function() {
-		var PLAYERS =
-			[['Me', 'ME'],
-			 ['Opponent', 'OTHER']];
 		var DEBRIS = 
 			[['1', '1'],
 			 ['2', '2'],
@@ -71,10 +68,7 @@ Blockly.Blocks['zrms14_haveDebris'] = {
 		this.setHelpUrl('');
 		this.setColour(20);
 		this.appendDummyInput()
-			.appendField('player:')
-			.appendField(new Blockly.FieldDropdown(PLAYERS), 'player');
-		this.appendDummyInput()
-			.appendField('has debris:')
+			.appendField('I have debris:')
 			.appendField(new Blockly.FieldDropdown(DEBRIS), 'debrisId');
 		this.setOutput(true, 'number');
 		this.setTooltip('');
@@ -148,7 +142,7 @@ Blockly.Blocks['zrms14_predictCometState'] = {
 		this.setPreviousStatement(true, 'statement');
 		this.setNextStatement(true, 'statement');
 		this.setTooltip('');
-		this.setInputsInline(true);
+		this.setInputsInline(false);
 	},
 	onchange: Blockly.Blocks.requireInFunction,
 };
