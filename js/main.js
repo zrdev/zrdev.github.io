@@ -184,7 +184,8 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		}
 	}).when('/forum/', {
 		templateUrl: '/partials/forum.html',
-		controller: 'ForumController'
+		controller: 'ForumController',
+		reloadOnSearch: false
 	}).otherwise({
 		redirectTo: '/'
 	});
