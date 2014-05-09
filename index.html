@@ -124,7 +124,15 @@
 					</li>
 				</ul>
 				<p class="navbar-right navbar-text" ng-if="displayName && showLogin" ng-cloak>Signed in as {{ displayName }} <a class="navbar-link" ng-click="signOut()"><b>Sign out</b></a></p>
-				<button class='zocial google navbar-right navbar-btn' ng-if="!displayName && showLogin" ng-cloak ng-click="signIn()">Sign in with Google</button>
+				<span class="navbar-right">
+					<span
+						class="g-signin"
+						data-callback="signinCallback"
+						data-clientid="{{ clientId }}"
+						data-cookiepolicy="single_host_origin"
+						data-scope="{{ scopes }}">
+					</span>
+				</span>
 			</div><!--/.navbar-collapse -->
 		</div>
 	</div>
