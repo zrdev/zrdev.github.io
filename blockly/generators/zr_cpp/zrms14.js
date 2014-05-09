@@ -40,7 +40,7 @@ Blockly.zr_cpp['zrms14_startLasso'] = function() {
 	return 'game.startLasso(' + debrisId + ');\n';
 };
 
-Blockly.zr_cpp['zrms14_havePack'] = {
+Blockly.zr_cpp['zrms14_havePack'] = function() {
 	var player = block.getFieldValue('player');
 	var objectNum = block.getFieldValue('objectNum');
 	return ['game.havePack(' + player + ', ' + objectNum + ')', Blockly.zr_cpp.ORDER_FUNCTION_CALL];
