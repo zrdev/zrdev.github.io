@@ -77,7 +77,7 @@ Blockly.Blocks['zrms14_haveDebris'] = {
 	onchange: Blockly.Blocks.requireInFunction,
 };
 
-Blockly.Blocks['zrms14_startLasso'] = {
+Blockly.Blocks['zrms14_startLassoVoid'] = {
 	init: function() {
 		var DEBRIS = 
 			[['1', '1'],
@@ -95,6 +95,29 @@ Blockly.Blocks['zrms14_startLasso'] = {
 			.appendField(new Blockly.FieldDropdown(DEBRIS), 'debrisId');
 		this.setPreviousStatement(true, 'statement');
 		this.setNextStatement(true, 'statement');
+		this.setTooltip('');
+		this.setInputsInline(true);
+	},
+	onchange: Blockly.Blocks.requireInFunction,
+};
+
+Blockly.Blocks['zrms14_startLassoBool'] = {
+	init: function() {
+		var DEBRIS = 
+			[['1', '1'],
+			 ['2', '2'],
+			 ['3', '3'],
+			 ['4', '4'],
+			 ['5', '5'],
+			 ['6', '6'],
+			 ['7', '7'],
+			 ['8', '8']];
+		this.setHelpUrl('');
+		this.setColour(20);
+		this.appendDummyInput()
+			.appendField('start lasso on debris:')
+			.appendField(new Blockly.FieldDropdown(DEBRIS), 'debrisId');
+		this.setOutput(true, 'number');
 		this.setTooltip('');
 		this.setInputsInline(true);
 	},

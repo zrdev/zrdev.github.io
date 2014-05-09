@@ -35,9 +35,14 @@ Blockly.zr_cpp['zrms14_haveDebris'] = function(block) {
 	return ['game.haveDebris(' + debrisId + ')', Blockly.zr_cpp.ORDER_FUNCTION_CALL];
 };
 
-Blockly.zr_cpp['zrms14_startLasso'] = function(block) {
+Blockly.zr_cpp['zrms14_startLassoVoid'] = function(block) {
 	var debrisId = block.getFieldValue('debrisId');
 	return 'game.startLasso(' + debrisId + ');\n';
+};
+
+Blockly.zr_cpp['zrms14_startLassoBool'] = function(block) {
+	var debrisId = block.getFieldValue('debrisId');
+	return ['game.startLasso(' + debrisId + ')', Blockly.zr_cpp.ORDER_FUNCTION_CALL];
 };
 
 Blockly.zr_cpp['zrms14_havePack'] = function(block) {

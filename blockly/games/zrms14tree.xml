@@ -6,7 +6,8 @@
 		</value>
 	</block>
 	<block type="zrms14_haveDebris"></block>
-	<block type="zrms14_startLasso"></block>
+	<block type="zrms14_startLassoVoid"></block>
+	<block type="zrms14_startLassoBool"></block>
 	<block type="zrms14_havePack"></block>
 	<block type="zrms14_getCometState">
 		<value name="state">
