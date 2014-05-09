@@ -41,10 +41,10 @@ Blockly.Blocks['zrms14_getDebrisLocation'] = {
 		this.setHelpUrl('');
 		this.setColour(20);
 		this.appendDummyInput()
-			.appendField('location of debris:')
+			.appendField('write location of debris:')
 			.appendField(new Blockly.FieldDropdown(DEBRIS), 'debrisId');
 		this.appendValueInput('loc')
-			.appendField('array:')
+			.appendField('to:')
 			.setCheck('array');
 		this.setPreviousStatement(true, 'statement');
 		this.setNextStatement(true, 'statement');
@@ -157,10 +157,8 @@ Blockly.Blocks['zrms14_getCometState'] = {
 	init: function() {
 		this.setHelpUrl('');
 		this.setColour(20);
-		this.appendDummyInput()
-			.appendField('getCometState');
 		this.appendValueInput('state')
-			.appendField('array:')
+			.appendField('write comet state to:')
 			.setCheck('array');
 		this.setPreviousStatement(true, 'statement');
 		this.setNextStatement(true, 'statement');
@@ -174,10 +172,8 @@ Blockly.Blocks['zrms14_faceTarget'] = {
 	init: function() {
 		this.setHelpUrl('');
 		this.setColour(20);
-		this.appendDummyInput()
-			.appendField('faceTarget');
 		this.appendValueInput('target')
-			.appendField('target:')
+			.appendField('face target:')
 			.setCheck('array');
 		this.setPreviousStatement(true, 'statement');
 		this.setNextStatement(true, 'statement');
