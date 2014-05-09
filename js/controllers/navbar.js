@@ -49,11 +49,22 @@ zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb', '$loca
 		};
 
 		window.loginCallback = function(authResult) {
+			if(authResult['status']['signed_in']) {
+				getUser();
+			}
 			$scope.showLogin = true;
-			getUser();
-		}
+		};
 
 		$scope.signOut = function() {
 			window.location.href = 'https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=' + window.location.origin;
 		}
+
+		//Render the login button
+		gapi.signin.render('login-button', {
+			'clientid': config.clientId,
+			'cookiepolicy' : 'single_host_origin',
+			'width': 'wide',
+			'scope': 'profile',
+			'callback': 'loginCallback'
+		})
 }]);
