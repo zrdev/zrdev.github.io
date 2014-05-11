@@ -27,6 +27,19 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 			headers: {}
 		}
 
+		//Auth check for views that require it
+		this.checkAuth = function() {
+			var token = gapi.auth.getToken();
+			if(token && token.status.signed_in) {
+				return $q.when();
+			}
+			else {
+				window.authDeferred = $q.defer();
+				gapi.auth.signIn();
+				return window.authDeferred.promise;
+			}
+		};
+
 		//Add a header w/ the OAuth token
 		var refreshAuth = function() {
 			if(gapi && gapi.auth && typeof gapi.auth.getToken === 'function' && gapi.auth.getToken() !== null) {

@@ -10,25 +10,11 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	//Use HTML5 URL rewriting instead of hash string
 	$locationProvider.html5Mode(true);
-
-	//Auth check for views that require it
-	var checkAuth = function($q) {
-		var token = gapi.auth.getToken();
-		if(token && token.status.signed_in) {
-			return $q.when();
-		}
-		else {
-			window.authDeferred = $q.deferred();
-			gapi.auth.signIn();
-			return window.authDeferred.promise;
-		}
-	};
-	checkAuth.$inject = ['$q'];
 	
 	//Function to inject the Realtime doc and game into the editor controller
 	var loadFile = function ($route, realtime, zrdb) {
 		var id = $route.current.params['fileId'];
-		return checkAuth().then(function() {
+		return zrdb.checkAuth().then(function() {
 			return realtime.getDocument(id)
 			.then(function(doc) {
 				var id = doc.getModel().getRoot().get('gameId');
@@ -43,7 +29,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 
 	var visualizationResources = function(zrdb) {
 		//Chained dependent resources: first load the sim, then get the game based on the ID in the sim
-		return checkAuth().then(function() {
+		return zrdb.checkAuth().then(function() {
 			return zrdb.getSingleResource('simulation')
 			.then(function(sim) {
 				return zrdb.getSingleResource('game', sim.data.gameId)
@@ -66,9 +52,9 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	};
 	folderResource.$inject = ['$route'];
 
-	var teamResources = function($q, realtime, drive) {
+	var teamResources = function($q, drive, zrdb) {
 		var d = $q.defer();
-		return checkAuth().then(function() {
+		return zrdb.checkAuth().then(function() {
 			drive.getUser(function(me) {
 				gapi.client.request({
 					'path': '/admin/directory/v1/groups',
@@ -84,7 +70,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		});
 		return d.promise;
 	};
-	teamResources.$inject = ['$q', 'realtime', 'drive'];
+	teamResources.$inject = ['$q', 'realtime', 'zrdb'];
 
 	var openRedirect = function(routeParams, path, search) {
 		//Parse state parameter from Drive UI
