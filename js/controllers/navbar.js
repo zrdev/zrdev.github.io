@@ -31,7 +31,11 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 			 		else {
 			 			$scope.displayName = null;
 			 		}
-			 		document.getElementById('login-button-wrapper').className = 'navbar-right';
+			 		//Let Angular take over display now
+			 		var wrapper = document.getElementById('login-button-wrapper');
+			 		if(wrapper.className == 'navbar-right ng-hide init-css') {
+			 			wrapper.className = 'navbar-right';
+			 		}
 			 		$scope.showLogin = true;
 				});
 			 });
