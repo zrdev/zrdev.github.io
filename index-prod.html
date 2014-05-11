@@ -2,13 +2,18 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+
+	<meta name="google-signin-clientid" content="2809468685-i7or9cfoaaeg7vb9apsn068h690bdlkr.apps.googleusercontent.com" />
+	<meta name="google-signin-cookiepolicy" content="single_host_origin" />
+	<meta name="google-signin-callback" content="loginCallback" />
+	<meta name="google-signin-scope" content="https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.install profile email https://www.googleapis.com/auth/admin.directory.group" />
+
 	<title>Zero Robotics</title>
 	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
 	
 	<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" />
 	<link type="text/css" href="/css/main.css" rel="stylesheet" />
 	<link type="text/css" rel="stylesheet" href="/css/angular-slider.min.css"/>
-	<link type="text/css" href="/css/social-buttons/zocial.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -41,13 +46,13 @@
 						<a class="dropdown-toggle" data-toggle="dropdown">Tournaments<b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="/tournaments/">All Tournaments</a></li>
-							<li><a href="/manage-teams/">Manage Teams</a></li>
+							<li><a href="/manage-teams/" ng-if="displayName">Manage Teams</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Current tournaments</li>
 							<li ng-repeat="t in activeTournaments"><a href="/tournaments/{{ t.id }}/">{{ t.name }}</a></li>
 						</ul>
 					</li>
-					<li class="dropdown">
+					<li class="dropdown" ng-if="displayName">
 						<a class="dropdown-toggle">IDE<b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a ng-click="newProject()">New Project</a></li>
@@ -66,7 +71,9 @@
 					</li>
 				</ul>
 				<p class="navbar-right navbar-text" ng-if="displayName && showLogin" ng-cloak>Signed in as {{ displayName }} <a class="navbar-link" ng-click="signOut()"><b>Sign out</b></a></p>
-				<button class='zocial google navbar-right navbar-btn' ng-if="!displayName && showLogin" ng-cloak ng-click="signIn()">Sign in with Google</button>
+				<span id="login-button-wrapper" class="navbar-right ng-hide init-css" style="margin: 9px 0px 0px 0px;" ng-hide="displayName || !showLogin">
+					<span id="login-button"></span>
+				</span>
 			</div><!--/.navbar-collapse -->
 		</div>
 	</div>
@@ -83,7 +90,7 @@
 				<a href="http://www.nasa.gov/" target="_blank"><img src="/images/sponsors/nasa.png" alt="NASA Logo" class="img-thumbnail" /></a>
 				<a href="http://www.darpa.mil/" target="_blank"><img src="/images/sponsors/darpa.png" alt="DARPA Logo" class="img-thumbnail" /></a>
 				<a href="http://ssl.mit.edu/newsite/" target="_blank"><img src="/images/sponsors/ssl.png" alt="MIT SSL Logo" class="img-thumbnail" /></a>
-				<a href="http://www.aurora.aero/" target="_blank"><img src="/images/sponsors/aurora.png" alt="AFS Logo" class="img-thumbnail" /></a>
+				<a href="http://www.aurora.aero/" target="_blank"><img src="/images/sponsors/aurora.png" alt="AFS Logo" class="img-thumbnail"/></a>
 				<a href="http://www.iss-casis.org/" target="_blank"><img src="/images/sponsors/casis.png" alt="CASIS Logo" class="img-thumbnail" /></a>
 				<a href="http://www.massafterschool.org/" target="_blank"><img src="/images/sponsors/map.png" alt="MAP Logo" class="img-thumbnail" /></a>
 			</p>
@@ -97,7 +104,8 @@
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-sanitize.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js" charset="utf-8"></script>
-	<script src="//apis.google.com/js/client:plusone.js"></script>
+	<script src="//apis.google.com/js/client:plusone:drive-share:drive-realtime.js?onload=onGapiLoaded"></script>
 	<script src="/js/zr.min.js"></script>
 </body>
 </html>
+
