@@ -31,6 +31,7 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 			 		else {
 			 			$scope.displayName = null;
 			 		}
+			 		document.getElementById('login-button-wrapper').className = 'navbar-right';
 			 		$scope.showLogin = true;
 				});
 			 });
