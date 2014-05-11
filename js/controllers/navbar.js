@@ -22,7 +22,7 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 			}
 		 });
 
-		 var getUser = function() {
+		 $scope.getUser = function() {
 			drive.getUser(function(data) {
 		 		if(data && data.displayName) {
 		 			$scope.displayName = data.displayName;
@@ -33,7 +33,7 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 		 		$scope.showLogin = true;
 			 });
 		 };
-		 getUser();
+		 $scope.getUser();
 		
 		$scope.newProject = function() {
 			drive.newProject();
