@@ -29,6 +29,7 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 
 		//Auth check for views that require it
 		this.checkAuth = function() {
+			return $q.when();
 			var token = gapi.auth.getToken();
 			if(token && token.status.signed_in) {
 				return $q.when();
