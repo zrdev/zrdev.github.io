@@ -47,11 +47,9 @@ zr.controller('SimulationController', ['$scope', '$modalInstance', 'gameResource
 
 	$scope.pickOpponent = function() {
 		drive.openProject(function(id, name) {
-			realtime.requireAuth(true).then(function () {
-				realtime.getDocument(id, true).then(function(doc) {
-					$scope.opponentTitle = name;
-					$scope.data.opponentCode = realtime.getDocAsString(doc.getModel().getRoot());
-				});
+			realtime.getDocument(id, true).then(function(doc) {
+				$scope.opponentTitle = name;
+				$scope.data.opponentCode = realtime.getDocAsString(doc.getModel().getRoot());
 			});
 		});
 	}

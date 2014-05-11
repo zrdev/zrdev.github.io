@@ -1,4 +1,4 @@
-zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$location', 'realtime', 'folder', 'gameResources', function($scope, $modalInstance, $location, realtime, folder, gameResources) {
+zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$location', 'folder', 'gameResources', function($scope, $modalInstance, $location, folder, gameResources) {
 	$scope.games = gameResources.data.rows;
 	$scope.data = {
 		shouldBeOpen: true,
@@ -13,14 +13,10 @@ zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$locati
 	});
 	
 	$scope.createProject = function() {
-		realtime.requireAuth().then(function () {
-			realtime.createDocument($scope.data.name + ' - ' + $scope.data.game.displayName, folder).then(function (file) {
-				realtime.ideGraphical = $scope.data.editorMode === 'graphical';
-				realtime.gameId = $scope.data.game.id;
-				$location.url('/ide/' + file.id + '/');
-			});
-		}, function () {
-			realtime.requireAuth();
+		realtime.createDocument($scope.data.name + ' - ' + $scope.data.game.displayName, folder).then(function (file) {
+			realtime.ideGraphical = $scope.data.editorMode === 'graphical';
+			realtime.gameId = $scope.data.game.id;
+			$location.url('/ide/' + file.id + '/');
 		});
 		$scope.data.shouldBeOpen = false;
 		$modalInstance.close();

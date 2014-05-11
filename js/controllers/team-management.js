@@ -1,4 +1,4 @@
-zr.controller('TeamManagementController', ['$scope', 'teamResources', 'realtime', function($scope, teamResources, realtime) {
+zr.controller('TeamManagementController', ['$scope', 'teamResources', function($scope, teamResources) {
 	$scope.teams = teamResources.groups;
 	$scope.currentTeam = null;
 	$scope.isLead = false;
@@ -10,29 +10,27 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'realtime'
 	}
 
 	$scope.setTeam = function(team) {
-		realtime.requireAuth().then(function() {
-			gapi.client.request({
-				'path': '/admin/directory/v1/groups/' + team.id + '/members',
-				'method': 'GET'
-			})
-			.execute(function(response){
-				drive.getUser(function(me) {
-					$scope.$apply(function() {
-						$scope.currentTeam = team; 
-						$scope.currentTeam.members = response.members;
-						for(var i = response.members.length; i--; ) {
-							if(response.members[i].id === me.id) {
-								if(response.members[i].role !== 'MEMBER') {
-									$scope.isLead = false;
-								}
-								else {
-									$scope.isLead = true;
-								}
+		gapi.client.request({
+			'path': '/admin/directory/v1/groups/' + team.id + '/members',
+			'method': 'GET'
+		})
+		.execute(function(response){
+			drive.getUser(function(me) {
+				$scope.$apply(function() {
+					$scope.currentTeam = team; 
+					$scope.currentTeam.members = response.members;
+					for(var i = response.members.length; i--; ) {
+						if(response.members[i].id === me.id) {
+							if(response.members[i].role !== 'MEMBER') {
+								$scope.isLead = false;
+							}
+							else {
+								$scope.isLead = true;
 							}
 						}
-					});
-				})
-			});
+					}
+				});
+			})
 		});
 	};
 	if($scope.teams.length !== 0) {

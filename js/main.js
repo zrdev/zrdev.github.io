@@ -14,14 +14,12 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	//Function to inject the Realtime doc into the editor controller
 	var loadFile = function ($route, realtime, zrdb) {
 		var id = $route.current.params['fileId'];
-		return realtime.requireAuth().then(function () {
-			return realtime.getDocument(id)
-			.then(function(doc) {
-				var id = doc.getModel().getRoot().get('gameId');
-				return zrdb.getSingleResource('game', id)
-				.then(function(game) {
-					return [doc, game];
-				});
+		return realtime.getDocument(id)
+		.then(function(doc) {
+			var id = doc.getModel().getRoot().get('gameId');
+			return zrdb.getSingleResource('game', id)
+			.then(function(game) {
+				return [doc, game];
 			});
 		});
 	};
@@ -52,20 +50,18 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 
 	var teamResources = function($q, realtime, drive) {
 		var d = $q.defer();
-		realtime.requireAuth().then(function() {
-			drive.getUser(function(me) {
-				gapi.client.request({
-					'path': '/admin/directory/v1/groups',
-					'method': 'GET',
-					'params': {
-						'userKey': me.id
-					}
-				})
-				.execute(function(response){
-					d.resolve(response);
-				});
+		drive.getUser(function(me) {
+			gapi.client.request({
+				'path': '/admin/directory/v1/groups',
+				'method': 'GET',
+				'params': {
+					'userKey': me.id
+				}
+			})
+			.execute(function(response){
+				d.resolve(response);
 			});
-		})
+		});
 		return d.promise;
 	};
 	teamResources.$inject = ['$q', 'realtime', 'drive'];

@@ -1,7 +1,7 @@
 'use strict';
 
-zr.controller('NavbarController', ['$scope', 'realtime', 'drive', 'zrdb', '$location', '$timeout', 'config',
-	function ($scope, realtime, drive, zrdb, $location, $timeout, config) {
+zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$timeout', 'config',
+	function ($scope, drive, zrdb, $location, $timeout, config) {
 		/**
 		 * Requests authorization from the user. Redirects to the previous target
 		 * or to create a new doc if no other action once complete.

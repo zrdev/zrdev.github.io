@@ -15,9 +15,9 @@
 'use strict';
 
 //Handles Drive files and APIs. 
-zr.service('drive', ['config', '$modal', 'realtime', 'zrdb',
+zr.service('drive', ['config', '$modal', 'zrdb',
 
-	function (config, $modal, realtime, zrdb) {
+	function (config, $modal, zrdb) {
 
 		//Renames the current file in Drive. 
 		this.renameFile = function(title, id, callback) {
@@ -81,53 +81,49 @@ zr.service('drive', ['config', '$modal', 'realtime', 'zrdb',
 		
 		//Opens new project modal. 
 		this.newProject = function(folder) {
-			realtime.requireAuth(false).then(function () {
-				$modal.open({
-					templateUrl: '/partials/new-project-modal.html',
-					controller: 'NewProjectModalController',
-					resolve: {
-						folder: function() { return folder; },
-						gameResources: function() {
-							return zrdb.getAllResources('game');
-						}
+			$modal.open({
+				templateUrl: '/partials/new-project-modal.html',
+				controller: 'NewProjectModalController',
+				resolve: {
+					folder: function() { return folder; },
+					gameResources: function() {
+						return zrdb.getAllResources('game');
 					}
-				});
+				}
 			});
 		};
 		
 		this.openProject = function(callback) {
-			realtime.requireAuth().then(function () {
-				var pickerCallback = function(data) {
-					if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
-						var doc = data[google.picker.Response.DOCUMENTS][0];
-						var id = doc[google.picker.Document.ID];
-						var name = doc[google.picker.Document.NAME];
-						callback(id, name);
-					}
-				};
-				var showPicker = function() {
-					var picker = new google.picker.PickerBuilder().
-						enableFeature(google.picker.Feature.NAV_HIDDEN).
-						hideTitleBar().
-						setOrigin(window.location.protocol + '//' + window.location.host).
-						setAppId(config.appId).
-						setOAuthToken(gapi.auth.getToken().access_token).
-						addView(new google.picker.DocsView().
-							setParent('root').
-							setMode(google.picker.DocsViewMode.LIST).
-							setIncludeFolders(true).
-							setMimeTypes('application/vnd.google-apps.drive-sdk.' + config.appId)).
-						setCallback(pickerCallback).
-						build();
-					picker.setVisible(true);
+			var pickerCallback = function(data) {
+				if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+					var doc = data[google.picker.Response.DOCUMENTS][0];
+					var id = doc[google.picker.Document.ID];
+					var name = doc[google.picker.Document.NAME];
+					callback(id, name);
 				}
-				if(!window.google || !window.google.picker) {
-					gapi.load('picker', {"callback" : showPicker});
-				}
-				else {
-					showPicker();
-				}
-			});
+			};
+			var showPicker = function() {
+				var picker = new google.picker.PickerBuilder().
+					enableFeature(google.picker.Feature.NAV_HIDDEN).
+					hideTitleBar().
+					setOrigin(window.location.protocol + '//' + window.location.host).
+					setAppId(config.appId).
+					setOAuthToken(gapi.auth.getToken().access_token).
+					addView(new google.picker.DocsView().
+						setParent('root').
+						setMode(google.picker.DocsViewMode.LIST).
+						setIncludeFolders(true).
+						setMimeTypes('application/vnd.google-apps.drive-sdk.' + config.appId)).
+					setCallback(pickerCallback).
+					build();
+				picker.setVisible(true);
+			}
+			if(!window.google || !window.google.picker) {
+				gapi.load('picker', {"callback" : showPicker});
+			}
+			else {
+				showPicker();
+			}
 		};
 	}]
 );
