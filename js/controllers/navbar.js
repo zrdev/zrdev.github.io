@@ -51,9 +51,17 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 		window.loginCallback = function(authResult) {
 			if(authResult['status']['signed_in']) {
 				getUser();
+				if(window.authDeferred) {
+					window.authDeferred.resolve();
+					window.authDeferred = null;
+				}
 			}
-			else if(authResult['error'] === 'user_signed_out') {
+			else if(authResult['error']) {
 				$scope.displayName = null;
+				if(window.authDeferred) {
+					window.authDeferred.reject();
+					window.authDeferred = null;
+				}
 			}
 			$scope.showLogin = true;
 		};

@@ -10,16 +10,31 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	//Use HTML5 URL rewriting instead of hash string
 	$locationProvider.html5Mode(true);
+
+	//Auth check for views that require it
+	var checkAuth = function() {
+		var token = gapi.auth.getToken();
+		if(token && token.status.signed_in) {
+			return $q.when();
+		}
+		else {
+			window.authDeferred = $q.deferred();
+			gapi.auth.signIn();
+			return window.authDeferred.promise;
+		}
+	};
 	
-	//Function to inject the Realtime doc into the editor controller
+	//Function to inject the Realtime doc and game into the editor controller
 	var loadFile = function ($route, realtime, zrdb) {
 		var id = $route.current.params['fileId'];
-		return realtime.getDocument(id)
-		.then(function(doc) {
-			var id = doc.getModel().getRoot().get('gameId');
-			return zrdb.getSingleResource('game', id)
-			.then(function(game) {
-				return [doc, game];
+		return checkAuth().then(function() {
+			return realtime.getDocument(id)
+			.then(function(doc) {
+				var id = doc.getModel().getRoot().get('gameId');
+				return zrdb.getSingleResource('game', id)
+				.then(function(game) {
+					return [doc, game];
+				});
 			});
 		});
 	};
@@ -27,11 +42,13 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 
 	var visualizationResources = function(zrdb) {
 		//Chained dependent resources: first load the sim, then get the game based on the ID in the sim
-		return zrdb.getSingleResource('simulation')
-		.then(function(sim) {
-			return zrdb.getSingleResource('game', sim.data.gameId)
-			.then(function(game) {
-				return [sim, game];
+		return checkAuth().then(function() {
+			return zrdb.getSingleResource('simulation')
+			.then(function(sim) {
+				return zrdb.getSingleResource('game', sim.data.gameId)
+				.then(function(game) {
+					return [sim, game];
+				});
 			});
 		});
 	};
@@ -50,16 +67,18 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 
 	var teamResources = function($q, realtime, drive) {
 		var d = $q.defer();
-		drive.getUser(function(me) {
-			gapi.client.request({
-				'path': '/admin/directory/v1/groups',
-				'method': 'GET',
-				'params': {
-					'userKey': me.id
-				}
-			})
-			.execute(function(response){
-				d.resolve(response);
+		return checkAuth().then(function() {
+			drive.getUser(function(me) {
+				gapi.client.request({
+					'path': '/admin/directory/v1/groups',
+					'method': 'GET',
+					'params': {
+						'userKey': me.id
+					}
+				})
+				.execute(function(response){
+					d.resolve(response);
+				});
 			});
 		});
 		return d.promise;
