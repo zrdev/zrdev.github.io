@@ -4,8 +4,11 @@ document.onclick = function(e) {
 	e.button === 2 && e.stopImmediatePropagation();
 };
 
+//Callback to bootstrap Angular AFTER the Google APIs are loaded
 document.onGapiLoaded = function() {
-	
+	angular.element(document).ready(function () {
+		angular.bootstrap(document, ['zr']);
+	});
 }
 
 //Initial module setup and URL routing
