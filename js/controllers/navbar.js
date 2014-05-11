@@ -35,6 +35,7 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 			 	})
 			 });
 		 };
+		 getUser();
 		
 		$scope.newProject = function() {
 			drive.newProject();
