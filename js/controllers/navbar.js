@@ -28,7 +28,7 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 			 		}
 			 		else {
 			 			$scope.displayName = null;
-			 			if(firstTime && gapi.auth.getToken()) {
+			 			if(firstTime) {
 							//Render the login button
 							gapi.signin.render('login-button', {
 								'width': 'wide'
