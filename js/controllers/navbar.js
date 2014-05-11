@@ -2,10 +2,7 @@
 
 zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$timeout', 'config',
 	function ($scope, drive, zrdb, $location, $timeout, config) {
-		/**
-		 * Requests authorization from the user. Redirects to the previous target
-		 * or to create a new doc if no other action once complete.
-		 */
+		gapi.client.setApiKey(config.simpleApiKey);
 
 		 $scope.clientId = config.appId;
 		 $scope.scopes = config.scopes;
@@ -22,6 +19,7 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 			}
 		 });
 
+		 var firstTime = true;
 		 $scope.getUser = function() {
 			drive.getUser(function(data) {
 				$timeout(function() {
@@ -30,11 +28,13 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 			 		}
 			 		else {
 			 			$scope.displayName = null;
-			 		}
-			 		//Let Angular take over display now
-			 		var wrapper = document.getElementById('login-button-wrapper');
-			 		if(wrapper.className == 'navbar-right ng-hide init-css') {
-			 			wrapper.className = 'navbar-right';
+			 			if(firstTime) {
+							//Render the login button
+							gapi.signin.render('login-button', {
+								'width': 'wide'
+							});
+							firstTime = false;
+			 			}
 			 		}
 			 		$scope.showLogin = true;
 				});
@@ -61,11 +61,6 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 			$location.path('/');
 		}
 
-		//Render the login button
-		gapi.signin.render('login-button', {
-			'width': 'wide',
-		});
-		gapi.client.setApiKey(config.simpleApiKey);
 		//Give global reference for login callback
 		zr.navbarScope = $scope;
 }]);
