@@ -24,15 +24,13 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 
 		 var getUser = function() {
 			drive.getUser(function(data) {
-			 	$scope.$apply(function() {
-			 		if(data && data.displayName) {
-			 			$scope.displayName = data.displayName;
-			 		}
-			 		else {
-			 			$scope.displayName = null;
-			 		}
-			 		$scope.showLogin = true;
-			 	})
+		 		if(data && data.displayName) {
+		 			$scope.displayName = data.displayName;
+		 		}
+		 		else {
+		 			$scope.displayName = null;
+		 		}
+		 		$scope.showLogin = true;
 			 });
 		 };
 		 getUser();
