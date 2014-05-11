@@ -4,6 +4,10 @@ document.onclick = function(e) {
 	e.button === 2 && e.stopImmediatePropagation();
 };
 
+document.onGapiLoaded = function() {
+	
+}
+
 //Initial module setup and URL routing
 
 var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute', 'ngSanitize', 'uiSlider'])
