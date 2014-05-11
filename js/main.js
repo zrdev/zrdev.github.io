@@ -227,7 +227,7 @@ window.onGapiLoaded = function() {
 	custom.setInitializer(Blockly.Block, Blockly.Block.prototype.initialize);
 
 	//Bootstrap Angular
-	if(document.readyState === 'complete') {
+	if(document.readyState !== 'loading') {
 		angular.bootstrap(document, ['zr']);
 	}
 	else {
