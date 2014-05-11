@@ -27,11 +27,11 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 				$timeout(function() {
 			 		if(data && data.displayName) {
 			 			$scope.displayName = data.displayName;
+			 			$scope.showLogin = true;
 			 		}
 			 		else {
 			 			$scope.displayName = null;
 			 		}
-			 		$scope.showLogin = true;
 				});
 			 });
 		 };
@@ -57,7 +57,7 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 
 		//Render the login button
 		gapi.signin.render('login-button', {
-			'width': 'wide'
+			'width': 'wide',
 		});
 		gapi.client.setApiKey(config.simpleApiKey);
 		//Give global reference for login callback
