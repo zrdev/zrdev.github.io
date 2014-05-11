@@ -210,7 +210,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 });
 
 //Callback to bootstrap Angular AFTER the Google APIs are loaded
-window.onGapiLoaded = function() {
+window['onGapiLoaded'] = function() {
 	// Monkey patch collaborative string for ng-model compatibility
 	Object.defineProperty(gapi.drive.realtime.CollaborativeString.prototype, 'text', {
 		set: gapi.drive.realtime.CollaborativeString.prototype.setText,
@@ -232,7 +232,7 @@ window.onGapiLoaded = function() {
 	});
 }
 
-window.loginCallback = function(authResult) {
+window['loginCallback'] = function(authResult) {
 	if(authResult['status']['signed_in']) {
 		if(zr.navbarScope) {
 			zr.navbarScope.getUser();
