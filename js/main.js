@@ -12,7 +12,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	$locationProvider.html5Mode(true);
 
 	//Auth check for views that require it
-	var checkAuth = function() {
+	var checkAuth = function($q) {
 		var token = gapi.auth.getToken();
 		if(token && token.status.signed_in) {
 			return $q.when();
@@ -23,6 +23,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 			return window.authDeferred.promise;
 		}
 	};
+	checkAuth.$inject = ['$q'];
 	
 	//Function to inject the Realtime doc and game into the editor controller
 	var loadFile = function ($route, realtime, zrdb) {
