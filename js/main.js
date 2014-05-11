@@ -254,7 +254,7 @@ window.onGapiLoaded = function() {
 window.loginCallback = function(authResult) {
 	if(authResult['status']['signed_in']) {
 		if(zr.navbarScope) {
-			navbarScope.getUser();
+			zr.navbarScope.getUser();
 		}
 		if(window.authDeferred) {
 			window.authDeferred.resolve();
