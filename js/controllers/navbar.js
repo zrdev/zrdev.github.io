@@ -33,7 +33,7 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 								gapi.signin.render('login-button', {
 									'width': 'wide'
 								});
-							});
+							},0.05);
 							firstTime = false;
 			 			}
 			 		}
