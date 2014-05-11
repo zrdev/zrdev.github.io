@@ -20,6 +20,9 @@ zr.directive('adjustheight', ['$window', '$timeout', function($window, $timeout)
 					element.css({
 						'max-height': String(height - offset) + 'px'
 					});
+					if(!!Blockly.mainWorkspace) {
+						Blockly.svgResize();
+					}
 				}
 				lastHeight = height;
 			};
