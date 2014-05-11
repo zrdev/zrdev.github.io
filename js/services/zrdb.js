@@ -36,7 +36,10 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 			else {
 				window.authDeferred = $q.defer();
 				gapi.auth.signIn();
-				return window.authDeferred.promise;
+				return window.authDeferred.promise.finally(function() {
+					//If this is required, reload the page afterward
+					$route.reload();
+				});
 			}
 		};
 
