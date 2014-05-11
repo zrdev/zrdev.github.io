@@ -150,7 +150,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 				}
 				deferred.resolve(document);
 				$rootScope.$digest();
-			}.bind(this);requi
+			}.bind(this);
 			var onError = function (error) {
 				if (error.type === gapi.drive.realtime.ErrorType.TOKEN_REFRESH_REQUIRED) {
 					$rootScope.$emit('todos.token_refresh_required');

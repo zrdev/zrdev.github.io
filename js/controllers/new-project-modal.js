@@ -1,4 +1,4 @@
-zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$location', 'folder', 'gameResources', function($scope, $modalInstance, $location, folder, gameResources) {
+zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$location', 'folder', 'gameResources', 'realtime', function($scope, $modalInstance, $location, folder, gameResources, realtime) {
 	$scope.games = gameResources.data.rows;
 	$scope.data = {
 		shouldBeOpen: true,
