@@ -262,7 +262,9 @@ window.loginCallback = function(authResult) {
 		}
 	}
 	else if(authResult['error']) {
-		$scope.displayName = null;
+		if(zr.navbarScope) {
+			zr.navbarScope.displayName = null;
+		}
 		if(window.authDeferred) {
 			window.authDeferred.reject();
 			window.authDeferred = null;
