@@ -29,9 +29,10 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 			 		else {
 			 			$scope.displayName = null;
 			 			if(firstTime) {
-							//Render the login button
-							gapi.signin.render('login-button', {
-								'width': 'wide'
+							$timeout(function() {
+								gapi.signin.render('login-button', {
+									'width': 'wide'
+								});
 							});
 							firstTime = false;
 			 			}
