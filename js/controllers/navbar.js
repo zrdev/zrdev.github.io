@@ -58,6 +58,7 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 
 		$scope.signOut = function() {
 			gapi.auth.signOut();
+			$location.path('/');
 		}
 
 		//Render the login button
