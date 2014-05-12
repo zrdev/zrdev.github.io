@@ -2,7 +2,6 @@ zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$locati
 	$scope.games = gameResources.data.rows;
 	if(saveAsData) {
 		$scope.data = {
-			shouldBeOpen: true,
 			name: saveAsData.name,
 			editorMode: (saveAsData.graphical ? 'graphical' : 'text'),
 			game: $scope.games[2]
@@ -17,19 +16,12 @@ zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$locati
 	}
 	else {
 		$scope.data = {
-			shouldBeOpen: true,
 			name: '',
 			editorMode: 'text',
 			game: $scope.games[2]
 		};
 		$scope.modalTitle = 'New Project';
 	}
-
-	
-	$modalInstance.opened.then(function() {
-		$scope.data.shouldBeOpen = true;
-		$scope.data.name = '';
-	});
 	
 	$scope.createProject = function() {
 		realtime.createDocument($scope.data.name + ' - ' + $scope.data.game.displayName, folder).then(function (file) {
@@ -37,12 +29,10 @@ zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$locati
 			realtime.gameId = $scope.data.game.id;
 			$location.url('/ide/' + file.id + '/');
 		});
-		$scope.data.shouldBeOpen = false;
 		$modalInstance.close();
 	};
 	
 	$scope.cancel = function() {
-		$scope.data.shouldBeOpen = false;
 		$modalInstance.dismiss('cancel');
 		if(folder) { //Redirected from Drive
 			$location.path('/');
