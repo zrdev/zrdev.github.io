@@ -80,7 +80,7 @@ zr.service('drive', ['config', '$modal', 'zrdb',
 		};
 		
 		//Opens new project modal. 
-		this.newProject = function(folder) {
+		this.newProject = function(folder, saveAsData) {
 			$modal.open({
 				templateUrl: '/partials/new-project-modal.html',
 				controller: 'NewProjectModalController',
@@ -88,7 +88,8 @@ zr.service('drive', ['config', '$modal', 'zrdb',
 					folder: function() { return folder; },
 					gameResources: function() {
 						return zrdb.getAllResources('game');
-					}
+					},
+					saveAsData: function() { return saveAsData; }
 				}
 			});
 		};

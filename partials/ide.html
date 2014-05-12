@@ -17,7 +17,7 @@
 						<li> <a ng-click="newProject()">New Project</a> </li>
 						<li> <a ng-click="openProject()">Open Project</a> </li>
 						<li> <a>Open Simulation</a> </li>
-						<li> <a ng-click="testGen()">Save As</a> </li>
+						<li> <a ng-click="saveAs()">Save As</a> </li>
 						<li> <a>Revision History</a> </li>
 						<li> <a ng-click="download()">Download</a> </li>
 						<li> <a ng-click="share()">Share</a> </li>
@@ -64,8 +64,8 @@
 					</ul>
 				</li>
 			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li ng-if="graphical" ng-switch="editorMode">
+			<ul ng-if="graphical" class="nav navbar-nav navbar-right">
+				<li ng-switch="editorMode">
 					<button type="button" class="btn btn-default navbar-btn" ng-click="toggleBlocklyText()" ng-switch-when="graphical">C Code</button>
 					<button type="button" class="btn btn-default navbar-btn" ng-click="toggleBlocklyText()" ng-switch-when="graphical-c">Graphical Editor</button>
 				</li>

@@ -1,11 +1,30 @@
-zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$location', 'folder', 'gameResources', 'realtime', function($scope, $modalInstance, $location, folder, gameResources, realtime) {
+zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$location', 'folder', 'gameResources', 'realtime', 'saveAsData', function($scope, $modalInstance, $location, folder, gameResources, realtime, saveAsData) {
 	$scope.games = gameResources.data.rows;
-	$scope.data = {
-		shouldBeOpen: true,
-		name: '',
-		editorMode: 'text',
-		game: $scope.games[2]
-	};
+	if(saveAsData) {
+		$scope.data = {
+			shouldBeOpen: true,
+			name: saveAsData.name,
+			editorMode: (saveAsData.graphical ? 'graphical' : 'text'),
+			game: $scope.games[2]
+		};
+		for(var i = $scope.games.length; i--; ) {
+			if($scope.games[i].id === saveAsData.gameId) {
+				$scope.data.game = $scope.games[i];
+				break;
+			}
+		}
+		$scope.modalTitle = 'Save As';
+	}
+	else {
+		$scope.data = {
+			shouldBeOpen: true,
+			name: '',
+			editorMode: 'text',
+			game: $scope.games[2]
+		};
+		$scope.modalTitle = 'New Project';
+	}
+
 	
 	$modalInstance.opened.then(function() {
 		$scope.data.shouldBeOpen = true;

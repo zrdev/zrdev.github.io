@@ -222,8 +222,12 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 	};
 	
 
-	$scope.testGen = function() {
-		alert(realtime.getDocAsString($scope.model.getRoot()));
+	$scope.saveAs = function() {
+		drive.newProject(null, {
+			'name': $scope.projectName, 
+			'gameId': $scope.model.getRoot().get('gameId'),
+			'graphical': graphical
+		})
 	}
 	
 	var parseErrorMessage = function(msg, startLines) {
