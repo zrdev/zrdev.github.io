@@ -8,7 +8,7 @@ zr.directive('embedSrc', function () {
       scope.$watch(function() { return attrs.embedSrc; }, function () {
         var clone = element
                       .clone()
-                      .attr('data', attrs.embedSrc);
+                      .attr(attrs.att, attrs.embedSrc);
         current.replaceWith(clone);
         current = clone;
       });
