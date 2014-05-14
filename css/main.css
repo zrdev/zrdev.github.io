@@ -327,3 +327,8 @@ div.picker-dialog-bg {
 	top: -12000px;
 	left: -9999px;
 }
+
+/* HACK: Hides Blockly toolbox compression errors */
+.undefined {
+	display: none !important;
+}
