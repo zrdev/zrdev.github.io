@@ -4,11 +4,13 @@
 		 embed-src="{{ swfUrl }}" att="value"/>
 	  <param name="allowScriptAccess" value="sameDomain"/>
 	  <param name="wmode" value="direct"/>
+	  <!--[if !IE]>-->
 	  <embed embed-src="{{ swfUrl }}" att="src"
 		 class="animation" id="cubesphere_embed" name="cubesphere_embed"
 		 allowScriptAccess="sameDomain" wmode="direct"
 		 pluginspage="http://www.macromedia.com/go/getflashplayer"
 			 type="application/x-shockwave-flash" adjustheight="210"/>
+	  <!--<![endif]-->
 	</object>
 	<div style="height:57px;">
 		<slider floor="0" ceiling="100" step="0.1" ng-model="time" precision="1" ng-click="setTime()" ng-hide="state === 'stop'"></slider>
