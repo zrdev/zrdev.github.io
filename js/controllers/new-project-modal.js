@@ -2,7 +2,7 @@ zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$locati
 	$scope.games = gameResources.data.rows;
 	if(saveAsData) {
 		$scope.data = {
-			name: saveAsData.name,
+			name: saveAsData.name + ' copy',
 			editorMode: (saveAsData.graphical ? 'graphical' : 'text'),
 			game: $scope.games[2]
 		};
