@@ -1,16 +1,14 @@
 <div class="page-content">
-	<!--<object class="animation" id="cubesphere_obj" name="cubesphere_obj" title="Click and drag picture to change view" type="application/x-shockwave-flash" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';" adjustheight="210">
-	  <param id="cubesphere_param" name="movie"
-		 embed-src="{{ swfUrl }}" att="value"/>
+	<object class="animation" id="cubesphere_obj" name="cubesphere_obj" title="Click and drag picture to change view" type="application/x-shockwave-flash" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';" adjustheight="210">
+	  <param id="cubesphere_param" name="movie" value="/visualizer/ZRVis.swf?config=/visualizer/FreeMode_config.xml&staticbase=/visualizer/"/>
 	  <param name="allowScriptAccess" value="sameDomain"/>
 	  <param name="wmode" value="direct"/>
-	  <embed embed-src="{{ swfUrl }}" att="src"
+	  <embed src="/visualizer/ZRVis.swf?config=/visualizer/FreeMode_config.xml&staticbase=/visualizer/"
 		 class="animation" id="cubesphere_embed" name="cubesphere_embed"
 		 allowScriptAccess="sameDomain" wmode="direct"
 		 pluginspage="http://www.macromedia.com/go/getflashplayer"
 			 type="application/x-shockwave-flash" adjustheight="210"/>
-	</object>-->
-	<object class="animation" id="cubesphere_obj" name="cubesphere_obj" title="Click and drag picture to change view" type="application/x-shockwave-flash" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"> <param id="cubesphere_param" name="movie" value="/visualizer/ZRVis.swf?data…e=http://www.zerorobotics.org/zero-robotics-portlet/visualizer/static/swf/"> <param name="allowScriptAccess" value="sameDomain"> <embed src="/visualizer/ZRVis.swf?data…e=http://www.zerorobotics.org/zero-robotics-portlet/visualizer/static/swf/" class="animation" id="cubesphere_embed" name="cubesphere_embed" allowscriptaccess="sameDomain" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash"> </object>
+	</object>
 	<div style="height:57px;">
 		<slider floor="0" ceiling="100" step="0.1" ng-model="time" precision="1" ng-click="setTime()" ng-hide="state === 'stop'"></slider>
 	</div>
