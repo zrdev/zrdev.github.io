@@ -16,7 +16,7 @@
 
 //This code was borrowed from the Google Drive realtime-tasks sample. 
 
-zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config', 
+zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config', 'drive',
 	/**
 	 * Handles document creation & loading for the app. Keeps only
 	 * one document loaded at a time.
@@ -25,7 +25,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 	 * @param $rootScope
 	 * @param config
 	 */
-	function ($q, $rootScope, $routeParams, config) {
+	function ($q, $rootScope, $routeParams, config, drive) {
 		//Parameters for new project
 		this.ideGraphical = false;
 		this.gameId = null;
@@ -131,10 +131,15 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config',
 				}
 				var log = model.createMap();
 				root.set('log', log);
+				//Get user name if available
+				var displayName = 'Anonymous';
+				drive.getUser(function(user) {
+					displayName = user.displayName;
+				});
 				//Log entries are identified by timestamp, plus some random digits to avoid collisions
 				var key = String(new Date().getTime() + Math.random());
 				log.set(key, {
-					user: 'Ethan DiNinno',
+					user: displayName,
 					title: 'Project created',
 					content: ''
 				});
