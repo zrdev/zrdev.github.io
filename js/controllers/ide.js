@@ -347,11 +347,15 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		$scope.chat.message = '';
 	};
 	
+	var displayName = 'Anonymous';
+	drive.getUser(function(user) {
+		displayName = user.displayName;
+	})
 	$scope.logInsert = function(title, content, simId) {
 		//Log entries are identified by timestamp, plus some random digits to avoid collisions
 		var key = String(new Date().getTime() + Math.random());
 		var value = {
-			user: getMyName(),
+			user: displayName,
 			title: title,
 			content: content,
 			simId: simId
