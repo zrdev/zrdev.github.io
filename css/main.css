@@ -319,6 +319,6 @@ div.picker-dialog-bg {
 }
 
 /* HACK: Hides Blockly toolbox compression errors */
-.undefined {
+/*.undefined {
 	display: none !important;
-}
+}*/
