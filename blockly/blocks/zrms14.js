@@ -41,7 +41,7 @@ Blockly.Blocks['zrms14_getDebrisLocation'] = {
 		this.setHelpUrl('');
 		this.setColour(20);
 		this.appendDummyInput()
-			.appendField('write location of debris:')
+			.appendField('get location of debris:')
 			.appendField(new Blockly.FieldDropdown(DEBRIS), 'debrisId');
 		this.appendValueInput('loc')
 			.appendField('to:')
@@ -138,7 +138,7 @@ Blockly.Blocks['zrms14_havePack'] = {
 			.appendField('player:')
 			.appendField(new Blockly.FieldDropdown(PLAYERS), 'player');
 		this.appendDummyInput()
-			.appendField('has item:')
+			.appendField('has pack:')
 			.appendField(new Blockly.FieldDropdown(ITEMS), 'objectNum');
 		this.setOutput(true, 'number');
 		this.setTooltip('');
@@ -175,7 +175,7 @@ Blockly.Blocks['zrms14_getCometState'] = {
 		this.setHelpUrl('');
 		this.setColour(20);
 		this.appendValueInput('state')
-			.appendField('write comet state to:')
+			.appendField('get comet state to:')
 			.setCheck('array');
 		this.setPreviousStatement(true, 'statement');
 		this.setNextStatement(true, 'statement');
@@ -205,7 +205,7 @@ Blockly.Blocks['zrms14_isFacingTarget'] = {
 		this.setHelpUrl('');
 		this.setColour(20);
 		this.appendDummyInput()
-			.appendField('I am facing my comet')
+			.appendField('is facing comet')
 		this.setOutput(true, 'number');
 		this.setTooltip('');
 		this.setInputsInline(true);
@@ -310,7 +310,7 @@ Blockly.Blocks['zrms14_isSlowDownActive'] = {
 		this.setHelpUrl('');
 		this.setColour(20);
 		this.appendDummyInput()
-			.appendField('slowdown is active')
+			.appendField('is slowdown active?')
 		this.setOutput(true, 'number');
 		this.setTooltip('');
 		this.setInputsInline(true);
@@ -323,7 +323,7 @@ Blockly.Blocks['zrms14_isBounceActive'] = {
 		this.setHelpUrl('');
 		this.setColour(20);
 		this.appendDummyInput()
-			.appendField('bounce is active')
+			.appendField('is bounce active?')
 		this.setOutput(true, 'number');
 		this.setTooltip('');
 		this.setInputsInline(true);

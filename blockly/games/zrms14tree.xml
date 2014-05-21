@@ -1,20 +1,34 @@
-<category name="CosmoSPHERES MS">
+<category name="CosmoSPHERES MS Phase 1">
+	<block type="zrms14_haveDebris"></block>
+	<block type="zrms14_startLassoVoid"></block>
+	<block type="zrms14_startLassoBool"></block>
+	<block type="zrms14_havePack"></block>
+	<block type="zrms14_isSlowDownActive"></block>
 	<block type="zrms14_getDebrisLocation">
 		<value name="loc">
 			<block type="variables_array_get_pointer">
 			</block>
 		</value>
 	</block>
-	<block type="zrms14_haveDebris"></block>
-	<block type="zrms14_startLassoVoid"></block>
-	<block type="zrms14_startLassoBool"></block>
-	<block type="zrms14_havePack"></block>
+</category>
+	
+<category name="CosmoSPHERES MS Phase 2">
 	<block type="zrms14_getCometState">
 		<value name="state">
 			<block type="variables_array_get_pointer">
 			</block>
 		</value>
 	</block>
+	<block type="zrms14_shootLaserBool"></block>
+	<block type="zrms14_shootLaserVoid"></block>
+	<block type="zrms14_faceTarget">
+		<value name="target">
+			<block type="variables_array_get_pointer">
+			</block>
+		</value>
+	</block>
+	<block type="zrms14_isFacingTarget"></block>
+	<block type="zrms14_laserShotsRemaining"></block>
 	<block type="zrms14_predictCometState">
 		<value name="dtSteps">
 			<block type="math_number">
@@ -29,20 +43,12 @@
 			</block>
 		</value>
 	</block>
-	<block type="zrms14_faceTarget">
-		<value name="target">
-			<block type="variables_array_get_pointer">
-			</block>
-		</value>
-	</block>
-	<block type="zrms14_isFacingTarget"></block>
-	<block type="zrms14_shootLaserBool"></block>
-	<block type="zrms14_shootLaserVoid"></block>
-	<block type="zrms14_laserShotsRemaining"></block>
+	<block type="zrms14_isBounceActive"></block>
+</category>
+
+<category name="CosmoSPHERES MS General">
 	<block type="zrms14_getMass"></block>
 	<block type="zrms14_getFuelRemaining"></block>
 	<block type="zrms14_getScore"></block>
 	<block type="zrms14_getOtherScore"></block>
-	<block type="zrms14_isSlowDownActive"></block>
-	<block type="zrms14_isBounceActive"></block>
 </category>
