@@ -230,7 +230,7 @@ window.onGapiLoaded = function() {
 	gapi.signin.render('login-button', {
 		'width': 'wide',
 	});
-	
+
 	//Bootstrap Angular
 	if(document.readyState !== 'loading') {
 		angular.bootstrap(document, ['zr']);
@@ -251,6 +251,7 @@ window.loginCallback = function(authResult) {
 			window.authDeferred.resolve();
 			window.authDeferred = null;
 		}
+		window.setTimeout(gapi.auth.signIn, 3000);
 	}
 	else if(authResult['error']) {
 		if(zr.navbarScope) {

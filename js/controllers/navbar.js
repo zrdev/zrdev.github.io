@@ -55,11 +55,6 @@ zr.controller('NavbarController', ['$scope', 'drive', 'zrdb', '$location', '$tim
 			gapi.auth.signOut();
 			$location.path('/');
 		}
-
-		//Render the login button
-		gapi.signin.render('login-button', {
-			'width': 'wide',
-		});
 		gapi.client.setApiKey(config.simpleApiKey);
 		//Give global reference for login callback
 		zr.navbarScope = $scope;
