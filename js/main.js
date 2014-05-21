@@ -251,7 +251,6 @@ window.loginCallback = function(authResult) {
 			window.authDeferred.resolve();
 			window.authDeferred = null;
 		}
-		window.setTimeout(gapi.auth.signIn, 3000);
 	}
 	else if(authResult['error']) {
 		if(zr.navbarScope) {
