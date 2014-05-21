@@ -226,6 +226,11 @@ window.onGapiLoaded = function() {
 	Blockly.Block.prototype.relativeY = custom.collaborativeField('relativeY');
 	custom.setInitializer(Blockly.Block, Blockly.Block.prototype.initialize);
 
+	//Render the login button
+	gapi.signin.render('login-button', {
+		'width': 'wide',
+	});
+	
 	//Bootstrap Angular
 	if(document.readyState !== 'loading') {
 		angular.bootstrap(document, ['zr']);
