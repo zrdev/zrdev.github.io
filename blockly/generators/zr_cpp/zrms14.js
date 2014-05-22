@@ -74,7 +74,7 @@ Blockly.zr_cpp['zrms14_faceTarget'] = function(block) {
 };
 
 Blockly.zr_cpp['zrms14_isFacingTarget'] = function(block) {
-	return ['game.isFacingTarget()', Blockly.zr_cpp.ORDER_FUNCTION_CALL];
+	return ['game.isFacingComet()', Blockly.zr_cpp.ORDER_FUNCTION_CALL];
 };
 
 Blockly.zr_cpp['zrms14_shootLaserBool'] = function(block) {
