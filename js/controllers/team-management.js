@@ -37,7 +37,9 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', fu
 		};
 		zrdb.addResource('teammembership', resource, function() {
 			zrdb.getSingleResource('team', $scope.currentTeam.id, true).then(function(data) {
-				ms = data.tournamentsTeammembershipCollection;
+				$timeout(function() {
+					ms = data.tournamentsTeammembershipCollection;
+				});
 			})
 		});
 		$scope.newEmail = '';
