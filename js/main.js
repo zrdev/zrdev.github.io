@@ -53,22 +53,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	folderResource.$inject = ['$route'];
 
 	var teamResources = function($q, drive, zrdb) {
-		var d = $q.defer();
-		return zrdb.checkAuth().then(function() {
-			drive.getUser(function(me) {
-				gapi.client.request({
-					'path': '/admin/directory/v1/groups',
-					'method': 'GET',
-					'params': {
-						'userKey': me.id
-					}
-				})
-				.execute(function(response){
-					d.resolve(response);
-				});
-			});
-		});
-		return d.promise;
+		return zrdb.getAllResources('team');
 	};
 	teamResources.$inject = ['$q', 'realtime', 'zrdb'];
 
