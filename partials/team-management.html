@@ -40,7 +40,7 @@
 					<div class="form-group">
 						<label for="country-name" class="col-sm-2 control-label">Country</label>
 						<div class="col-sm-10">
-							<select ng-model="currentTeam.description.country" ng-options="a for a in countries" class="form-control">
+							<select ng-model="currentTeam.country" ng-options="a for a in countries" class="form-control">
 							</select>
 						</div>
 					</div>
@@ -68,7 +68,7 @@
 						<td>
 							<div class="checkbox">
 								<label>
-									<input type="checkbox" ng-model="m.isLead"> Is lead?
+									<input type="checkbox" ng-model="m.isLead" ng-change="setLead()"> Is lead?
 								</label>
 							</div>
 						</td>

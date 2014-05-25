@@ -17,4 +17,8 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', fu
 	$scope.setData = function() {
 		zrdb.putResource('team', $scope.currentTeam.id, $scope.currentTeam);
 	};
+
+	$scope.setLead = function(membership) {
+		zrdb.putResource('teammembership', m.id, m);
+	}
 }]);
