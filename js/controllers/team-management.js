@@ -15,24 +15,26 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', fu
 		$scope.setTeam($scope.teams[0]);
 	}
 	
+	var ms = $scope.currentTeam.tournamentsTeammembershipCollection; //Short name!
 
 	//For editing the basic team info
 	$scope.setData = function() {
 		zrdb.putResource('team', $scope.currentTeam.id, $scope.currentTeam);
 	};
 	$scope.deleteMember = function(m) {
-		var ms = $scope.currentTeam.tournamentsTeammembershipCollection;
-		var index = ms.indexOf(m);
-		ms.splice(index, 1);
+		zrdb.deleteResource('teammembership', m.id, function() {
+			var index = ms.indexOf(m);
+			ms.splice(index, 1);
+		});
 	}
 	$scope.addMember = function() {
-		$scope.currentTeam.tournamentsTeammembershipCollection.push({
+		ms.push({
 			'inviteAccepted': false,
 			'isLead': false,
 			'teamId': $scope.currentTeam.id,
 			'email': $scope.newmem.email,
 			'tournamentId': 17 //TODO: Separate rosters for different tournaments
 		});
-		$scope.newEmail = '';
+		$scope.newmem.email = '';
 	}
 }]);
