@@ -68,13 +68,13 @@
 						<td>
 							<div class="checkbox">
 								<label>
-									<input type="checkbox" ng-model="m.isLead" > Is lead?
+									<input type="checkbox" ng-model="m.isLead"> Is lead?
 								</label>
 							</div>
 						</td>
 						<td>{{ m.inviteAccepted ? 'Active' : 'Invitation pending' }}</td>
 						<td>
-							<button class="btn btn-danger">Remove</button>
+							<button class="btn btn-danger" ng-click="deleteMember(m)">Remove</button>
 						</td>
 					</tr>
 				</tbody>

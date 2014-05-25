@@ -17,8 +17,7 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', fu
 	$scope.setData = function() {
 		zrdb.putResource('team', $scope.currentTeam.id, $scope.currentTeam);
 	};
-
-	$scope.setLead = function(m) {
-		zrdb.putResource('teammembership', m.id, m);
+	$scope.deleteMember = function(m) {
+		zrdb.deleteResource('teammembership', m.id);
 	}
 }]);

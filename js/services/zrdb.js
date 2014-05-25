@@ -93,6 +93,20 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 			});
 		};
 
+		this.deleteResource = function(name, id, callback) {
+			refreshAuth();
+			return $http.post(config.serviceDomain + '/' + name + 'resource/delete/' + id + '/', {}, reqConfig)
+			.success(function(data) {
+				if(typeof callback === 'function') {
+					callback();
+				}
+			})
+			.error(function() {
+				alert(CONNECTION_ERROR);
+				return null;
+			});
+		};
+
 		this.getAllResources = function(name) {
 			if(name in completeTables) {
 				//Return a promise and resolve it right away
