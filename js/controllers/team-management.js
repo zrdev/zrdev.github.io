@@ -1,4 +1,4 @@
-zr.controller('TeamManagementController', ['$scope', 'teamResources', function($scope, teamResources) {
+zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', function($scope, teamResources, zrdb) {
 	$scope.teams = teamResources.data.rows;
 	$scope.currentTeam = null;
 	$scope.isLead = true;
@@ -15,16 +15,6 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', function($
 
 	//For editing the basic team info
 	$scope.setData = function() {
-		gapi.client.request({
-			'path': '/admin/directory/v1/groups/' + $scope.currentTeam.id,
-			'method': 'PUT',
-			'params': {
-				'fields': ''
-			},
-			'body': {
-				'description': JSON.stringify($scope.currentTeam.description)
-			}
-		})
-		.execute(function() {});
+		zrdb.putResource('team', $scope.currentTeam.id, $scope.currentTeam);
 	};
 }]);
