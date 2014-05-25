@@ -1,4 +1,4 @@
-zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', function($scope, teamResources, zrdb) {
+zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', '$timeout', function($scope, teamResources, zrdb, $timeout) {
 	$scope.teams = teamResources.data.rows;
 	$scope.currentTeam = null;
 	$scope.isLead = true;
@@ -37,7 +37,7 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', fu
 		};
 		zrdb.addResource('teammembership', resource, function() {
 			zrdb.getSingleResource('team', $scope.currentTeam.id, true).then(function(data) {
-				$scope.$apply(function() {
+				$timeout(function() {
 					ms = data.tournamentsTeammembershipCollection;
 				});
 			})
