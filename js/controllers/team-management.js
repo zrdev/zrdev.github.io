@@ -28,19 +28,15 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', fu
 		});
 	}
 	$scope.addMember = function() {
-		// ms.push({
-		// 	'inviteAccepted': false,
-		// 	'isLead': false,
-		// 	'teamId': $scope.currentTeam.id,
-		// 	'email': $scope.newmem.email,
-		// 	'tournamentId': 17 //TODO: Separate rosters for different tournaments
-		// });
-		zrdb.addResource('teammembership', {
+		var resource = {
 			'inviteAccepted': false,
 			'isLead': false,
 			'teamId': $scope.currentTeam.id,
 			'email': $scope.newmem.email,
 			'tournamentId': 17 //TODO: Separate rosters for different tournaments
+		};
+		zrdb.addResource('teammembership', resource, function() {
+			ms.push(resource);
 		});
 		$scope.newEmail = '';
 	}

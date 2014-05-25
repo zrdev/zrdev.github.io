@@ -55,11 +55,11 @@
 			<h3>Team Roster</h3>
 			<form class="form-horizontal" role="form">
 				<div class="form-group">
-					<label for="new-email" class="col-sm-2 control-label">Email of new member</label>
-					<div class="col-sm-9">
+					<label for="new-email" class="col-sm-3 control-label">New member's email</label>
+					<div class="col-sm-8">
 						<input type="text" class="form-control" ng-model="newmem.email">
 					</div>
-					<div class="col-sm-1">
+					<div class="col-sm-1" style="text-align: left;">
 						<button class="btn btn-primary" ng-click="addMember()">Add</button>
 					</div>
 				</div>
@@ -79,7 +79,7 @@
 						<td>
 							<div class="checkbox">
 								<label>
-									<input type="checkbox" ng-model="m.isLead"> Is lead?
+									<input type="checkbox" ng-model="m.isLead" ng-change="setData()"> Is lead?
 								</label>
 							</div>
 						</td>
