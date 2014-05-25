@@ -70,7 +70,9 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 				if(!(name in cache)) {
 					cache[name] = [];
 				}
-				cache[name].push(data);
+				if(!nocache) {
+					cache[name].push(data);
+				}
 				return data;
 			})
 			.error(function() {
