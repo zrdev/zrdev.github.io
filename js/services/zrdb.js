@@ -50,10 +50,10 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 			}
 		}
 		
-		this.getSingleResource = function(name, id) {
+		this.getSingleResource = function(name, id, nocache) {
 			id = id || $route.current.params['id'];
 			id = parseInt(id);
-			if(name in cache) {
+			if(!nocache && name in cache) {
 				var all = cache[name];
 				for(var i = all.length; i--; ) {
 					if(all[i].id === id) {
