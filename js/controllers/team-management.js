@@ -38,7 +38,7 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', '$
 		zrdb.addResource('teammembership', resource, function() {
 			zrdb.getSingleResource('team', $scope.currentTeam.id, true).then(function(data) {
 				$timeout(function() {
-					ms = data.tournamentsTeammembershipCollection;
+					ms = data.data.tournamentsTeammembershipCollection;
 				});
 			})
 		});
