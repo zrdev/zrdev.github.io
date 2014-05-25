@@ -73,6 +73,21 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 			});
 		}
 	};
+
+	$scope.teamShare = function() {
+		$modal.open({
+			templateUrl: '/partials/sharing-modal.html',
+			controller: 'SharingModalController',
+			resolve: {
+				teamResources: function() {
+					return zrdb.getAllResources('team');
+				}
+			},
+			windowClass: {
+				'max-width': '800px'
+			}
+		});	
+	}
 	
 	var logRemoteChange = function(e) {
 		if(!e.isLocal) {
@@ -378,7 +393,7 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 	var shareClient = null;
 	$scope.share = function() {
 		if(!shareClient) {
-			shareClient = new gapi.drive.share.ShareClient(config.appId);
+			shareClient = new gapi.drive.share.ShareClient(String(config.appId));
 		}
 		shareClient.setItemIds(realtime.id);
 		shareClient.showSettingsDialog();
