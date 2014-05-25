@@ -35,8 +35,9 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', fu
 			'email': $scope.newmem.email,
 			'tournamentId': 17 //TODO: Separate rosters for different tournaments
 		};
-		ms.push(resource);
-		$scope.setData();
+		zrdb.addResource('teammembership', resource, function() {
+			
+		});
 		$scope.newEmail = '';
 	}
 }]);
