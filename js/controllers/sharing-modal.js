@@ -1,4 +1,4 @@
-zr.controller('SimulationController', ['$scope', '$modalInstance', 'teamResources', function($scope, $modalInstance, teamResources) {
+zr.controller('SharingModalController', ['$scope', '$modalInstance', 'teamResources', function($scope, $modalInstance, teamResources) {
 	var game = gameResource.data;
 	
 	$scope.share = function() {

@@ -237,7 +237,7 @@ window.loginCallback = function(authResult) {
 			window.authDeferred = null;
 		}
 	}
-	else if(authResult['error']) {
+	else if(authResult['error'] === 'user_signed_out') {
 		if(zr.navbarScope) {
 			zr.navbarScope.displayName = null;
 		}
