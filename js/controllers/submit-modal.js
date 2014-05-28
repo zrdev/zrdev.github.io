@@ -1,24 +1,11 @@
-zr.controller('SubmitModalController', ['$scope', '$modalInstance', 'projectText', function($scope, $modalInstance, projectText) {
+zr.controller('SubmitModalController', ['$scope', '$modalInstance', 'projectText', 'teamResources', 'competitionResources', 
+		function($scope, $modalInstance, projectText, teamResources, competitionResources) {
 	$scope.projectText = projectText;
-	$scope.teams = [
-		{
-			name: 'Team 1'
-		},
-		{
-			name: 'Team 2'
-		}
-	];
-	$scope.competitions = [
-		{
-			name: 'Competition 1'
-		},
-		{
-			name: 'Competition 2'
-		}
-	];
+	$scope.teams = teamResources.data.rows || [];
+	$scope.competitions = competitionResources.data.rows || [];
 	$scope.data = {
-		team: $scope.teams[0],
-		competition: $scope.competitions[0],
+		team: $scope.teams[0] || { name: '' },
+		competition: $scope.competitions[0] || { name: '' },
 		agree: false
 	};
 	$scope.aceOptions = {

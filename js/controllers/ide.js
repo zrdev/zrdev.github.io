@@ -173,7 +173,9 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 			templateUrl: '/partials/submit-modal.html',
 			controller: 'SubmitModalController',
 			resolve: {
-				projectText: function() { return realtime.getDocAsString($scope.model.getRoot()); }
+				projectText: function() { return realtime.getDocAsString($scope.model.getRoot()); },
+				teamResources: function() { return zrdb.getAllResources('team'); },
+				competitionResources: function() { return zrdb.getAllResources('competition'); }
 			}
 		}).result.then(function(data) {
 		});
