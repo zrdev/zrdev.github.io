@@ -16,11 +16,11 @@
 					<ul class="dropdown-menu">
 						<li> <a ng-click="newProject()">New Project</a> </li>
 						<li> <a ng-click="openProject()">Open Project</a> </li>
-						<li> <a>Open Simulation</a> </li>
-						<li> <a ng-click="saveAs()">Save As</a> </li>
-						<li> <a>Revision History</a> </li>
+						<li> <a style="display: none;">Open Simulation</a> </li>
+						<li> <a style="display: none;" ng-click="saveAs()">Save As</a> </li>
+						<li> <a style="display: none;">Revision History</a> </li>
 						<li> <a ng-click="download()">Download</a> </li>
-						<li> <a ng-click="teamShare()">Share With Team</a> </li>
+						<li> <a style="display: none;" ng-click="teamShare()">Share With Team</a> </li>
 						<li> <a ng-click="share()">Share Individually</a> </li>
 						<li> <a ng-click="renameProject()">Rename</a> </li>
 					</ul>
@@ -53,15 +53,8 @@
 						<li> <a ng-click="compile(false)">Compile</a> </li>
 						<li> <a ng-click="compile(true)">Codesize Estimate</a> </li>
 						<li> <a ng-click="openSimDialog()">Simulate</a> </li>
-						<li> <a id="menu-profile">Profile</a> </li>
-						<li> <a ng-click="openSubmitDialog()">Submit</a> </li>
-					</ul>
-				</li>
-				<li class="dropdown">
-					<a class="dropdown-toggle">Help<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li> <a href="/forums/">Support Forums</a> </li>
-						<li> <a href="/tutorials/">Tutorials</a> </li>
+						<li> <a style="display: none;">Profile</a> </li>
+						<li> <a style="display: none;" ng-click="openSubmitDialog()">Submit</a> </li>
 					</ul>
 				</li>
 			</ul>
