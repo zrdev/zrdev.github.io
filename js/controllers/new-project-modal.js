@@ -25,7 +25,7 @@ zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$locati
 	
 	$scope.createProject = function() {
 		if(saveAsData) {
-			drive.copyFile($scope.data.name || 'Untitled', realtime.id, )
+			drive.copyFile($scope.data.name || 'Untitled', realtime.id);
 		}
 		else {
 			realtime.createDocument($scope.data.name + ' - ' + $scope.data.game.displayName, folder).then(function (file) {
