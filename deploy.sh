@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ $1 != "--prod" && $1 != "--qa" ]]; then
+	echo "Run this script with options --qa or --prod to deploy."
+	exit
+fi
+
 rm -rf build
 mkdir build
 
@@ -22,9 +27,17 @@ cp -Rp partials/ build/partials/
 cp -Rp visualizer/ build/visualizer/
 cp -Rp blockly/media/ build/blockly/media/
 cp -Rp blockly/games/ build/blockly/games/
-cp -p index-prod.html build/index.html
+if [ $1 == "--prod" ]; then
+	cp -p index-prod.html build/index.html
+elif [ $1 == "--qa" ]; then
+	cp -p index-qa.html build/index.html
+fi
 
 #Deploy to S3 bucket
-aws s3 sync build/ s3://zerorobotics.mit.edu/ --delete --exclude "*.DS_Store"
+if [ $1 == "--prod" ]; then
+	aws s3 sync build/ s3://zerorobotics.mit.edu/ --delete --exclude "*.DS_Store"
+elif [ $1 == "--qa" ]; then
+	aws s3 sync build/ s3://zr-qa/ --delete --exclude "*.DS_Store"
+fi
 
 echo "Deploy complete"
