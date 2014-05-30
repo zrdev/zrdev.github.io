@@ -1,6 +1,6 @@
 <div class="page-content">
 	<div class="page-header"><h1>{{ data.announcement.title }}</h1></div>
-	<p><i>Posted by {{ data.announcement.user }}<br>{{ data.announcement.date | date:'longDate' }}</i></p>
+	<p><i>{{ data.announcement.date | date:'longDate' }}</i></p>
 	<div ng-bind-html="data.announcement.content"></div>
 	<p>
 		<a href="/announcements">Back to Announcements List</a><br>

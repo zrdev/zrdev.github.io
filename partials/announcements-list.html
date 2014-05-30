@@ -5,7 +5,7 @@
 			<h4 class="panel-title"><a href="/announcements/{{ a.id }}">{{ a.title }}</a></h4>
 		</div>
 		<div class="panel-body">
-			<p><i>Posted by {{ a.user }}<br>{{ a.date | date:'longDate' }}</i></p>
+			<p><i>{{ a.date | date:'longDate' }}</i></p>
 			{{ a.content | striptags | limitTo:255 }}
 			<a href="/announcements/{{ a.id }}">Read&nbsp;more...</a>
 		</div>
