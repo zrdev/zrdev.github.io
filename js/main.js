@@ -191,7 +191,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	simpleApiKey: 'AIzaSyCXIUmc4SlS1uW0SL5jDy9JjbIT6jqLIQk',
 	scopes: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.install profile email https://www.googleapis.com/auth/admin.directory.group',
 	//NO TRAILING SLASH on serviceDomain
-	serviceDomain: 'http://zrwebsite-env.elasticbeanstalk.com'
+	serviceDomain: (window.location.hostname === 'zerorobotics.mit.edu' ? 'http://zrwebsite-env.elasticbeanstalk.com' : 'http://zrdev.elasticbeanstalk.com')
 });
 
 //Callback to bootstrap Angular AFTER the Google APIs are loaded
