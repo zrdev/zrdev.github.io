@@ -21,7 +21,31 @@
 		</div>
 		<div class="col-md-10" style="padding-right:0;" ng-switch="mode">
 			<div ng-switch-when="info" ng-bind-html="resource.content"></div>
-			<div ng-switch-when="teams"></div>
+			<div ng-switch-when="teams">
+				<h2>{{ resource.name }}</h2>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>City</th>
+							<th>State</th>
+							<th>Country</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="t in resource.tournamentsDivisionTeamsCollection | orderBy:['country', 'state', 'name']">
+							<td>{{ t.name }}</td>
+							<td>{{ t.city }}</td>
+							<td>{{ t.state }}</td>
+							<td>{{ t.country }}</td>
+							<td><a href="mailto:">Email Leads</a></td>
+							<td><a ng-if="t.websiteUrl" target="_blank" href="{{ t.websiteUrl }}">Website</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 			<div ng-switch-when="scores"></div>
 		</div>
 	</div>
