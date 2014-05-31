@@ -13,13 +13,14 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', fu
 	for(var i = $scope.teams.length; i--; ) {
 		var ts = $scope.teams[i].tournamentsTeammembershipCollection;
 		for(var j = ts.length; j--; ) {
+			var user = ts[j];
 			httpBatch.add(gapi.client.request({
-				'path': '/plus/v1/people/' + ts[j].userId,
+				'path': '/plus/v1/people/' + user.userId,
 				'method': 'GET'
 			}), {
 				callback: function(data) {
-					ts[j].email = data.result.emails[0].value;
-					ts[j].name = data.result.displayName;
+					user.email = data.result.emails[0].value;
+					user.name = data.result.displayName;
 				}
 			});
 		};
