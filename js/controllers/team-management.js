@@ -18,8 +18,8 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', fu
 				'method': 'GET'
 			}), {
 				callback: function(data) {
-					ts[j].email = data.emails[0].value;
-					ts[j].name = data.displayName;
+					ts[j].email = data.result.emails[0].value;
+					ts[j].name = data.result.displayName;
 				}
 			});
 		};
