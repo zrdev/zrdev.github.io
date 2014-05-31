@@ -8,6 +8,23 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', fu
 	$scope.countries = ['United States', 'Austria', 'Belgium', 'Czech Republic', 'Denmark', 'Finland', 'France', 'Germany', 'Greece', 'Ireland', 'Italy', 'Luxembourg', 'Netherlands', 'Norway', 'Poland', 'Portugal', 'Romania', 'Spain', 'Sweden', 'Switzerland', 'United Kingdom'];
 	$scope.states = ["", "AK", "AL", "AR", "AS", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "FM", "GA", "GU", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MH", "MI", "MN", "MO", "MP", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "PR", "PW", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VI", "VT", "WA", "WI", "WV", "WY"];
 
+	var httpBatch = gapi.client.newHttpBatch();
+	for(var i = $scope.teams.length; i--; ) {
+		var ts = $scope.teams[i].teamDivisionsCollection;
+		for(var j = ts.length; j--; ) {
+			httpBatch.add(gapi.client.request({
+				'path': '/plus/v1/people/' + ts[j].id,
+				'method': 'GET'
+			}), {
+				callback: function(data) {
+					ts[j].email = req.emails[0].value;
+					ts[j].name = req.displayName;
+				}
+			});
+		};
+	};
+	httpBatch.execute();
+
 	$scope.setTeam = function(team) {
 		$scope.currentTeam = team;
 	};
