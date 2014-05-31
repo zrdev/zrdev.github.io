@@ -46,7 +46,7 @@
 						<a class="dropdown-toggle" data-toggle="dropdown">Tournaments<b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="/tournaments/">All Tournaments</a></li>
-							<li><a href="/manage-teams/" ng-if="displayName">Manage Teams</a></li>
+							<li><a href="/manage-teams/" style="display: none;" ng-if="displayName">Manage Teams</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Current tournaments</li>
 							<li ng-repeat="t in activeTournaments"><a href="/tournaments/{{ t.id }}/">{{ t.name }}</a></li>
