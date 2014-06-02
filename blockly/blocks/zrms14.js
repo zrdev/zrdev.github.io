@@ -130,8 +130,8 @@ Blockly.Blocks['zrms14_havePack'] = {
 			[['Me', 'ME'],
 			 ['Opponent', 'OTHER']];
 		var ITEMS = 
-			[['0', '0'],
-			 ['1', '1']];
+			[['1', '1'],
+			 ['2', '2']];
 		this.setHelpUrl('');
 		this.setColour(20);
 		this.appendDummyInput()
