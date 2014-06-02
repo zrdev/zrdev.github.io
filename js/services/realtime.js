@@ -32,7 +32,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config', 'drive',
 
 		this.id = null;
 		this.document = null;
-		var PROJ_INIT_TEXT = 'void init() {\n\t\n}\n\nvoid loop() {\n\t\n}\n';
+		var PROJ_INIT_TEXT = '\/\/Declare any variables shared between functions here\r\n\r\nvoid init(){\r\n\t\/\/This function is called once when your code is first loaded.\r\n\r\n\t\/\/IMPORTANT: make sure to set any variables that need an initial value.\r\n\t\/\/Do not assume variables will be set to 0 automatically!\r\n}\r\n\r\nvoid loop(){\r\n\t\/\/This function is called once per second.  Use it to control the satellite.\r\n}\r\n';
 
 		/**
 		 * Close the current document.

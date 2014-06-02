@@ -28,7 +28,11 @@ cp -Rp visualizer/ build/visualizer/
 cp -Rp blockly/media/ build/blockly/media/
 cp -Rp blockly/games/ build/blockly/games/
 if [ $1 == "--prod" ]; then
+	mkdir build/tutorials
+	mkdir build/ms
 	cp -p index-prod.html build/index.html
+	cp -p index-prod.html build/tutorials/index.html
+	cp -p index-prod.html build/ms/index.html
 elif [ $1 == "--qa" ]; then
 	cp -p index-qa.html build/index.html
 fi
