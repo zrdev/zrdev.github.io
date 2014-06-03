@@ -1,11 +1,8 @@
 <div class="page-content">
-	<div class="jumbotron">
-		<p style="font-weight: bold; color: red;">This page is under construction. Until this message disappears, some features may not work and some links may be broken.</p>
-	</div>
 	<div class="container">
 		<div class="col-md-3 accordion-container">
 			<div class="list-group">
-				<a ng-click="setTeam(t)" class="list-group-item active" ng-repeat="t in teams">{{ t.name }}</a>
+				<a ng-click="setTeam(t)" class="list-group-item {{ t === currentTeam ? 'active' : '' }}" ng-repeat="t in teams | orderBy:'name'">{{ t.teamType }} {{ t.name }}</a>
 			</div>
 		</div>
 		<div class="col-md-9" ng-if="currentTeam && isLead">
@@ -67,16 +64,13 @@
 			<table class="table table-striped middle-align">
 				<thead>
 					<tr>
-						<th>Name</th>
 						<th>Email</th>
 						<th>Is lead?</th>
-						<th>Status</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="m in currentTeam.tournamentsTeammembershipCollection">
-						<td>{{ m.name }}</td>
+					<tr ng-repeat="m in currentTeam.tournamentsTeammembershipCollection | orderBy:'email'">
 						<td>{{ m.email }}</td>
 						<td>
 							<div class="checkbox">
@@ -85,7 +79,6 @@
 								</label>
 							</div>
 						</td>
-						<td>{{ m.inviteAccepted ? 'Active' : 'Invitation pending' }}</td>
 						<td>
 							<button class="btn btn-danger" ng-click="deleteMember(m)">Remove</button>
 						</td>
@@ -94,5 +87,7 @@
 			</table>
 		</div>
 		<div class="col-md-9" ng-if="currentTeam && !isLead">
+			<button class="btn btn-danger" ng-click="deleteMe()">Remove me from this team</button>
+		</div>
 	</div>
 </div>
