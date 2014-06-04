@@ -204,24 +204,17 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 .config(['$httpProvider', function ($httpProvider) {
 	$httpProvider.defaults.useXDomain = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
-	//Intercept ZR backend requests for auth handling
-	$httpProvider.interceptors.push(function($q, $location) {
+	//ZR backend auth filter
+	$httpProvider.interceptors.push(['$q', function($q) {
 		return {
 			request: function(config) {
 				if(gapi && gapi.auth && typeof gapi.auth.getToken === 'function' && gapi.auth.getToken() !== null) {
 					config.headers['authorization'] = gapi.auth.getToken().access_token;
 				}
 				return config;
-			},
-			response: function(response) {
-				//ZR backend needs auth
-				if(response.status === 302) {
-
-				}
-				return response;
-			},
+			}
 		};
-	});
+	}]);
 }])
 
 .value('config', {
