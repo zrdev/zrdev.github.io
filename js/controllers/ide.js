@@ -160,7 +160,7 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 				}
 			},
 			windowClass: {
-				'max-width': '800px'
+				'width': '500px !important'
 			}
 		}).result.then(function(data) {
 			simulate(data);

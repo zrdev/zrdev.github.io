@@ -77,6 +77,16 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	};
 	tournamentResources.$inject = ['zrdb'];
 
+	var announcementResources = function(zrdb) {
+		return zrdb.getAllResources('announcement');
+	};
+	announcementResources.$inject = ['zrdb'];
+
+	var announcementResource = function(zrdb) {
+		return zrdb.getSingleResource('announcement');
+	};
+	announcementResource.$inject = ['zrdb'];
+
 	var previousProject = function($routeParams) {
 		return $routeParams['fileId'];
 	}
@@ -84,13 +94,23 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 
 	//URL routing
 	$routeProvider.when('/', {
-		templateUrl: '/partials/frontpage.html'
+		templateUrl: '/partials/frontpage.html',
+		controller: 'AnnouncementsListController',
+		resolve: {
+			'announcementResources': announcementResources
+		}
 	}).when('/announcements/', {
 		templateUrl: '/partials/announcements-list.html',
-		controller: 'AnnouncementsController'
-	}).when('/announcements/:announcementId/', {
+		controller: 'AnnouncementsListController',
+		resolve: {
+			'announcementResources': announcementResources
+		}
+	}).when('/announcements/:id/', {
 		templateUrl: '/partials/announcements-detail.html',
-		controller: 'AnnouncementsController'
+		controller: 'AnnouncementsController',
+		resolve: {
+			'announcementResource': announcementResource
+		}
 	}).when('/ide/simulation/', {
 		templateUrl: '/partials/simulations-list.html',
 		controller: 'SimulationListController'
