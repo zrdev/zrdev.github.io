@@ -107,7 +107,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		}
 	}).when('/announcements/:id/', {
 		templateUrl: '/partials/announcements-detail.html',
-		controller: 'AnnouncementsController',
+		controller: 'AnnouncementsDetailController',
 		resolve: {
 			'announcementResource': announcementResource
 		}
