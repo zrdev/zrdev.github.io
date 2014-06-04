@@ -52,10 +52,12 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 	};
 	folderResource.$inject = ['$route'];
 
-	var teamResources = function($q, drive, zrdb) {
-		return zrdb.getAllResources('team');
+	var teamResources = function(zrdb) {
+		return zrdb.checkAuth().then(function() {
+			return zrdb.getAllResources('team');
+		});
 	};
-	teamResources.$inject = ['$q', 'realtime', 'zrdb'];
+	teamResources.$inject = ['zrdb'];
 
 	var openRedirect = function(routeParams, path, search) {
 		//Parse state parameter from Drive UI
@@ -202,6 +204,24 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 .config(['$httpProvider', function ($httpProvider) {
 	$httpProvider.defaults.useXDomain = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
+	//Intercept ZR backend requests for auth handling
+	$httpProvider.interceptors.push(function($q, $location) {
+		return {
+			request: function(config) {
+				if(gapi && gapi.auth && typeof gapi.auth.getToken === 'function' && gapi.auth.getToken() !== null) {
+					config.headers['authorization'] = gapi.auth.getToken().access_token;
+				}
+				return config;
+			},
+			response: function(response) {
+				//ZR backend needs auth
+				if(response.status === 302) {
+
+				}
+				return response;
+			},
+		};
+	});
 }])
 
 .value('config', {
@@ -248,7 +268,7 @@ window.onGapiLoaded = function() {
 }
 
 window.loginCallback = function(authResult) {
-	if(authResult['status']['signed_in']) {
+	if(authResult['status'] && authResult['status']['signed_in']) {
 		if(zr.navbarScope) {
 			zr.navbarScope.getUser();
 		}

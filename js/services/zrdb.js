@@ -42,13 +42,6 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 				});
 			}
 		};
-
-		//Add a header w/ the OAuth token
-		var refreshAuth = function() {
-			if(gapi && gapi.auth && typeof gapi.auth.getToken === 'function' && gapi.auth.getToken() !== null) {
-				reqConfig.headers['authorization'] = gapi.auth.getToken().access_token;
-			}
-		}
 		
 		this.getSingleResource = function(name, id, nocache) {
 			id = id || $route.current.params['id'];
@@ -64,7 +57,6 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 					}
 				}
 			}
-			refreshAuth();
 			return $http.get(config.serviceDomain + '/' + name + 'resource/single/' + id + '/', reqConfig)
 			.success(function(data) {
 				if(!(name in cache)) {
@@ -75,14 +67,15 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 				}
 				return data;
 			})
-			.error(function() {
-				alert(CONNECTION_ERROR);
+			.error(function(response) {
+				if(response.status === 0) {
+					alert(CONNECTION_ERROR);
+				}
 				return null;
 			});
 		};
 
 		this.putResource = function(name, id, resource, callback) {
-			refreshAuth();
 			return $http.post(config.serviceDomain + '/' + name + 'resource/edit/' + id + '/', resource, reqConfig)
 			.success(function(data) {
 				if(typeof callback === 'function') {
@@ -96,7 +89,6 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 		};
 
 		this.deleteResource = function(name, id, callback) {
-			refreshAuth();
 			return $http.post(config.serviceDomain + '/' + name + 'resource/delete/' + id + '/', {}, reqConfig)
 			.success(function(data) {
 				if(typeof callback === 'function') {
@@ -110,7 +102,6 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 		};
 
 		this.addResource = function(name, resource, callback) {
-			refreshAuth();
 			return $http.post(config.serviceDomain + '/' + name + 'resource/add/', resource, reqConfig)
 			.success(function(data) {
 				if(typeof callback === 'function') {
@@ -133,8 +124,6 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 				});
 			}
 
-			refreshAuth();
-
 			return $http.get(config.serviceDomain + '/' + name + 'resource/all/', reqConfig)
 			.success(function(data) {
 				cache[name] = data.rows;
@@ -142,7 +131,9 @@ zr.service('zrdb', ['config', '$http', '$timeout', '$route', '$q',
 				return data.rows;
 			})
 			.error(function() {
-				alert(CONNECTION_ERROR);
+				if(response.status === 0) {
+					alert(CONNECTION_ERROR);
+				}
 				return null;
 			});
 		};
