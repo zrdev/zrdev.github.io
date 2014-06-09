@@ -63,6 +63,14 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		drive.openProject();
 	}
 	
+	$scope.saveAs = function() {
+		drive.newProject(null, {
+			'name': $scope.projectName, 
+			'gameId': $scope.model.getRoot().get('gameId'),
+			'graphical': graphical
+		})
+	}
+	
 	$scope.focusLog = function(item) {
 		if(item.content) {
 			var template = '<div class="modal-header"><button type="button" class="close" aria-hidden="true" ng-click="$dismiss()">&times;</button><h4 class="modal-title">'
@@ -237,15 +245,6 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		//Exit the read-only C mode in a graphical project
 		$scope.editorMode = graphical ? 'graphical' : 'text';
 	};
-	
-
-	$scope.saveAs = function() {
-		drive.newProject(null, {
-			'name': $scope.projectName, 
-			'gameId': $scope.model.getRoot().get('gameId'),
-			'graphical': graphical
-		})
-	}
 	
 	var parseErrorMessage = function(msg, startLines) {
 		var re = /^\/zr.cpp:([0-9]+):([0-9]+): (error|warning): (.*)$/gm;
