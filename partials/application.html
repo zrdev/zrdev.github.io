@@ -1,41 +1,183 @@
 <div class="page-content">
-	<h1>{{  }} Application</h1>
-	<form class="form-horizontal" role="form">
+	<div class="page-header"><h1>{{ tournament.name }} Application Form</h1></div>
+
+	<h3>Team Information</h3>
+	<form>
 		<div class="form-group">
-			<label for="team-name" class="col-sm-2 control-label">Team name</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" ng-model="currentTeam.name">
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="school-name" class="col-sm-2 control-label">School</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" ng-model="currentTeam.school">
-			</div>				</div>
-		<div class="form-group">
-			<label for="city-name" class="col-sm-2 control-label">City</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" ng-model="currentTeam.city">
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="state-name" class="col-sm-2 control-label">State (US Only)</label>
-			<div class="col-sm-10">
-				<select class="form-control" ng-options="a for a in states" ng-model="currentTeam.state"></select>
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="country-name" class="col-sm-2 control-label">Country</label>
-			<div class="col-sm-10">
-				<select ng-model="currentTeam.country" ng-options="a for a in countries" class="form-control">
-				</select>
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="website-url" class="col-sm-2 control-label">Team Website</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" ng-model="currentTeam.websiteUrl">
+			<label class="control-label">Has your team participated in Zero Robotics before?</label>
+			<div>
+				<label class="radio">
+					<input type="radio" name="sphRadios" ng-model="data.isReturning" value="yes">Yes, we're back for more!
+				</label>
+				<label class="radio">
+					<input type="radio" name="sphRadios" ng-model="data.isReturning" value="no">No, we're new on the block
+				</label>
 			</div>
 		</div>
 	</form>
+	<table class="table-form">
+		<tr ng-show="data.isReturning === 'yes'">
+			<td>
+				<label class="control-label">Select Team</label>
+			</td>
+			<td>
+				<select class="form-control" ng-options="t as t.teamType + ' ' + t.name for t in teams" ng-model="data.team"></select>
+			</td>
+		</tr>
+		<tr ng-show="data.isReturning === 'no'">
+			<td>
+				<label class="control-label">Team Name</label>
+			</td>
+			<td>
+				<input type="text" class="form-control" ng-model="data.team.name">
+			</td>
+		</tr>
+		<tr ng-show="data.isReturning === 'no'">
+			<td>
+				<label class="control-label">School/Organization</label>
+			</td>
+			<td>
+				<input type="text" class="form-control" ng-model="data.team.school">
+			</td>
+		</tr>
+		<tr ng-show="data.isReturning === 'no'">
+			<td>
+				<label class="control-label">City</label>
+			</td>
+			<td>
+				<input type="text" class="form-control" ng-model="data.team.city">
+			</td>
+		</tr>
+		<tr ng-show="data.isReturning === 'no'">
+			<td>
+				<label class="control-label">State (US Only)</label>
+			</td>
+			<td>
+				<select class="form-control" ng-options="a for a in states" ng-model="data.team.state"></select>
+			</td>
+		</tr>
+		<tr ng-show="data.isReturning === 'no'">
+			<td>
+				<label class="control-label">Country</label>
+			</td>
+			<td>
+				<select ng-model="data.team.country" ng-options="a for a in countries" class="form-control"></select>
+			</td>
+		</tr>
+		<tr ng-show="data.isReturning === 'no'">
+			<td>
+				<label class="control-label">Team Website (optional)</label>
+			</td>
+			<td>
+				<input type="text" class="form-control" ng-model="data.team.websiteUrl">
+			</td>
+		</tr>
+	</table>
+
+	<h3>Mentor Information</h3>
+	<p>The primary mentor serves as the team's contact and should be the one to fill out this form. The account you are currently logged in with will be needed to set up your team, and the email address shown below will be used for communications from Zero Robotics.</p>
+	<table class="table-form">
+		<tr>
+			<td>
+				<label class="control-label">Primary Mentor's Name</label>
+			</td>
+			<td>
+				{{ data.mentors.name }}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label class="control-label">Primary Mentor's Email</label>
+			</td>
+			<td>
+				{{ data.mentors.email }}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label class="control-label">Primary Mentor's Position/Profession</label>
+			</td>
+			<td>
+				<input type="text" class="form-control" ng-model="data.mentors.profession">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label class="control-label">How did you hear about Zero Robotics?</label>
+			</td>
+			<td>
+				<input type="text" class="form-control" ng-model="data.mentors.howHeard">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label class="control-label">Other Mentors (Optional) </label>
+			</td>
+			<td>
+				<textarea class="form-control" ng-model="data.mentors.secondary" rows="4"></textarea>
+			</td>
+		</tr>
+	</table>
+
+	<h3>Essay</h3>
+	<p>Use this space to paste short answers (1-2 paragraphs) to the following questions. The answers must be written by at least one of the expected <strong>student</strong> team members. Remember to cite references to any materials you use to write this section. </p>
+	<p>
+		<strong>Team Skills:</strong> 
+		Tell us about the skills the team should have to be successful in Zero Robotics. Describe the skills you already have and how you will learn new ones.
+	</p>
+	<textarea class="form-control" style="width: 100%;" ng-model="data.essays.teamSkills" rows="10"></textarea>
+	<p style="margin-top: 10px;">
+		<strong>Team Organization:</strong> 
+		Describe how the team will be organized in order to encourage a cooperative programming environment. Since Zero Robotics is primarily a programming and strategy competition, it is important that your team has a plan for everyone to contribute.
+	</p>
+	<textarea class="form-control" style="width: 100%;" ng-model="data.essays.teamOrganization" rows="10"></textarea>
+	<p style="margin-top: 10px;">
+		<strong>Why is programming important?</strong> 
+		Describe how programming is important to you.
+	</p>
+	<textarea class="form-control" style="width: 100%;" ng-model="data.essays.programming" rows="10"></textarea>
+	<p style="margin-top: 10px;">
+		<strong>What are SPHERES?</strong>
+		Tell us what SPHERES are in your own words. What do we accomplish with them? How can you learn from using SPHERES? <a href="http://ssl.mit.edu/spheres/" target="_blank">Click here</a> for more information about SPHERES.
+	</p>
+	<textarea class="form-control" style="width: 100%;" ng-model="data.essays.spheres" rows="10"></textarea>
+
+	<h3>Team Commitments</h3>
+	<p>Before submitting an application, you must agree to the following commitments from your school/district:</p>
+	<div class="checkbox">
+	  <label>
+	    <input type="checkbox" ng-model="agreement[0]">
+	    <strong>Mentor Commitment:</strong> You will provide at least one mentor/advisor to the group, who must be a teacher or long-term volunteer at the school/district.
+	  </label>
+	</div>
+	<div class="checkbox">
+	  <label>
+	    <input type="checkbox" ng-model="agreement[1]">
+	    <strong>Computer Access:</strong> The team will have access to at least two computers, each with Internet access, a modern Web browser, and the capability to play Flash content. 
+	  </label>
+	</div>
+	<div class="checkbox">
+	  <label>
+	    <input type="checkbox" ng-model="agreement[2]">
+	    <strong>Team Size/Composition:</strong> You will form a team of 5-20 students, all of whom will be registered at the school/district and be in grades 9-12.
+	  </label>
+	</div>
+	<div class="checkbox">
+	  <label>
+	    <input type="checkbox" ng-model="agreement[3]">
+	    <strong>No Cost / No Funding:</strong> While there is no cost to participate in the Zero Robotics competition, no funding is provided beyond certain limited grants  that may be announced. All funds for team activities, including travel to MIT for the finals if desired, must be raised by the team.
+	  </label>
+	</div>
+	<div class="checkbox">
+	  <label>
+	    <input type="checkbox" ng-model="agreement[4]">
+	    <strong>Code Display:</strong> MIT retains the right to publish programs submitted for competition at the end of the tournament. Code will not be released before the end of the tournament unless otherwise specified in tournament rules.
+	  </label>
+	</div>
+	<div class="checkbox">
+	  <label>
+	    <input type="checkbox" ng-model="agreement[5]">
+	    <strong>Tournament Rules:</strong> Official rules will be released in the game manual at the start of the tournament. Making your first code submission will indicate that you have read and agree to the official rules of the tournament.
+	</div>
+	<button class="btn btn-primary" ng-click="submit()">Submit</button>
 </div>
