@@ -68,7 +68,7 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', 'd
 		if(confirm('Are you sure you want to remove yourself from this team?')) {
 			var ms = $scope.currentTeam.tournamentsTeammembershipCollection;
 			for(var i = ms.length; i--; ) {
-				if(ms[i].email === myEmail) {
+				if(ms[i].email.toLowerCase() === myEmail.toLowerCase()) {
 					zrdb.deleteResource('teammembership', ms[i].id, function() {
 						var index = $scope.teams.indexOf($scope.currentTeam);
 						$scope.teams.splice(index, 1);
