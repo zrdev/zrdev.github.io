@@ -39,9 +39,9 @@ fi
 
 #Deploy to S3 bucket
 if [ $1 == "--prod" ]; then
-	aws s3 sync build/ s3://zerorobotics.mit.edu/ --delete --exclude "*.DS_Store"
+	aws s3 sync build/ s3://zerorobotics.mit.edu/ --delete --exclude "*.DS_Store" --exclude "docs/*" --exclude "images/*"
 elif [ $1 == "--qa" ]; then
-	aws s3 sync build/ s3://zr-qa/ --delete --exclude "*.DS_Store"
+	aws s3 sync build/ s3://zr-qa/ --delete --exclude "*.DS_Store"  --exclude "docs/*" --exclude "images/*"
 fi
 
 echo "Deploy complete"

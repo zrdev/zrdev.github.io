@@ -7,10 +7,10 @@
 			<label class="control-label">Has your team participated in Zero Robotics before?</label>
 			<div>
 				<label class="radio">
-					<input type="radio" name="sphRadios" ng-model="data.isReturning" value="yes">Yes, we're back for more!
+					<input type="radio" name="sphRadios" ng-model="data.isReturning" value="yes" ng-change="data.team = {state:'', country:''}">Yes, we're back for more!
 				</label>
 				<label class="radio">
-					<input type="radio" name="sphRadios" ng-model="data.isReturning" value="no">No, we're new on the block
+					<input type="radio" name="sphRadios" ng-model="data.isReturning" value="no" ng-change="data.team = {state:'', country:''}">No, we're new on the block
 				</label>
 			</div>
 		</div>
