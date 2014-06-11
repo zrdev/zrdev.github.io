@@ -9,7 +9,7 @@ zr.controller('SharingModalController', ['$scope', '$modalInstance', 'teamResour
 				'path': '/drive/v2/files/' + realtime.id + '/permissions',
 				'method': 'POST',
 				'params': {
-					'sendNotificationEmails': false
+					'sendNotificationEmails': true
 				},
 				'body': JSON.stringify({
 					'value': ms[i].email,
