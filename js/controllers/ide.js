@@ -75,14 +75,6 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		})
 	}
 	
-	$scope.saveAs = function() {
-		drive.newProject(null, {
-			'name': $scope.projectName, 
-			'gameId': $scope.model.getRoot().get('gameId'),
-			'graphical': graphical
-		})
-	}
-	
 	$scope.focusLog = function(item) {
 		if(item.content) {
 			var template = '<div class="modal-header"><button type="button" class="close" aria-hidden="true" ng-click="$dismiss()">&times;</button><h4 class="modal-title">'

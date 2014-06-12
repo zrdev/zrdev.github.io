@@ -89,8 +89,7 @@ zr.service('drive', ['config', '$modal', 'zrdb',
 					gameResources: function() {
 						return zrdb.getAllResources('game');
 					},
-					saveAsData: function() { return saveAsData; },
-					drive: function() { return this; }
+					saveAsData: function() { return saveAsData; }
 				}
 			});
 		};
