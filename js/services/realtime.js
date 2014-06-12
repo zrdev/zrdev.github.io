@@ -96,7 +96,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config', 'drive',
 		var this_ = this;
 		
 		//Helper function for copyDocument
-		this.getCurrentFileData = function(id) {
+		var getCurrentFileData = function(id) {
 			var deferredGet = $q.defer();
 			var getDocData = function (result) {
 				if (result && !result.error) {
@@ -115,7 +115,7 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config', 'drive',
 		}
 		
 		//Helper function for copyDocument
-		this.updateDocumentData = function(newFile, oldFile){
+		var updateDocumentData = function(newFile, oldFile){
 			var deferredUpdate = $q.defer();
 			var onComplete = function (result) {
 				if (!result){
@@ -150,9 +150,9 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config', 'drive',
 			};
 			if(!folder)
 				folder = [];		
-			this_.getCurrentFileData(id).then(function (oldFile) {
+			getCurrentFileData(id).then(function (oldFile) {
 				this_.createDocument(newTitle, folder).then(function (copy) {
-					this_.updateDocumentData(copy, oldFile).then(function(){
+					updateDocumentData(copy, oldFile).then(function(){
 						onComplete(copy);
 					});
 				});
