@@ -93,42 +93,75 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config', 'drive',
 			return deferred.promise;
 		};
 		
+		var this_ = this;
+		
+		//Helper function for copyDocument
+		this.getCurrentFileData = function(id) {
+			var deferredGet = $q.defer();
+			var getDocData = function (result) {
+				if (result && !result.error) {
+					deferredGet.resolve(result);
+				}
+				else {
+					deferredGet.reject(result);
+				}
+			};
+			gapi.client.request({
+				'path': 'drive/v2/files/'+id+'/realtime',
+				'method': 'GET'
+			}).execute(getDocData);
+			
+			return deferredGet.promise;
+		}
+		
+		//Helper function for copyDocument
+		this.updateDocumentData = function(newFile, oldFile){
+			var deferredUpdate = $q.defer();
+			var onComplete = function (result) {
+				if (!result){
+					deferredUpdate.resolve(result);
+				}
+				else {
+					deferredUpdate.reject(result);
+				}
+			};
+			
+			gapi.client.request({
+				'path': 'upload/drive/v2/files/'+newFile.id+'/realtime',
+				'method': 'PUT',
+				'body': oldFile.data
+			}).execute(onComplete);
+			
+			return deferredUpdate.promise;
+		}
+		
 		/**
 		 * Copies a document in place
 		 */
 		this.copyDocument = function (newTitle, id, folder) {
 			var deferred = $q.defer();
 			var onComplete = function (result) {
-				if (result && !result.error) {
+				if (result && !result.error){
 					deferred.resolve(result);
-				} else {
-					deferred.reject(result);
+				}
+				else {
+					deferred.resolve(result);
 				}
 			};
+			if(!folder)
+				folder = [];		
+			this_.getCurrentFileData(id).then(function (oldFile) {
+				this_.createDocument(newTitle, folder).then(function (copy) {
+					this_.updateDocumentData(copy, oldFile).then(function(){
+						onComplete(copy);
+					});
+				});
+			});
 			
-			if(!folder) {
-				folder = [];
-			}
-			
-			gapi.client.request({
-				'path': '/drive/v2/files/'+id+'/get',
-				'method': 'POST',
-				'params': {
-					convert: false,
-					ocr: false,
-					pinned: false,
-					visibility: 'DEFAULT'
-				},
-				'body': JSON.stringify({
-					title: newTitle,
-					mimeType: 'application/vnd.google-apps.drive-sdk',
-					parents: folder
-				})
-			}).execute(onComplete);
 			return deferred.promise;
 		};
 
-		var this_ = this;
+		
 		/**
 		 * Actually load a document. If the document is new, initializes
 		 * the model.
