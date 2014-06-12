@@ -1,4 +1,4 @@
-zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$location', 'folder', 'gameResources', 'realtime', 'saveAsData', function($scope, $modalInstance, $location, folder, gameResources, realtime, saveAsData) {
+zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$location', 'folder', 'gameResources', 'realtime', 'drive', 'saveAsData', function($scope, $modalInstance, $location, folder, gameResources, realtime, drive, saveAsData) {
 	$scope.games = gameResources.data.rows;
 	if(saveAsData) {
 		$scope.data = {
@@ -25,7 +25,7 @@ zr.controller('NewProjectModalController', ['$scope', '$modalInstance', '$locati
 	
 	$scope.createProject = function() {
 		if(saveAsData) {
-			drive.copyFile($scope.data.name || 'Untitled', realtime.id);
+			realtime.copyDocument($scope.data.name || 'Untitled', realtime.id, folder);
 		}
 		else {
 			realtime.createDocument($scope.data.name + ' - ' + $scope.data.game.displayName, folder).then(function (file) {

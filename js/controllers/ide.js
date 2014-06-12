@@ -60,7 +60,11 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 	}
 	
 	$scope.openProject = function() {
-		drive.openProject();
+		drive.openProject(function(id, name) {
+				$timeout(function() {
+					$location.url('/ide/' + id + '/');
+				});
+			});
 	}
 	
 	$scope.saveAs = function() {

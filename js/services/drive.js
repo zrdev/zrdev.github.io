@@ -36,22 +36,6 @@ zr.service('drive', ['config', '$modal', 'zrdb',
 				callback();
 			});
 		};
-
-		//Renames the current file in Drive. 
-		this.copyFile = function(title, id, callback) {
-			gapi.client.request({
-				'path': '/drive/v2/files/' + id + '/copy',
-				'method': 'POST',
-				'params': {
-					'key': config.apiKey
-				},
-				'body': JSON.stringify({
-					title: title
-				})
-			}).execute(function(data){
-				callback(data);
-			});
-		};
 		
 		var fileMetadata = {};
 		//Gets the metadata of a file in Drive. 
@@ -105,8 +89,7 @@ zr.service('drive', ['config', '$modal', 'zrdb',
 					gameResources: function() {
 						return zrdb.getAllResources('game');
 					},
-					saveAsData: function() { return saveAsData; },
-					drive: function() { return this; }
+					saveAsData: function() { return saveAsData; }
 				}
 			});
 		};

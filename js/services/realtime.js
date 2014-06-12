@@ -92,6 +92,41 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config', 'drive',
 			}).execute(onComplete);
 			return deferred.promise;
 		};
+		
+		/**
+		 * Copies a document in place
+		 */
+		this.copyDocument = function (newTitle, id, folder) {
+			var deferred = $q.defer();
+			var onComplete = function (result) {
+				if (result && !result.error) {
+					deferred.resolve(result);
+				} else {
+					deferred.reject(result);
+				}
+			};
+			
+			if(!folder) {
+				folder = [];
+			}
+			
+			gapi.client.request({
+				'path': '/drive/v2/files/'+id+'/get',
+				'method': 'POST',
+				'params': {
+					convert: false,
+					ocr: false,
+					pinned: false,
+					visibility: 'DEFAULT'
+				},
+				'body': JSON.stringify({
+					title: newTitle,
+					mimeType: 'application/vnd.google-apps.drive-sdk',
+					parents: folder
+				})
+			}).execute(onComplete);
+			return deferred.promise;
+		};
 
 		var this_ = this;
 		/**
