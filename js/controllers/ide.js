@@ -60,7 +60,19 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 	}
 	
 	$scope.openProject = function() {
-		drive.openProject();
+		drive.openProject(function(id, name) {
+				$timeout(function() {
+					$location.url('/ide/' + id + '/');
+				});
+			});
+	}
+	
+	$scope.saveAs = function() {
+		drive.newProject(null, {
+			'name': $scope.projectName, 
+			'gameId': $scope.model.getRoot().get('gameId'),
+			'graphical': graphical
+		})
 	}
 	
 	$scope.focusLog = function(item) {
@@ -237,15 +249,6 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 		//Exit the read-only C mode in a graphical project
 		$scope.editorMode = graphical ? 'graphical' : 'text';
 	};
-	
-
-	$scope.saveAs = function() {
-		drive.newProject(null, {
-			'name': $scope.projectName, 
-			'gameId': $scope.model.getRoot().get('gameId'),
-			'graphical': graphical
-		})
-	}
 	
 	var parseErrorMessage = function(msg, startLines) {
 		var re = /^\/zr.cpp:([0-9]+):([0-9]+): (error|warning): (.*)$/gm;

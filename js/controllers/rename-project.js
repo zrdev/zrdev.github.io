@@ -1,4 +1,4 @@
-zr.controller('RenameProjectController', ['$scope', '$modalInstance', 'drive', 'callback', 'realtime', function($scope, $modalInstance, drive, callback, realtime) {
+zr.controller('RenameProjectController', ['$scope', '$modalInstance', 'drive', 'realtime', 'callback', function($scope, $modalInstance, drive, realtime, callback) {
 	$scope.data = {
 		name: ''
 	};
