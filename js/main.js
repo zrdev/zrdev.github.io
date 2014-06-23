@@ -202,7 +202,7 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		templateUrl: '/partials/forum.html',
 		controller: 'ForumController',
 		reloadOnSearch: false
-	}).when('/generalFAQ/', {
+	}).when('/faq/', {
 		templateUrl: '/partials/generalFAQ.html'
 	}).otherwise({
 		redirectTo: '/'
