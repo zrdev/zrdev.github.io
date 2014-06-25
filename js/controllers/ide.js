@@ -175,6 +175,7 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 				'width': '500px !important'
 			}
 		}).result.then(function(data) {
+			//
 			simulate(data);
 		});
 	};
@@ -187,7 +188,8 @@ zr.controller('IdeController', ['$scope', '$modal', '$http', '$timeout', '$locat
 			resolve: {
 				projectText: function() { return realtime.getDocAsString($scope.model.getRoot()); },
 				teamResources: function() { return zrdb.getAllResources('team'); },
-				competitionResources: function() { return zrdb.getAllResources('competition'); }
+				competitionResources: function() { return zrdb.getAllResources('competition'); },
+				game: function() { return resources[1].data; }
 			}
 		}).result.then(function(data) {
 		});
