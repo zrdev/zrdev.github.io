@@ -29,6 +29,6 @@
 	<button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
 	<button type="button" class="btn btn-primary" type="submit" ng-disabled="!data.agree || !data.competition.name" ng-click="validate()">Submit</button>
 </div>
-<div style="position: fixed; left: 50%; top: 80px; float: left;">
-	<div class="alert alert-info" style="position: relative; left: -50%; float: left; z-index: 1052;" ng-show="showFloater">Validating and submitting...</div>
+<div style="position: fixed; left: 50%; top: 80px; float: left; z-index: 3000;">
+	<div class="alert alert-info" style="position: relative; left: -50%; float: left; " ng-show="showFloater">Validating and submitting...</div>
 </div>

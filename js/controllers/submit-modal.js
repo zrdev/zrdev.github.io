@@ -17,7 +17,6 @@ zr.controller('SubmitModalController', ['$scope', '$modalInstance', 'projectText
 	var compilePassed = false;
 	var codesizePassed = false;
 	$scope.validate = function() {
-		if($scope.compilePassed && $scope.codesizePassed)
 		$scope.showFloater = true;
 
 		zrdb.compile({
