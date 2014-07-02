@@ -15,7 +15,30 @@ zr.controller('SimulationController', ['$scope', '$modalInstance', 'gameResource
 			$scope.data.gameVars[i].value = $scope.data.gameVars[i].min;
 		}
 	}
-	$scope.resetAll();
+
+	
+	//function to restore previous simulation settings
+	$scope.restoreSettings = function() {
+        	$scope.data={
+            		sph:1,
+            		opponentId: null,
+        		timeout: game.defaultTimeout,
+            		sph1init: JSON.parse(realtime.sph1init),
+            		sph2init: JSON.parse(realtime.sph2init),
+            		gameVars: JSON.parse(game.gameVariables),
+            		opponentCode: 'void init() {} void loop() {}'
+        	};
+        	for(var i = $scope.data.gameVars.length; i--; ) {
+        		$scope.data.gameVars[i].value = $scope.data.gameVars[i].min;
+        	}
+	 }
+    	if(realtime.sph1init.length===0&&realtime.sph2init.length===0){
+       		$scope.resetAll();
+    	}
+    	else{
+        	$scope.restoreSettings();
+    	}
+
 
 	$scope.opponentTitle = 'No Opponent';
 	
@@ -26,6 +49,9 @@ zr.controller('SimulationController', ['$scope', '$modalInstance', 'gameResource
 			delete v.max;
 			delete v.type;
 		}
+		 //Save simulation settings to real time
+        	realtime.sph1init=JSON.stringify($scope.data.sph1init);
+        	realtime.sph2init=JSON.stringify($scope.data.sph2init);
 		$modalInstance.close($scope.data);
 	};
 	
