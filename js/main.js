@@ -192,8 +192,6 @@ var zr = angular.module('zr', ['ui.bootstrap', 'ui.ace', 'ui.keypress', 'ngRoute
 		templateUrl: '/partials/week5.html'
 	}).when('/ms/tutorials/', {
 		templateUrl: '/partials/tutorials-ms.html'
-	}).when('/practiceregionals1/',{
-		templateUrl:'/partials/practiceRegional.html'
 	}).when('/manage-teams/', {
 		templateUrl: '/partials/team-management.html',
 		controller: 'TeamManagementController', 
