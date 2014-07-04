@@ -56,6 +56,10 @@ zr.controller('TeamManagementController', ['$scope', 'teamResources', 'zrdb', 'd
 		zrdb.putResource('team', $scope.currentTeam.id, $scope.currentTeam);
 	};
 
+	$scope.setLead = function(membership) {
+		zrdb.putResource('teammembership', membership.id, membership);
+	};
+
 	$scope.deleteMember = function(m) {
 		var ms = $scope.currentTeam.tournamentsTeammembershipCollection;
 		zrdb.deleteResource('teammembership', m.id, function() {
