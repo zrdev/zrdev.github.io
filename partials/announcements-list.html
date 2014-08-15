@@ -6,7 +6,7 @@
 		</div>
 		<div class="panel-body">
 			<p><i>{{ a.date | date:'longDate' }}</i></p>
-			{{ a.content | striptags | limitTo:255 }}
+			{{ a.content | limitTo:255 }}
 			<a href="/announcements/{{ a.id }}">Read&nbsp;more...</a>
 		</div>
 	</div>
