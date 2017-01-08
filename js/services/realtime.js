@@ -26,6 +26,10 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config', 'drive',
 	 * @param config
 	 */
 	function ($q, $rootScope, $routeParams, config, drive) {
+		//Arrays for saving simulation settings
+		this.sph1init=[];
+		this.sph2init=[];
+		
 		//Parameters for new project
 		this.ideGraphical = false;
 		this.gameId = null;
@@ -170,6 +174,9 @@ zr.service('realtime', ['$q', '$rootScope', '$routeParams', 'config', 'drive',
 		 * @returns {angular.$q.promise}
 		 */
 		this.load = function (id, dontReplace) {
+			//clear previous simulation settings when project is loaded
+			this.sph1init=[];
+			this.sph2init=[];
 			var deferred = $q.defer();
 			var initialize = function (model) {
 				var root = model.getRoot();
